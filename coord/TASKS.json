@@ -1,0 +1,302 @@
+{
+  "R1": {
+    "id": "R1",
+    "title": "Fetch the real AI Engineer NY roster via Tavily",
+    "deps": [],
+    "role": "roster",
+    "files": [
+      "event-fleet/src/fleet/roster.py"
+    ],
+    "verify": "fetch_roster('AI Engineer NY') run for real; ACTUAL SPEAKER NAMES pasted in evidence",
+    "status": "RUNNING",
+    "agent": "wave1-R1",
+    "evidence": null,
+    "stretch": false
+  },
+  "R2": {
+    "id": "R2",
+    "title": "Cache the real roster response as the on-stage fallback",
+    "deps": [
+      "R1"
+    ],
+    "role": "roster",
+    "files": [
+      "event-fleet/data/roster_aieng_ny.json"
+    ],
+    "verify": "cache file loads and contains source URL + UTC timestamp + the same real names",
+    "status": "TODO",
+    "agent": null,
+    "evidence": null,
+    "stretch": false
+  },
+  "S1": {
+    "id": "S1",
+    "title": "MCP server boots; prep_conference registered and callable from Claude",
+    "deps": [],
+    "role": "spine",
+    "files": [
+      "event-fleet/src/fleet/server.py"
+    ],
+    "verify": "server boots; tool listed; the `claude mcp add` line written to BOARD.md",
+    "status": "RUNNING",
+    "agent": "wave1-S1",
+    "evidence": null,
+    "stretch": false
+  },
+  "S2": {
+    "id": "S2",
+    "title": "Persist every run (inputs+output) and mint run_id",
+    "deps": [
+      "S1"
+    ],
+    "role": "spine",
+    "files": [
+      "event-fleet/src/fleet/store.py"
+    ],
+    "verify": "two real runs persisted; run_ids distinct; row re-read and printed",
+    "status": "TODO",
+    "agent": null,
+    "evidence": null,
+    "stretch": false
+  },
+  "P1": {
+    "id": "P1",
+    "title": "rank(user, speakers, intent) -> list[RankedPick] via real Nebius call",
+    "deps": [],
+    "role": "priorities",
+    "files": [
+      "event-fleet/src/fleet/rank.py"
+    ],
+    "verify": "real Nebius call; actual model output pasted; parses into RankedPick",
+    "status": "RUNNING",
+    "agent": "wave1-P1",
+    "evidence": null,
+    "stretch": false
+  },
+  "P2": {
+    "id": "P2",
+    "title": "judge(...) -> EvalResult, Mechanism A rubric, grounding check weighted hardest",
+    "deps": [
+      "P1"
+    ],
+    "role": "priorities",
+    "files": [
+      "event-fleet/src/fleet/judge.py"
+    ],
+    "verify": "real call; EvalResult with per-check pass/fail printed",
+    "status": "TODO",
+    "agent": null,
+    "evidence": null,
+    "stretch": false
+  },
+  "P3": {
+    "id": "P3",
+    "title": "Prove the judge has teeth: an ungrounded ranking must FAIL",
+    "deps": [
+      "P2"
+    ],
+    "role": "priorities",
+    "files": [
+      "event-fleet/tests/test_judge.py"
+    ],
+    "verify": "both runs pasted: grounded->pass, deliberately ungrounded->fail",
+    "status": "TODO",
+    "agent": null,
+    "evidence": null,
+    "stretch": false
+  },
+  "E1": {
+    "id": "E1",
+    "title": "Enumerate Iridium /mcp/tools/list; pick the read-only person-resolution tool",
+    "deps": [],
+    "role": "enrichment",
+    "files": [
+      "event-fleet/src/fleet/iridium.py"
+    ],
+    "verify": "real tool catalogue fetched; chosen tool named with its real payload shape",
+    "status": "RUNNING",
+    "agent": "wave1-E1",
+    "evidence": null,
+    "stretch": false
+  },
+  "E2": {
+    "id": "E2",
+    "title": "enrich_user() -> UserProfile from ONE real Iridium call, pre-warmed + cached",
+    "deps": [
+      "E1"
+    ],
+    "role": "enrichment",
+    "files": [
+      "event-fleet/src/fleet/enrich.py"
+    ],
+    "verify": "real (redacted) response pasted; cache written to event-fleet/data/",
+    "status": "TODO",
+    "agent": null,
+    "evidence": null,
+    "stretch": false
+  },
+  "E3": {
+    "id": "E3",
+    "title": "Tavily-only fallback, PROVEN by forcing an Iridium failure",
+    "deps": [
+      "E2"
+    ],
+    "role": "enrichment",
+    "files": [
+      "event-fleet/src/fleet/enrich.py"
+    ],
+    "verify": "forced failure shown degrading cleanly; degradation string logged, not swallowed",
+    "status": "TODO",
+    "agent": null,
+    "evidence": null,
+    "stretch": false
+  },
+  "M1": {
+    "id": "M1",
+    "title": "Install Cotal; `cotal up` authed loopback (never --open)",
+    "deps": [],
+    "role": "mesh",
+    "files": [
+      ".cotal/"
+    ],
+    "verify": "cotal running; version + mesh status pasted",
+    "status": "RUNNING",
+    "agent": "wave1-M1",
+    "evidence": null,
+    "stretch": false
+  },
+  "M2": {
+    "id": "M2",
+    "title": "Four agent files with explicit default-deny ACLs; peers coordinate on the mesh",
+    "deps": [
+      "M1"
+    ],
+    "role": "mesh",
+    "files": [
+      ".cotal/agents/",
+      "event-fleet/src/fleet/mesh.py"
+    ],
+    "verify": "real cotal_send/cotal_anycast round trip; cotal web dashboard shows it",
+    "status": "TODO",
+    "agent": null,
+    "evidence": null,
+    "stretch": false
+  },
+  "M3": {
+    "id": "M3",
+    "title": "Every non-silent fleet error posts to the mesh (spec section 6)",
+    "deps": [
+      "M2"
+    ],
+    "role": "mesh",
+    "files": [
+      "event-fleet/src/fleet/mesh.py"
+    ],
+    "verify": "a real induced error appears in the durable audit log",
+    "status": "TODO",
+    "agent": null,
+    "evidence": null,
+    "stretch": false
+  },
+  "I1": {
+    "id": "I1",
+    "title": "Wire roster -> briefing (straight line, no ranking). HOUR-1 FLOOR",
+    "deps": [
+      "S1",
+      "R1"
+    ],
+    "role": "spine",
+    "files": [
+      "event-fleet/src/fleet/server.py"
+    ],
+    "verify": "prep_conference called for real; briefing with real speakers returned",
+    "status": "TODO",
+    "agent": null,
+    "evidence": null,
+    "stretch": false
+  },
+  "I2": {
+    "id": "I2",
+    "title": "Wire rank + judge into the flow",
+    "deps": [
+      "I1",
+      "P2"
+    ],
+    "role": "spine",
+    "files": [
+      "event-fleet/src/fleet/server.py"
+    ],
+    "verify": "end-to-end real run: roster -> ranking -> judge verdict",
+    "status": "TODO",
+    "agent": null,
+    "evidence": null,
+    "stretch": false
+  },
+  "I3": {
+    "id": "I3",
+    "title": "Wire enrichment + thread degradations through",
+    "deps": [
+      "I2",
+      "E3"
+    ],
+    "role": "spine",
+    "files": [
+      "event-fleet/src/fleet/server.py"
+    ],
+    "verify": "real run with enrichment; degradation path also shown working",
+    "status": "TODO",
+    "agent": null,
+    "evidence": null,
+    "stretch": false
+  },
+  "I4": {
+    "id": "I4",
+    "title": "Render the exact section-5 output format",
+    "deps": [
+      "I3"
+    ],
+    "role": "spine",
+    "files": [
+      "event-fleet/src/fleet/render.py"
+    ],
+    "verify": "rendered briefing pasted, matching the spec's section-5 shape",
+    "status": "TODO",
+    "agent": null,
+    "evidence": null,
+    "stretch": false
+  },
+  "V1": {
+    "id": "V1",
+    "title": "FULL END-TO-END VERIFICATION \u2014 always last",
+    "deps": [
+      "I4",
+      "S2",
+      "R2",
+      "P3",
+      "M3"
+    ],
+    "role": "verify",
+    "files": [],
+    "verify": "cold-start real run through Claude; every claim on the board re-checked against reality",
+    "status": "TODO",
+    "agent": null,
+    "evidence": null,
+    "stretch": false
+  },
+  "V2": {
+    "id": "V2",
+    "title": "Demo rehearsal + fallbacks armed",
+    "deps": [
+      "V1"
+    ],
+    "role": "verify",
+    "files": [
+      "DEMO.md"
+    ],
+    "verify": "script written; every fallback triggered once and confirmed working",
+    "status": "TODO",
+    "agent": null,
+    "evidence": null,
+    "stretch": false
+  }
+}
