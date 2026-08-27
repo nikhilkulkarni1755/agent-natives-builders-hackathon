@@ -1,0 +1,2 @@
+{"ts": "2026-08-27T19:34:00.700325+00:00", "agent": "P1", "event": "done", "detail": "rank() live: real openai/gpt-oss-120b call via Nebius, strict json_schema -> list[RankedPick], all 5 speakers covered, median 3.47s, retry+hard-fail paths verified"}
+{"ts": "2026-08-27T19:34:43.488486+00:00", "agent": "P1", "event": "verified", "detail": "rank() latency on real Nebius calls: 5 spk 3.47s, 10 spk 3.74s, 20 spk 5.39s, 40 spk 7.66s -- full coverage at every size, no truncation. Safe for any roster B returns."}

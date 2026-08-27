@@ -1,0 +1,1 @@
+{"ts": "2026-08-27T19:34:51.731463+00:00", "agent": "M1", "event": "done", "detail": "cotal-ai v0.33.2 installed; cotal up --detach running in JWT-authed mode (nats://127.0.0.1:4222, mode=auth); connection shape reported for M2"}

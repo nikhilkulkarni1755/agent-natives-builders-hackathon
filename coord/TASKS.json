@@ -38,9 +38,9 @@
       "event-fleet/src/fleet/server.py"
     ],
     "verify": "server boots; tool listed; the `claude mcp add` line written to BOARD.md",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave1-S1",
-    "evidence": null,
+    "evidence": "MCP server boots over stdio; prep_conference in tools/list; real call returned run_id + honest degradations; registered in Claude, health-checked Connected",
     "stretch": false
   },
   "S2": {
@@ -54,8 +54,8 @@
       "event-fleet/src/fleet/store.py"
     ],
     "verify": "two real runs persisted; run_ids distinct; row re-read and printed",
-    "status": "TODO",
-    "agent": null,
+    "status": "RUNNING",
+    "agent": "wave2-S2",
     "evidence": null,
     "stretch": false
   },
@@ -68,9 +68,9 @@
       "event-fleet/src/fleet/rank.py"
     ],
     "verify": "real Nebius call; actual model output pasted; parses into RankedPick",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave1-P1",
-    "evidence": null,
+    "evidence": "real Nebius call, slug openai/gpt-oss-120b confirmed; strict json_schema honored; 3.47s median @5 speakers, 7.66s @40; parses to RankedPick",
     "stretch": false
   },
   "P2": {
@@ -84,8 +84,8 @@
       "event-fleet/src/fleet/judge.py"
     ],
     "verify": "real call; EvalResult with per-check pass/fail printed",
-    "status": "TODO",
-    "agent": null,
+    "status": "RUNNING",
+    "agent": "wave2-P2",
     "evidence": null,
     "stretch": false
   },
@@ -160,9 +160,9 @@
       ".cotal/"
     ],
     "verify": "cotal running; version + mesh status pasted",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave1-M1",
-    "evidence": null,
+    "evidence": "cotal-ai 0.33.2 installed; cotal up authed (mode=auth, nats://127.0.0.1:4222, space main); NOT --open",
     "stretch": false
   },
   "M2": {
@@ -177,8 +177,8 @@
       "event-fleet/src/fleet/mesh.py"
     ],
     "verify": "real cotal_send/cotal_anycast round trip; cotal web dashboard shows it",
-    "status": "TODO",
-    "agent": null,
+    "status": "RUNNING",
+    "agent": "wave2-M2",
     "evidence": null,
     "stretch": false
   },

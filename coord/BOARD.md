@@ -118,6 +118,13 @@ multi-speaker enrichment · any login/user-management UI · hotels · anything G
 
 ## Decisions log (Agent A appends)
 - D-001: coord/ read+written at the absolute main-checkout path, not per-worktree. Zero sync latency.
+- D-005: HARD RULE, learned from S1 — stdout is the MCP JSON-RPC channel. NO `print()` in any
+  module under event-fleet/src/fleet/. Use `logging` to stderr. A stray print drops the connection.
+- D-006: `mcp` resolves to 2.1.1, NOT 1.x. FastMCP is gone. Use `from mcp.server import MCPServer`,
+  `@mcp.tool()`, `mcp.run()`. Wire fields are snake_case (input_schema, structured_content, is_error).
+- D-007: rank() returns ALL speakers ranked, not a top-N (no top_k in the contract). Render slices
+  to top 3-5. Fact-less speakers stay IN the ranking (grounding-correct) but are filtered OUT of the
+  rendered top-N — the judge still sees the full list. Dispatcher call, not a ranking bug.
 - D-003: Keys verified at bootstrap by live call, not assumed. Findings in PRE-VERIFIED above.
 - D-004: Iridium API key is used raw — the `irid_` prefix in the spec is notation, not literal.
 - D-002: Lanes are vertical slices, not pipeline stages, so A/B/C/D parallelise without chaining.
