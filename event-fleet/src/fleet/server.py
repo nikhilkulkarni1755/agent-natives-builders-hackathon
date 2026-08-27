@@ -109,6 +109,15 @@ def prep_conference(event_name: str, intent: str) -> ConferenceBriefing:
         user = UserProfile(summary="", interests=[], source="none")
 
     enriched = _step("enrich", "enrich_speakers", degradations, speakers) or []
+
+    # The enrichment plane records its own fallbacks internally -- an Iridium failure
+    # answered from public web data, a speaker it refused to guess at. Draining them
+    # here is what carries them into the briefing; without it they are logged and then
+    # lost, which is exactly the silent failure spec section 6 forbids.
+    drain = _step("enrich", "take_degradations", degradations)
+    if drain:
+        degradations.extend(drain)
+
     picks = _step("rank", "rank", degradations, user, enriched, intent) or []
     evaluation = _step("judge", "judge", degradations, user, picks, intent)
     if evaluation is None:
