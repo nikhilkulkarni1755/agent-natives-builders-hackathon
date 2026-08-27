@@ -49,6 +49,7 @@ This is about to be reachable by strangers, so:
 from __future__ import annotations
 
 import asyncio
+from contextvars import ContextVar
 import json
 import logging
 import os
@@ -68,6 +69,7 @@ from starlette.routing import Route
 
 from fleet.models import PrepRequest
 from fleet.render import render
+from fleet import enrich
 from fleet.server import _load_env, prep_conference
 
 AGENT = "H1/http"
@@ -266,6 +268,27 @@ async def _read_request(request: Request) -> PrepRequest:
 # --------------------------------------------------------------------------- #
 
 
+_pending_key: ContextVar[str | None] = ContextVar("fleet_http_caller_key", default=None)
+
+
+def _bind_caller(request: Request) -> None:
+    """Bind this HTTP caller's own Iridium identity, never the operator's.
+
+    The server process holds the operator's key, so without this every public request
+    would be enriched as -- and told it is -- the person who started the server. A
+    caller who wants their own profile supplies their own key; one who does not gets a
+    briefing ranked on their stated goal alone. The key is read from the request and
+    never stored, logged, or persisted.
+    """
+    key = request.headers.get("x-iridium-key") or None
+    if not key:
+        auth = request.headers.get("authorization") or ""
+        if auth.lower().startswith("bearer "):
+            key = auth[7:].strip() or None
+    _pending_key.set(key)
+    enrich.set_caller(key, remote=True)
+
+
 async def health(request: Request) -> JSONResponse:
     """Liveness only. Touches no model, no network, no key -- safe for a tunnel to poll."""
     return JSONResponse({
@@ -296,6 +319,7 @@ async def prep(request: Request) -> JSONResponse:
 
     started = time.monotonic()
     try:
+        _bind_caller(request)
         briefing = await asyncio.to_thread(prep_conference, req.event_name, req.intent)
     except Exception as exc:
         log.error("agent=%s step=prep event=%r exc=%r", AGENT, req.event_name, exc, exc_info=True)
@@ -316,6 +340,16 @@ async def prep(request: Request) -> JSONResponse:
 def _sse(event: str, payload: dict[str, Any]) -> bytes:
     """One SSE frame. `data` is always a single-line JSON object, so no framing edge cases."""
     return f"event: {event}\ndata: {json.dumps(payload, default=str)}\n\n".encode()
+
+
+def _run_bound(req: PrepRequest):
+    """Run the pipeline in a worker thread with the caller identity already bound.
+
+    contextvars set on the event loop do not propagate into `asyncio.to_thread`, so the
+    binding is re-applied inside the thread that actually runs enrichment.
+    """
+    enrich.set_caller(_pending_key.get(), remote=True)
+    return prep_conference(req.event_name, req.intent)
 
 
 async def _stream(req: PrepRequest, request: Request) -> AsyncIterator[bytes]:
@@ -348,7 +382,7 @@ async def _stream(req: PrepRequest, request: Request) -> AsyncIterator[bytes]:
         })
 
         future = asyncio.ensure_future(
-            asyncio.to_thread(prep_conference, req.event_name, req.intent)
+            asyncio.to_thread(_run_bound, req)
         )
         # Bound to the run, not to the connection: if the caller hangs up mid-run the
         # thread keeps spending quota, so the slot stays held until it really finishes.
@@ -412,6 +446,7 @@ async def prep_stream(request: Request) -> StreamingResponse:
     except _BadRequest as exc:
         return JSONResponse({"error": str(exc)}, status_code=400)
 
+    _bind_caller(request)
     return StreamingResponse(
         _stream(req, request),
         media_type="text/event-stream",

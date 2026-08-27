@@ -43,6 +43,7 @@ import logging
 import os
 import re
 from concurrent.futures import ThreadPoolExecutor
+from contextvars import ContextVar
 from datetime import datetime, timezone
 from functools import partial
 from pathlib import Path
@@ -101,6 +102,27 @@ _STOPWORDS = frozenset(
 )
 
 _degradations: list[str] = []
+
+# Who is asking. The process environment belongs to whoever STARTED the server, so it
+# cannot be used to decide identity for a remote caller: a public HTTP request would
+# otherwise inherit the operator's Iridium account and be told it is them. Local stdio
+# callers ARE the operator, so they keep the process key; every remote request must set
+# this explicitly, and gets no profile unless it carries its own key.
+_caller_key: ContextVar[str | None] = ContextVar("fleet_caller_iridium_key", default=None)
+_caller_is_remote: ContextVar[bool] = ContextVar("fleet_caller_is_remote", default=False)
+
+
+def set_caller(iridium_key: str | None, remote: bool = True) -> None:
+    """Bind the identity for the current request. Call once per inbound request."""
+    _caller_key.set(iridium_key or None)
+    _caller_is_remote.set(remote)
+
+
+def _identity_key() -> str | None:
+    """The Iridium key to resolve THIS caller with, or None for no profile."""
+    if _caller_is_remote.get():
+        return _caller_key.get()       # remote: only ever the caller's own key
+    return os.environ.get("IRIDIUM_API_KEY")   # local stdio: the operator is the caller
 
 
 def take_degradations() -> list[str]:
@@ -271,7 +293,7 @@ def enrich_user(hint: str | None = None) -> UserProfile:
     # goals. So the cache is only ever served to a caller who presents an Iridium key.
     # A public caller with no key gets an honest empty profile and is ranked on their
     # stated intent alone.
-    if not os.environ.get("IRIDIUM_API_KEY"):
+    if not _identity_key():
         log.info("agent=%s step=enrich_user why=no IRIDIUM_API_KEY; ranking on intent alone", AGENT)
         _degrade(
             "No Iridium account is connected, so this briefing has no attendee profile: "
