@@ -72,7 +72,7 @@ Never stand in silence waiting for a model.
 
 > **[0:35 — switch to browser.]**
 >
-> "And that's the live audit log. Every lane's progress, every error, durable and replayable.
+> "And that's the live audit log. Every run's per-lane outcome and every error, durable and replayable.
 > Authenticated — it 401s without a session."
 
 > **[0:45 — back to Claude. The result is in.]**
