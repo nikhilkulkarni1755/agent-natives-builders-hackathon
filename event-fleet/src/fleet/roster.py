@@ -30,12 +30,14 @@ TAVILY_API_URL = "https://api.tavily.com"
 # here is a normal outcome, not a bug.
 AI_ENGINEER_NY_URL = "https://ai.engineer/nyc/2026"
 
-# Matches the site's repeated speaker-card markdown: an image whose alt
-# text is the person's name, then the name again as plain text, then a
-# "Title, Company" line. Works for whichever section this pattern occurs
-# in -- past-speaker carousel today, a real confirmed lineup once one ships.
+# Matches the site's repeated speaker-card text: a name line (1-4
+# Title-Case words) followed by a "Title, Company" line. Tavily's extract
+# sometimes includes the card's headshot markdown and sometimes strips
+# images entirely, so this matches on the name/title-line pair alone --
+# present either way. Works for whichever section this pattern occurs in:
+# past-speaker carousel today, a real confirmed lineup once one ships.
 _SPEAKER_CARD_RE = re.compile(
-    r"!\[([^\]]+)\]\(https://assets\.ai\.engineer/[^)]+\)\s*\n\n\1\s*\n\n([^\n]+)"
+    r"\n\n([A-Z][\w.'’-]*(?: [A-Z][\w.'’-]*){0,3})\n\n([^\n]*,[^\n]*)"
 )
 _PAST_SPEAKERS_HEADING_RE = re.compile(r"past speakers?\s*&?\s*attendees?", re.IGNORECASE)
 _TITLE_RE = re.compile(r"^# (.+)$", re.MULTILINE)
