@@ -49,6 +49,7 @@ This is about to be reachable by strangers, so:
 from __future__ import annotations
 
 import asyncio
+from pathlib import Path
 from contextvars import ContextVar
 import json
 import logging
@@ -64,8 +65,15 @@ from starlette.applications import Starlette
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
-from starlette.responses import JSONResponse, StreamingResponse
-from starlette.routing import Route
+from starlette.responses import (
+    FileResponse,
+    JSONResponse,
+    PlainTextResponse,
+    Response,
+    StreamingResponse,
+)
+from starlette.routing import Mount, Route
+from starlette.staticfiles import StaticFiles
 
 from fleet.models import PrepRequest
 from fleet.render import render
@@ -271,6 +279,26 @@ async def _read_request(request: Request) -> PrepRequest:
 _pending_key: ContextVar[str | None] = ContextVar("fleet_http_caller_key", default=None)
 
 
+_WEB = Path(__file__).resolve().parents[3] / "web"
+
+
+async def index(request: Request) -> Response:
+    """Serve the front end at the root.
+
+    The public URL is what a first-time visitor pastes, so it has to show the product
+    rather than a 404. Falls back to plain text if the page is missing, since the API
+    is useful on its own and a missing asset must not take the endpoint down.
+    """
+    page = _WEB / "index.html"
+    if page.is_file():
+        return FileResponse(page, media_type="text/html")
+    return PlainTextResponse(
+        "Conference Prep Fleet -- API is up. Try GET /health, or POST /prep with "
+        '{"event_name": "...", "intent": "..."}.',
+        status_code=200,
+    )
+
+
 def _bind_caller(request: Request) -> None:
     """Bind this HTTP caller's own Iridium identity, never the operator's.
 
@@ -463,6 +491,8 @@ async def prep_stream(request: Request) -> StreamingResponse:
 # browser widget served from anywhere has to be able to open the stream.
 app = Starlette(
     routes=[
+        Route("/", index, methods=["GET"]),
+        Mount("/vendor", app=StaticFiles(directory=str(_WEB / "vendor")), name="vendor"),
         Route("/health", health, methods=["GET"]),
         Route("/prep", prep, methods=["POST"]),
         Route("/prep/stream", prep_stream, methods=["GET", "POST"]),
