@@ -12,7 +12,7 @@ from the **real** AI Engineer NY speaker roster. That alone is a demo. Get here 
 ## PRE-VERIFIED FACTS (real calls made at bootstrap — do NOT re-derive, do NOT doubt)
 
 **Secrets** — all three keys are live and loaded. Every terminal does:
-`set -a; . /Users/nikhilkulkarni/immersive-commons-hackathon/hackathon-p1/.env; set +a`
+`source /Users/nikhilkulkarni/immersive-commons-hackathon/hackathon-p1/.env`
 That file is gitignored and 600. Never read it into context, never echo a key, never commit it.
 
 **Nebius (Agent C)** — key authenticates; 30 models on the live catalog.

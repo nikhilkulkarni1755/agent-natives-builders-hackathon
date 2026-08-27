@@ -12,13 +12,15 @@ BUS          $FLEET_ROOT/scripts/coord.sh   ·   HITL  $FLEET_ROOT/scripts/hitl.
 ## STEP 0 — before any agent (terminal 0, ~60 seconds)
 
 ```bash
-export TAVILY_API_KEY='...'                     # B, D
-export NEBIUS_API_KEY='...'                     # C
-export IRIDIUM_API_KEY='irid_...'               # D
+# keys are already verified and live in the gitignored .env at repo root.
+# NOTE zsh: bare `. .env` does a $PATH lookup and fails. Use the absolute path.
+source /Users/nikhilkulkarni/immersive-commons-hackathon/hackathon-p1/.env
 
 # leave this running in terminal 0 for the whole 3 hours:
 /Users/nikhilkulkarni/immersive-commons-hackathon/hackathon-p1/scripts/coord.sh monitor
 ```
+
+Run that same `source` line in **every** agent terminal before launching `claude`.
 
 `monitor` is your live dashboard: every agent's state, anything blocked, open HITL
 questions, and the last 12 fleet events, refreshing every 10s. Answer a question from
