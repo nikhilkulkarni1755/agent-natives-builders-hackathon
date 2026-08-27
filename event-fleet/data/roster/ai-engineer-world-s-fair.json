@@ -1,0 +1,27 @@
+{
+  "captured_at": "2026-08-27T21:05:22.046361+00:00",
+  "event_name": "AI Engineer World's Fair",
+  "sources": [
+    "https://www.ai21.com/llms.txt",
+    "https://sessionize.com/aiewf2026",
+    "https://www.ai21.com/events/ai-engineer-worlds-fair-2026"
+  ],
+  "event_description": "AI Engineer World\u2019s Fair 2026, June 29 \u2013 July 2, 2026, San Francisco",
+  "is_partial": false,
+  "speakers": [
+    {
+      "name": "Yuval Belfer",
+      "title": "Senior Developer Advocate",
+      "company": "AI21",
+      "session_title": "Stop Chunking Like It\u2019s 2022",
+      "profile_url": null
+    },
+    {
+      "name": "Asaf Gardin",
+      "title": "Senior Software Engineer",
+      "company": "AI21",
+      "session_title": "Two Bugs That Hid in Plain Sight: A vLLM Debugging Detective Story",
+      "profile_url": null
+    }
+  ]
+}

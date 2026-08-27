@@ -1,0 +1,186 @@
+{
+  "captured_at": "2026-08-27T21:56:06.258696+00:00",
+  "event_name": "GDC 2026",
+  "sources": [
+    "https://developer.microsoft.com/en-us/games/events/gdc/2026"
+  ],
+  "event_description": "GDC 2026, March 9-13, San Francisco",
+  "is_partial": false,
+  "speakers": [
+    {
+      "name": "Zhen Zhai",
+      "title": null,
+      "company": "Blizzard Entertainment",
+      "session_title": "Machine Learning Forum: Ask the Experts",
+      "profile_url": null
+    },
+    {
+      "name": "Julien Merceron",
+      "title": null,
+      "company": "Orion Productions",
+      "session_title": "Machine Learning Forum: Ask the Experts",
+      "profile_url": null
+    },
+    {
+      "name": "Martin Singh-Blom",
+      "title": null,
+      "company": "Embark Studios",
+      "session_title": "Machine Learning Forum: Ask the Experts",
+      "profile_url": null
+    },
+    {
+      "name": "Alessandro Sestini",
+      "title": null,
+      "company": "Electronic Arts, SEED",
+      "session_title": "Machine Learning Forum: Ask the Experts",
+      "profile_url": null
+    },
+    {
+      "name": "Alexis Rolland",
+      "title": null,
+      "company": "Ubisoft, La Forge",
+      "session_title": "Machine Learning Forum: Ask the Experts",
+      "profile_url": null
+    },
+    {
+      "name": "Alexandre Moufarek",
+      "title": null,
+      "company": "Google DeepMind",
+      "session_title": "Machine Learning Forum: Ask the Experts",
+      "profile_url": null
+    },
+    {
+      "name": "Nicole Maiorano",
+      "title": null,
+      "company": "Blizzard Entertainment",
+      "session_title": "Welcome Back: Updating Diablo Immortal's Returning Player Experience",
+      "profile_url": null
+    },
+    {
+      "name": "Angelo Alcid",
+      "title": null,
+      "company": "Microsoft Corp.",
+      "session_title": "Ask Video Game Lawyers Anything (Legal AMA): This Normally Costs Money!",
+      "profile_url": null
+    },
+    {
+      "name": "Yan Perng",
+      "title": null,
+      "company": "Blizzard Entertainment",
+      "session_title": "Ask Video Game Lawyers Anything (Legal AMA): This Normally Costs Money!",
+      "profile_url": null
+    },
+    {
+      "name": "Ryan Black",
+      "title": null,
+      "company": "DLA Piper (Canada) LLP",
+      "session_title": "Ask Video Game Lawyers Anything (Legal AMA): This Normally Costs Money!",
+      "profile_url": null
+    },
+    {
+      "name": "Brandon Huffman",
+      "title": null,
+      "company": "Odin Law and Media",
+      "session_title": "Ask Video Game Lawyers Anything (Legal AMA): This Normally Costs Money!",
+      "profile_url": null
+    },
+    {
+      "name": "Kenny Shea Dinkin",
+      "title": null,
+      "company": "King",
+      "session_title": "Game Designer's Notebook",
+      "profile_url": null
+    },
+    {
+      "name": "Cara Ely",
+      "title": null,
+      "company": "Meta",
+      "session_title": "Game Designer's Notebook",
+      "profile_url": null
+    },
+    {
+      "name": "Rohit Crasta",
+      "title": null,
+      "company": "The New York Times",
+      "session_title": "Game Designer's Notebook",
+      "profile_url": null
+    },
+    {
+      "name": "Jesse Schell",
+      "title": null,
+      "company": "Schell Games",
+      "session_title": "Game Designer's Notebook",
+      "profile_url": null
+    },
+    {
+      "name": "Guy Somberg",
+      "title": null,
+      "company": "Blizzard Entertainment",
+      "session_title": "Game Audio Programmer Roundtable Day 1",
+      "profile_url": null
+    },
+    {
+      "name": "Tomas Neumann",
+      "title": null,
+      "company": "CD Projekt Red",
+      "session_title": "Game Audio Programmer Roundtable Day 1",
+      "profile_url": null
+    },
+    {
+      "name": "Ant\u00f3nio Figueiredo",
+      "title": null,
+      "company": "MachineGames",
+      "session_title": "Aged by Adventure: Crafting the Time-Worn World of Indiana Jones and the Great Circle",
+      "profile_url": null
+    },
+    {
+      "name": "Michael Tran",
+      "title": null,
+      "company": "MachineGames",
+      "session_title": "Aged by Adventure: Crafting the Time-Worn World of Indiana Jones and the Great Circle",
+      "profile_url": null
+    },
+    {
+      "name": "Vytautas Katarzis",
+      "title": null,
+      "company": "MachineGames",
+      "session_title": "Aged by Adventure: Crafting the Time-Worn World of Indiana Jones and the Great Circle",
+      "profile_url": null
+    },
+    {
+      "name": "Eva Ryott",
+      "title": null,
+      "company": "King",
+      "session_title": "The Art & Science of Evergreen Games: Running Live Services That Last (Presented by King)",
+      "profile_url": null
+    },
+    {
+      "name": "Ryan Cooper",
+      "title": null,
+      "company": "Mojang",
+      "session_title": "The Art & Science of Evergreen Games: Running Live Services That Last (Presented by King)",
+      "profile_url": null
+    },
+    {
+      "name": "Romain Jemma",
+      "title": null,
+      "company": "King",
+      "session_title": "The Art & Science of Evergreen Games: Running Live Services That Last (Presented by King)",
+      "profile_url": null
+    },
+    {
+      "name": "Natasha Miller",
+      "title": null,
+      "company": "Blizzard Entertainment",
+      "session_title": "Thriving Players Workshop",
+      "profile_url": null
+    },
+    {
+      "name": "Matthew Soeth",
+      "title": null,
+      "company": "Thriving in Games Group",
+      "session_title": "Thriving Players Workshop",
+      "profile_url": null
+    }
+  ]
+}

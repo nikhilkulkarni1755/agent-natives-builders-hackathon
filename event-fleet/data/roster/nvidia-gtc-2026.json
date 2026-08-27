@@ -1,0 +1,187 @@
+{
+  "captured_at": "2026-08-27T21:55:53.869901+00:00",
+  "event_name": "NVIDIA GTC 2026",
+  "sources": [
+    "https://www.nvidia.com/llms.txt",
+    "https://www.nvidia.com/gtc/speakers.md"
+  ],
+  "event_description": "GTC 2026 in San Jose",
+  "is_partial": false,
+  "speakers": [
+    {
+      "name": "Deepak Pathak",
+      "title": "CEO and Co-Founder CTO",
+      "company": "Skild AI",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Moritz Baecher",
+      "title": "Director, Research Lab Zurich",
+      "company": "Disney Research Imagineering",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Aman Sanger",
+      "title": "CTO and Co-Founder",
+      "company": "Cursor",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Sanja Fidler",
+      "title": "VP, AI Research",
+      "company": "NVIDIA",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Ashok Elluswamy",
+      "title": "VP, AI Software",
+      "company": "Tesla",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Neda Cvijetic",
+      "title": "Global Head, Robotics and Digital R&D",
+      "company": "Johnson & Johnson",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Percy Liang",
+      "title": "Associate Professor of Computer Science",
+      "company": "Stanford University",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Zhilin Yang",
+      "title": "Founder and CEO",
+      "company": "Kimi (Moonshot AI)",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Cameron Davies",
+      "title": "Chief Data Officer",
+      "company": "Yum! Brands",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Mira Murati",
+      "title": "Founder and CEO",
+      "company": "Thinking Machines Lab",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Pras Velagapudi",
+      "title": "CTO",
+      "company": "Agility Robotics",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Chris Malachowsky",
+      "title": "Cofounder",
+      "company": "NVIDIA",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Rev Lebaredian",
+      "title": "VP of Omniverse and Simulation Technology",
+      "company": "NVIDIA",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Jia Li",
+      "title": "President and Chief AI Officer",
+      "company": "LiveX AI",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Eric Jacuzzi",
+      "title": "VP of Vehicle Performance",
+      "company": "NASCAR",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Anastasis Germanidis",
+      "title": "CTO and Co-Founder",
+      "company": "Runway",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Kimberly Powell",
+      "title": "VP, Healthcare and Life Sciences",
+      "company": "NVIDIA",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Sachin Katti",
+      "title": "Head of Industrial Compute",
+      "company": "OpenAI",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Deepu Talla",
+      "title": "Vice President of Robotics and Edge AI",
+      "company": "NVIDIA",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Charles Frye",
+      "title": "Member of Technical Staff",
+      "company": "Modal",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Stef Corazza",
+      "title": "Head of AI Research",
+      "company": "Canva",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Kara Hurst",
+      "title": "CSO",
+      "company": "Amazon",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Guive Balooch",
+      "title": "Global VP, Tech and Open Innovation",
+      "company": "L'Oreal",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Florence Hu-Aubigny",
+      "title": "Executive VP, R&D",
+      "company": "Dassault Syst\u00e8mes",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Ian Buck",
+      "title": "VP of Hyperscale and HPC Computing",
+      "company": "NVIDIA",
+      "session_title": null,
+      "profile_url": null
+    }
+  ]
+}

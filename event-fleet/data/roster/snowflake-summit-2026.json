@@ -1,0 +1,173 @@
+{
+  "captured_at": "2026-08-27T21:54:04.086648+00:00",
+  "event_name": "Snowflake Summit 2026",
+  "sources": [
+    "https://atlan.com/llms.txt",
+    "https://atlan.com/know/snowflake-summit-2026-must-attend-sessions"
+  ],
+  "event_description": "Snowflake Summit 2026, June 1\u20134, San Francisco",
+  "is_partial": false,
+  "speakers": [
+    {
+      "name": "Libby Hickey",
+      "title": "Head of Data Platforms & Enablement",
+      "company": "Aviva",
+      "session_title": "Aviva\u2019s Internal Marketplace Playbook: From 29 Silos to One Source of Truth",
+      "profile_url": null
+    },
+    {
+      "name": "Andy McPhee",
+      "title": "Director of Data Engineering",
+      "company": "Aviva",
+      "session_title": "Aviva\u2019s Internal Marketplace Playbook: From 29 Silos to One Source of Truth",
+      "profile_url": null
+    },
+    {
+      "name": "Ra Raman",
+      "title": "Sr. Director, Enterprise Data & AI",
+      "company": "Zscaler",
+      "session_title": "Context, Governance, Infrastructure: The Stack AI Data Agents Don\u2019t Have",
+      "profile_url": null
+    },
+    {
+      "name": "Pradnesh Patil",
+      "title": "Co-founder & CEO",
+      "company": "Altimate AI",
+      "session_title": "Context, Governance, Infrastructure: The Stack AI Data Agents Don\u2019t Have",
+      "profile_url": null
+    },
+    {
+      "name": "Karthik Raman",
+      "title": "Head of Snowflake Practice",
+      "company": "LTM",
+      "session_title": "Context Is the New Code: AI Engineering with Snowflake Cortex AI",
+      "profile_url": null
+    },
+    {
+      "name": "Pallavi Sharma",
+      "title": "Sr. Data Cloud Architect \u2013 Partners",
+      "company": "Snowflake",
+      "session_title": "Context Is the New Code: AI Engineering with Snowflake Cortex AI",
+      "profile_url": null
+    },
+    {
+      "name": "Prukalpa Sankar",
+      "title": "Co-founder & Co-CEO",
+      "company": "Atlan",
+      "session_title": "WTF is the Enterprise Context Layer \u2014 Demystified and Demoed (Presented by Atlan)",
+      "profile_url": null
+    },
+    {
+      "name": "George Fraser",
+      "title": "CEO & Co-founder",
+      "company": "Fivetran",
+      "session_title": "Open Data Infrastructure: The Next Era of Data Architecture",
+      "profile_url": null
+    },
+    {
+      "name": "Tristan Handy",
+      "title": "CEO",
+      "company": "dbt Labs",
+      "session_title": "Open Data Infrastructure: The Next Era of Data Architecture",
+      "profile_url": null
+    },
+    {
+      "name": "Yali Sassoon",
+      "title": "CTO",
+      "company": "Snowplow",
+      "session_title": "When the Interface Is an Agent: Reimagining Your Customer Context Layer",
+      "profile_url": null
+    },
+    {
+      "name": "Jessica Talisman",
+      "title": "Principal",
+      "company": "Ontology Pipeline",
+      "session_title": "Context Layer? Semantic Layer? Ontology? Knowledge Graph? A Spicy Debate (Presented by Atlan)",
+      "profile_url": null
+    },
+    {
+      "name": "Cindi Howson",
+      "title": "Chief Data & AI Strategy Officer",
+      "company": "ThoughtSpot",
+      "session_title": "Context Layer? Semantic Layer? Ontology? Knowledge Graph? A Spicy Debate (Presented by Atlan)",
+      "profile_url": null
+    },
+    {
+      "name": "Austin Kronz",
+      "title": "Director of AI & Data Strategy",
+      "company": "Atlan",
+      "session_title": "Context Layer? Semantic Layer? Ontology? Knowledge Graph? A Spicy Debate (Presented by Atlan)",
+      "profile_url": null
+    },
+    {
+      "name": "Rinesh Patel",
+      "title": "Global Head of Financial Services",
+      "company": "Snowflake",
+      "session_title": "The Future of Financial Services: Agents with Industry Context and Connectivity",
+      "profile_url": null
+    },
+    {
+      "name": "Sachin Mehta",
+      "title": "EVP & Chief Data Product Officer",
+      "company": "US Bank",
+      "session_title": "The Future of Financial Services: Agents with Industry Context and Connectivity",
+      "profile_url": null
+    },
+    {
+      "name": "Mallik Yemme",
+      "title": "Managing Director",
+      "company": "JP Morgan Chase",
+      "session_title": "The Future of Financial Services: Agents with Industry Context and Connectivity",
+      "profile_url": null
+    },
+    {
+      "name": "Joe DosSantos",
+      "title": "VP Enterprise Data & Analytics",
+      "company": "Workday",
+      "session_title": "The Enterprise Context Layer: Atlan\u2019s Thesis, Workday\u2019s Proof in Production (Presented by Atlan)",
+      "profile_url": null
+    },
+    {
+      "name": "Steve Hillion",
+      "title": "SVP of Data and AI",
+      "company": "Astronomer",
+      "session_title": "Your AI Strategy Has a Context Problem. Orchestration Solves It",
+      "profile_url": null
+    },
+    {
+      "name": "Jon Chen",
+      "title": "Director of Enterprise AI/ML Solutions",
+      "company": "Workday",
+      "session_title": "Context Layer in Practice: How Workday Builds Trustworthy AI Agents (Presented by Atlan)",
+      "profile_url": null
+    },
+    {
+      "name": "Mark Huberty",
+      "title": "Principal Data Scientist",
+      "company": "Snowflake",
+      "session_title": "A Framework for Assessing and Improving AI Readiness",
+      "profile_url": null
+    },
+    {
+      "name": "Tyler Richards",
+      "title": "Staff Data Scientist",
+      "company": "Snowflake",
+      "session_title": "A Framework for Assessing and Improving AI Readiness",
+      "profile_url": null
+    },
+    {
+      "name": "Sanjeev Mohan",
+      "title": "Principal",
+      "company": "Sanjmo",
+      "session_title": "3 Essentials for Building Winning AI Projects",
+      "profile_url": null
+    },
+    {
+      "name": "Navita Sood",
+      "title": "Director of Product Marketing, Data & AI",
+      "company": "Cloudera",
+      "session_title": "3 Essentials for Building Winning AI Projects",
+      "profile_url": null
+    }
+  ]
+}

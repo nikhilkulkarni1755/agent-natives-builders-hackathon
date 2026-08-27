@@ -1,0 +1,19 @@
+{
+  "captured_at": "2026-08-27T21:54:23.130284+00:00",
+  "event_name": "AI Dev DeepLearning.AI 2026",
+  "sources": [
+    "https://eventbrowse.com/event/ai-dev-26-x-sf-the-ai-developer-conference",
+    "https://ai-dev.deeplearning.ai/sponsor"
+  ],
+  "event_description": "AI Dev 26 x SF, April 28-29, 2026, San Francisco",
+  "is_partial": false,
+  "speakers": [
+    {
+      "name": "Andrew Ng",
+      "title": "Founder",
+      "company": "DeepLearning.AI",
+      "session_title": null,
+      "profile_url": null
+    }
+  ]
+}

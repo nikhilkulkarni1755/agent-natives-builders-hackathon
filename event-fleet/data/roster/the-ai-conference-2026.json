@@ -1,0 +1,187 @@
+{
+  "captured_at": "2026-08-27T21:54:38.729579+00:00",
+  "event_name": "The AI Conference 2026",
+  "sources": [
+    "https://aiconference.com/llms.txt",
+    "https://aiconference.com"
+  ],
+  "event_description": "The AI Conference 2026, Sept 29 - Oct 1, SAN FRANCISCO",
+  "is_partial": true,
+  "speakers": [
+    {
+      "name": "Peter Norvig",
+      "title": "Distinguished Education Fellow",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Emmanuel Ameisen",
+      "title": "Interpretability Researcher",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Illia Polosukhin",
+      "title": null,
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Ion Stoica",
+      "title": "Professor & Co-founder",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Chris Lattner",
+      "title": "Co-founder and CEO",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Brian Yang",
+      "title": "Member of Technical Staff",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Sergey Levine",
+      "title": "Associate Professor",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Chris Clark",
+      "title": "COO and Co-Founder",
+      "company": null,
+      "session_title": "State of AI with OpenRouter",
+      "profile_url": null
+    },
+    {
+      "name": "Eric Ries",
+      "title": "Founder and Author",
+      "company": null,
+      "session_title": "Building AI Companies That Matter",
+      "profile_url": null
+    },
+    {
+      "name": "Tim O'Reilly",
+      "title": "Founder and CEO",
+      "company": null,
+      "session_title": "Building AI Companies That Matter",
+      "profile_url": null
+    },
+    {
+      "name": "Annie Surla",
+      "title": "Product Research Engineering Manager, Deep Learning",
+      "company": null,
+      "session_title": "From LLMs to Language Agents",
+      "profile_url": null
+    },
+    {
+      "name": "Max Brodeur-Urbas",
+      "title": "CEO",
+      "company": null,
+      "session_title": "How to build an AI-native company",
+      "profile_url": null
+    },
+    {
+      "name": "Daksh Gupta",
+      "title": "Co-founder and CEO",
+      "company": null,
+      "session_title": "What We Learned by Analyzing 1M AI-Generated PRs",
+      "profile_url": null
+    },
+    {
+      "name": "Ann Miura-Ko",
+      "title": "Co-founding Partner",
+      "company": null,
+      "session_title": "The AI-Pilled Organization",
+      "profile_url": null
+    },
+    {
+      "name": "Jaclyn Konzelmann",
+      "title": "Product Director",
+      "company": null,
+      "session_title": "The Agentic Shift",
+      "profile_url": null
+    },
+    {
+      "name": "Marco Paglia",
+      "title": "President - Product & Engineering",
+      "company": null,
+      "session_title": "Lyrics",
+      "profile_url": null
+    },
+    {
+      "name": "Sarah Chieng",
+      "title": "Head of Developer Experience",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Malika Aubakirova",
+      "title": "Partner",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Matthew Strozier",
+      "title": "bureau chief",
+      "company": null,
+      "session_title": "Fundraising & the Future of AI Companies",
+      "profile_url": null
+    },
+    {
+      "name": "Lauri Moore",
+      "title": "Partner",
+      "company": null,
+      "session_title": "Fundraising & the Future of AI Companies",
+      "profile_url": null
+    },
+    {
+      "name": "Jon Sakoda",
+      "title": "Founding Partner",
+      "company": null,
+      "session_title": "Fundraising & the Future of AI Companies",
+      "profile_url": null
+    },
+    {
+      "name": "Charlie Guo",
+      "title": "Developer Experience Engineer",
+      "company": null,
+      "session_title": "Fundraising & the Future of AI Companies",
+      "profile_url": null
+    },
+    {
+      "name": "Pallavi Kinnera",
+      "title": "Chip Designer",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Shuen Mei",
+      "title": "VP, Director of Software and Data Engineering",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Pratyusha Singaraju",
+      "title": "Senior Software Engineer",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    }
+  ]
+}

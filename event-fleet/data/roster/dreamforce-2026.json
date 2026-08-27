@@ -1,0 +1,26 @@
+{
+  "captured_at": "2026-08-27T21:56:51.483418+00:00",
+  "event_name": "Dreamforce 2026",
+  "sources": [
+    "https://multisyncmadeasy.com/llms.txt",
+    "https://multisyncmadeasy.com/blog/dreamforce-2026"
+  ],
+  "event_description": "Dreamforce 2026, September 15-17, 2026, San Francisco, California",
+  "is_partial": false,
+  "speakers": [
+    {
+      "name": "Marc Benioff",
+      "title": "Chair, CEO & Co-Founder",
+      "company": "Salesforce",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Bozoma Saint John",
+      "title": "CMO",
+      "company": "Forbes",
+      "session_title": null,
+      "profile_url": null
+    }
+  ]
+}

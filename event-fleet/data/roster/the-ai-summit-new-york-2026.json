@@ -1,0 +1,156 @@
+{
+  "captured_at": "2026-08-27T21:55:18.755478+00:00",
+  "event_name": "The AI Summit New York 2026",
+  "sources": [
+    "https://gracker.ai/events/llms-full.txt",
+    "https://gracker.ai/events/llms.txt",
+    "https://summit.ai/llms.txt",
+    "https://gracker.ai/events/ai-summit-new-york-2026",
+    "https://summit.ai",
+    "https://newyork.theaisummit.com"
+  ],
+  "event_description": "The AI Summit New York, December 9-10, 2026, Javits Center, New York",
+  "is_partial": false,
+  "speakers": [
+    {
+      "name": "Pamela Gupta",
+      "title": "Founder",
+      "company": "Trusted AI",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Iwao Fusillo",
+      "title": "Chief Data & Analytics Officer",
+      "company": "New York Jets",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Shekar Ramanathan",
+      "title": "Executive Director, Digital Transformation",
+      "company": "Atlantic Health",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Nirmal Jingar",
+      "title": "Senior Engineering Leader",
+      "company": "Wayfair",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Christie Mealo",
+      "title": "CTO & Chief AI Officer",
+      "company": "Medical Knowledge Group",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Eric Petajan",
+      "title": "Principal Member of Technical Staff",
+      "company": "AT&T",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Ipshita Chakraborty",
+      "title": "Director, Data Science & Applied AI",
+      "company": "HelloFresh",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Wayne Filin-Matthews",
+      "title": "Senior Vice President, Enterprise Architecture and AI",
+      "company": "The Walt Disney Company",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Jennifer Yang",
+      "title": "Global Head of Data Governance, CDO Delegate, Global Privacy Officer, HR and Employee Experience",
+      "company": "Global Bank",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Christophe Rougeaux",
+      "title": "Head AI Risk Management",
+      "company": "TD Bank",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Ashley Scott",
+      "title": "Data & AI Product Management Principal",
+      "company": "PepsiCo",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Arsh Arora",
+      "title": "Lead, AI & Cyber IR Operations",
+      "company": "McKesson",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Bijit Ghosh",
+      "title": "Managing Director, AI/ML & Data Transformation",
+      "company": "Wells Fargo",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Elise Neel",
+      "title": "SVP, Global Strategy & Strategic Partnerships",
+      "company": "Panasonic",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Jason Harvey",
+      "title": "EVP & General Manager",
+      "company": "BET+, Paramount Global",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Maryam Ashoori",
+      "title": "Vice President of Product and Engineering",
+      "company": "IBM",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Nitzan Mekel",
+      "title": "VP, Chief AI Officer",
+      "company": "eBay",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Pooja Chandiramani",
+      "title": "VP, Global Head of Marketing Analytics, Operations, Brand Transformation, and Media Strategy",
+      "company": "Coach",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Ryan Hefner",
+      "title": "Chief Architect",
+      "company": "Vanguard",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Zach Golkhou",
+      "title": "Director of Generative AI & Data Science",
+      "company": "JPMorgan Chase",
+      "session_title": null,
+      "profile_url": null
+    }
+  ]
+}

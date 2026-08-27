@@ -1,0 +1,188 @@
+{
+  "captured_at": "2026-08-27T21:54:34.520231+00:00",
+  "event_name": "Vercel Ship 2026",
+  "sources": [
+    "https://vercel.com/llms.txt",
+    "https://www.digitalapplied.com/llms.txt",
+    "https://vercel.com/blog/vercel-ship-2026-recap"
+  ],
+  "event_description": "Vercel Ship 2026, 30 Jun 2026, London, Berlin, New York",
+  "is_partial": true,
+  "speakers": [
+    {
+      "name": "Guillermo Rauch",
+      "title": "CEO",
+      "company": "Vercel",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Tom",
+      "title": null,
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Hedi",
+      "title": null,
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Shar",
+      "title": null,
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Malte Ubl",
+      "title": "CTO",
+      "company": "Vercel",
+      "session_title": "A New Stack for a New Era of Software",
+      "profile_url": null
+    },
+    {
+      "name": "Jeanne Grosser",
+      "title": "COO",
+      "company": "Vercel",
+      "session_title": "Panel: Agents in production",
+      "profile_url": null
+    },
+    {
+      "name": "Andr\u00e9 Balleyguier",
+      "title": null,
+      "company": "Anthropic",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Tomas Jansson",
+      "title": null,
+      "company": "Currys/Elkj\u00f8p",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Matan Kushner",
+      "title": null,
+      "company": "Vercel",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Jas Sagoo",
+      "title": null,
+      "company": "Auth0",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Sam Bellen",
+      "title": null,
+      "company": "Auth0",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Abhi Sivasailam",
+      "title": null,
+      "company": "Vercel",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Romain Huet",
+      "title": null,
+      "company": "OpenAI",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Micha\u0142 Pierzcha\u0142a",
+      "title": null,
+      "company": "Callstack",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Alex Holt",
+      "title": null,
+      "company": "ElevenLabs",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Malavika Balachandran Tadeusz",
+      "title": null,
+      "company": "Vercel",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Arthur Viegers",
+      "title": null,
+      "company": "Cursor",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Ryan den Rooijen",
+      "title": null,
+      "company": "Currys",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Nicolas Le Pallec",
+      "title": null,
+      "company": "AKQA",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Harry Stebbings",
+      "title": null,
+      "company": "20VC",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Will Shu",
+      "title": null,
+      "company": "Deliveroo",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Suyog Rao",
+      "title": null,
+      "company": "Vercel",
+      "session_title": "AI SDK 7",
+      "profile_url": null
+    },
+    {
+      "name": "Philip Miseldine",
+      "title": null,
+      "company": "SAP",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Lars Grammel",
+      "title": null,
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Carsten H\u00f8yer",
+      "title": null,
+      "company": "AKQA",
+      "session_title": null,
+      "profile_url": null
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "captured_at": "2026-08-27T21:55:58.754890+00:00",
+  "event_name": "TechCrunch Disrupt 2026",
+  "sources": [
+    "https://techcrunch.com/events/techcrunch-disrupt"
+  ],
+  "event_description": "TechCrunch Disrupt 2026 \u2014 October 13 \u2013 15, 2026 \u2014 San Francisco",
+  "is_partial": false,
+  "speakers": [
+    {
+      "name": "Panos Panay",
+      "title": "SVP, Devices, Alexa & Leo",
+      "company": "Amazon",
+      "session_title": "What Comes After the Smartphone?",
+      "profile_url": null
+    },
+    {
+      "name": "RJ Scaringe",
+      "title": "Founder & CEO",
+      "company": "Rivian",
+      "session_title": "Building the Impossible",
+      "profile_url": null
+    },
+    {
+      "name": "Garrett Langley",
+      "title": "CEO and Co-founder",
+      "company": "Flock",
+      "session_title": "AI, Surveillance, and the Future of Public Safety",
+      "profile_url": null
+    },
+    {
+      "name": "Amjad Masad",
+      "title": "CEO and Co-founder",
+      "company": "Replit",
+      "session_title": "Everyone Can Build Software Now. What Happens Next?",
+      "profile_url": null
+    },
+    {
+      "name": "Arvind Jain",
+      "title": "Founder & CEO",
+      "company": "Glean",
+      "session_title": "Rewriting SaaS: Why AI Breaks the Old Business Model",
+      "profile_url": null
+    },
+    {
+      "name": "Matt Birnbaum",
+      "title": "Founder",
+      "company": "Wylder.co",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Atli Thorkelsson",
+      "title": "VP, Talent Network",
+      "company": "Redpoint Ventures",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Ben Broca",
+      "title": "Founder",
+      "company": "Polsia",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Ryan Meadows",
+      "title": "Chief Revenue Officer",
+      "company": "Lovable",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Tomasz Tunguz",
+      "title": "General Partner and Founder",
+      "company": "Theory Ventures",
+      "session_title": null,
+      "profile_url": null
+    }
+  ]
+}

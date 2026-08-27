@@ -1,0 +1,187 @@
+{
+  "captured_at": "2026-08-27T21:53:47.787586+00:00",
+  "event_name": "Cloudflare Connect 2026",
+  "sources": [
+    "https://www.cloudflare.com/llms.txt",
+    "https://www.cloudflare.com/connect/speakers"
+  ],
+  "event_description": "cloudflare-connect-2026",
+  "is_partial": false,
+  "speakers": [
+    {
+      "name": "Matthew Prince",
+      "title": "Co-founder & CEO",
+      "company": "Cloudflare",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Michelle Zatlyn",
+      "title": "Co-founder & President",
+      "company": "Cloudflare",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Peter Steinberger",
+      "title": "Member of Technical Staff",
+      "company": "OpenClaw/OpenAI",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Jorn Lambert",
+      "title": "Chief Product Officer",
+      "company": "Mastercard",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Stephanie Cohen",
+      "title": "Chief Strategy Officer",
+      "company": "Cloudflare",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Joe Dixon",
+      "title": "Head of Product",
+      "company": "Laravel",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Alejandro Salinas",
+      "title": "Head of Core Infrastructure",
+      "company": "Block, Inc.",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Alissa Starzak",
+      "title": "Chief Legal Officer",
+      "company": "Cloudflare",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Anthony Maggio",
+      "title": "Chief Product Officer",
+      "company": "Runway",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Kenton Varda",
+      "title": "Principal Engineer",
+      "company": "Cloudflare",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Dillon Mulroy",
+      "title": "Principal Software Engineer",
+      "company": "Cloudflare",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Rapha\u00ebl Beamonte",
+      "title": "Head of Production Engineering",
+      "company": "Ramp",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Alexander Braunreuther",
+      "title": "Chief Architect",
+      "company": "Contentful",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Tim Millwood",
+      "title": "AI Platforms Lead",
+      "company": "Pfizer",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Phil Hawksworth",
+      "title": "Principal Engineer, Developer Adoption",
+      "company": "Cloudflare",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Jonas Bengtson",
+      "title": "Director of Engineering, Audio/Video",
+      "company": "Discord",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Grant Bourzikas",
+      "title": "Senior Vice President, Chief Security Officer",
+      "company": "Cloudflare",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Bill Gross",
+      "title": "Chairman and Founder",
+      "company": "IdeaLab",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Mark Papermaster",
+      "title": "EVP, CTO",
+      "company": "AMD",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Justin Schroeder",
+      "title": "Co-Founder",
+      "company": "Standard Agents",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Nicholas Khami",
+      "title": "Head of Engineering",
+      "company": "Mintlify",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Kevin Ng",
+      "title": "Staff Developer Advocate",
+      "company": "TELUS",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Justin Watts",
+      "title": "Distinguished Engineer",
+      "company": "TELUS",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Michael Hacker",
+      "title": "Associate Vice President for Strategy, Transformation and Innovation (AI)",
+      "company": "Montclair State University",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Laura Poss",
+      "title": "Software Engineer",
+      "company": "Block, Inc.",
+      "session_title": null,
+      "profile_url": null
+    }
+  ]
+}

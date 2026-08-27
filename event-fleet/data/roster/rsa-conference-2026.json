@@ -1,0 +1,166 @@
+{
+  "captured_at": "2026-08-27T21:56:02.540027+00:00",
+  "event_name": "RSA Conference 2026",
+  "sources": [
+    "https://www.prnewswire.com/llms.txt",
+    "https://www.rsaconference.com/library/press-release/rsac-reveals-keynote-speakers-for-2026"
+  ],
+  "event_description": "RSAC\u2122 2026 Conference, taking place at the Moscone Center in San Francisco from March 23\u201126",
+  "is_partial": false,
+  "speakers": [
+    {
+      "name": "Ben Horowitz",
+      "title": "Co\u2011founder, Andreessen Horowitz",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Michael Lewis",
+      "title": "Author",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Adam Savage",
+      "title": "Host, Scientist, and Educator",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Dr. Hugh Thompson",
+      "title": "Executive Chairman & RSAC Conference Program Committee Chair, RSAC",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Hugh Jackman",
+      "title": "Actor",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Linda Gray Martin",
+      "title": "Senior Vice President, RSAC Conference",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "H.E. Dr. Mohamed Al Kuwaiti",
+      "title": "Head of Cyber Security United Arab Emirates Government, Cyber Security Council",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Meg Anderson",
+      "title": "President, MSA InfoSec, LLC",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Lawrence Baldwin",
+      "title": "Chief Connection Officer, Ground to Growth",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Charles Blauner",
+      "title": "President, Cyber Aegis LLC",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Roland Cloutier",
+      "title": "Founder & Partner, The Business Protection Group",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Whitfield Diffie",
+      "title": "Honorary Fellow, Gonville and Caius College, Cambridge",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Cynthia Dwork",
+      "title": "Gordon McKay Professor of Computer Science, Harvard University",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Adi Shamir",
+      "title": "Borman Professor of Computer Science, The Weizmann Institute, Israel",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Paul Kocher",
+      "title": "Independent Researcher",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Chase Cunningham",
+      "title": "Chief Strategy Officer & Founder, Demo\u2011Force",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Jen Easterly",
+      "title": "CEO, RSAC",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Yaki Faitelson",
+      "title": "CEO, Varonis",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Fred Frey",
+      "title": "Director, Software Engineering, Splunk, a Cisco Company",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Ali Ghodsi",
+      "title": "CEO & Co\u2011founder, Databricks",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Sarah Gosler",
+      "title": "Head of Cyber Resiliency and Human Defense, Wells Fargo",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Richard Horne",
+      "title": "CEO, UK National Cyber Security Centre",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    }
+  ]
+}

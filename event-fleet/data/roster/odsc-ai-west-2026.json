@@ -1,0 +1,54 @@
+{
+  "captured_at": "2026-08-27T21:54:26.273780+00:00",
+  "event_name": "ODSC AI West 2026",
+  "sources": [
+    "https://odsc.ai/llms.txt",
+    "https://www.eventbrite.com/e/odsc-ai-west-2026-virtual-conference-registration-tickets-1982432141902"
+  ],
+  "event_description": "ODSC AI West 2026, Virtual",
+  "is_partial": false,
+  "speakers": [
+    {
+      "name": "Marius Hobbhahn",
+      "title": "CEO & Founder",
+      "company": "Apollo Research",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Kyle Stratis",
+      "title": "Founder",
+      "company": "Stratis Data Labs",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Sajal Sharma",
+      "title": "Instructor",
+      "company": "O'Reilly",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Marco Peixeiro",
+      "title": "Applied AI Scientist",
+      "company": "Nixtla",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Alex Graveley",
+      "title": "Director, Comet",
+      "company": "Perplexity AI",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Robert Shelton",
+      "title": "Applied AI Engineer",
+      "company": "Redis",
+      "session_title": null,
+      "profile_url": null
+    }
+  ]
+}

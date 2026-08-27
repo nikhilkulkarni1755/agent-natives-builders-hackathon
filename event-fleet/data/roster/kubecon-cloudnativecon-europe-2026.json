@@ -1,0 +1,88 @@
+{
+  "captured_at": "2026-08-27T21:03:01.020101+00:00",
+  "event_name": "KubeCon CloudNativeCon Europe 2026",
+  "sources": [
+    "https://kccnceu2026.sched.com/list/descriptions"
+  ],
+  "event_description": "KubeCon + CloudNativeCon Europe 2026, 24-26 March, 2026",
+  "is_partial": true,
+  "speakers": [
+    {
+      "name": "Robert Sirchia",
+      "title": "Director of Technical & Community Marketing, SUSE",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Katherine Druckman",
+      "title": null,
+      "company": null,
+      "session_title": "Project Lightning Talk: A Curator\u2019s Guide to the CNCF Landscape",
+      "profile_url": null
+    },
+    {
+      "name": "Kohei Tokunaga",
+      "title": "Software Engineer, NTT",
+      "company": null,
+      "session_title": "Project Lightning Talk: Container2Wasm: Running Containers On Wasm Environments",
+      "profile_url": null
+    },
+    {
+      "name": "Diego Ciangottini",
+      "title": "Technologist, INFN",
+      "company": null,
+      "session_title": "Project Lightning Talk: How To Run Kubernetes Pods On My Slurm-Based HPC Center",
+      "profile_url": null
+    },
+    {
+      "name": "Aarno Aukia",
+      "title": "Partner, VSHN - The DevOps Company",
+      "company": null,
+      "session_title": "Project Lightning Talk: CNCF Sandbox Project K8Up Under The Hood",
+      "profile_url": null
+    },
+    {
+      "name": "Bill Mulligan",
+      "title": "Community Pollinator, Isovalent at Cisco",
+      "company": null,
+      "session_title": "Project Lightning Talk: Translating Ebpf Into Business Value: Lessons From The Cilium Website",
+      "profile_url": null
+    },
+    {
+      "name": "\u00c1d\u00e1m Rozm\u00e1n",
+      "title": "Senior Developer, Ericsson Software Technology",
+      "company": null,
+      "session_title": "Project Lightning Talk: Finally Incubated! What Comes Next For Metal3?",
+      "profile_url": null
+    },
+    {
+      "name": "Ammar Yasser",
+      "title": "Software Engineer, Nirmata",
+      "company": null,
+      "session_title": "Project Lightning Talk: Beyond Guardrails: Resource Lifecycle Automation With Kyverno",
+      "profile_url": null
+    },
+    {
+      "name": "Charlie Egan",
+      "title": "OPA Maintainer, Apple",
+      "company": null,
+      "session_title": "Project Lightning Talk: How To Add A New Language Feature To OPA",
+      "profile_url": null
+    },
+    {
+      "name": "Gerald Combs",
+      "title": null,
+      "company": null,
+      "session_title": "Project Lightning Talk: Forensics With Falco",
+      "profile_url": null
+    },
+    {
+      "name": "Mauro Morales",
+      "title": "Staff Engineer, Spectro Cloud",
+      "company": null,
+      "session_title": "Project Lightning Talk: What\u2019S New In Kairos, 2026 Edition",
+      "profile_url": null
+    }
+  ]
+}

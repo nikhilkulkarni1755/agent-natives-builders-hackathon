@@ -1,0 +1,19 @@
+{
+  "captured_at": "2026-08-27T21:55:07.341857+00:00",
+  "event_name": "AWS Summit New York 2026",
+  "sources": [
+    "https://www.eon.io/llms.txt",
+    "https://www.aboutamazon.com/news/aws/aws-summit-nyc-2026-ai-agents"
+  ],
+  "event_description": "AWS Summit New York 2026",
+  "is_partial": false,
+  "speakers": [
+    {
+      "name": "Swami Sivasubramanian",
+      "title": "Vice President of Agentic AI",
+      "company": "AWS",
+      "session_title": null,
+      "profile_url": null
+    }
+  ]
+}

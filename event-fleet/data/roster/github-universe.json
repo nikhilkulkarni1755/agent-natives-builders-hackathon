@@ -1,0 +1,89 @@
+{
+  "captured_at": "2026-08-27T21:55:11.846119+00:00",
+  "event_name": "GitHub Universe",
+  "sources": [
+    "https://github.com/llms.txt",
+    "https://github.blog/news-insights/company-news/github-universe-is-back-we-want-you-to-take-the-stage"
+  ],
+  "event_description": "GitHub Universe at Fort Mason Center in San Francisco on October 28\u201329",
+  "is_partial": false,
+  "speakers": [
+    {
+      "name": "Pillippa P\u00e9rez Pons",
+      "title": null,
+      "company": null,
+      "session_title": "Git\u2019s nine lives: Taming frontend chaos with Git\u2019s hidden features (2025)",
+      "profile_url": null
+    },
+    {
+      "name": "Matteo Bianchi",
+      "title": null,
+      "company": "GitHub",
+      "session_title": "Breath of Copilot: Level up your DevEx with GitHub Actions and GitHub Advanced Security (2025)",
+      "profile_url": null
+    },
+    {
+      "name": "Alexandra Aldershaab",
+      "title": null,
+      "company": "Eficode",
+      "session_title": "Breath of Copilot: Level up your DevEx with GitHub Actions and GitHub Advanced Security (2025)",
+      "profile_url": null
+    },
+    {
+      "name": "Martin Woodward",
+      "title": null,
+      "company": "GitHub",
+      "session_title": "Dream it in the morning, build it in the afternoon: Collapsing the distance from idea to impact (2025)",
+      "profile_url": null
+    },
+    {
+      "name": "Noah Abrahams",
+      "title": null,
+      "company": null,
+      "session_title": "Dungeons and deployments: The clusters of chaos (2024)",
+      "profile_url": null
+    },
+    {
+      "name": "Ian Coldwater",
+      "title": null,
+      "company": null,
+      "session_title": "Dungeons and deployments: The clusters of chaos (2024)",
+      "profile_url": null
+    },
+    {
+      "name": "Kat Cosgrove",
+      "title": null,
+      "company": null,
+      "session_title": "Dungeons and deployments: The clusters of chaos (2024)",
+      "profile_url": null
+    },
+    {
+      "name": "Seth McCombs",
+      "title": null,
+      "company": null,
+      "session_title": "Dungeons and deployments: The clusters of chaos (2024)",
+      "profile_url": null
+    },
+    {
+      "name": "Natali Vlatko",
+      "title": null,
+      "company": null,
+      "session_title": "Dungeons and deployments: The clusters of chaos (2024)",
+      "profile_url": null
+    },
+    {
+      "name": "Nick Liffen",
+      "title": null,
+      "company": "GitHub",
+      "session_title": "Mission Copilot Autofix: Securing the world\u2019s software (2024)",
+      "profile_url": null
+    },
+    {
+      "name": "Niroshan Rajadurai",
+      "title": null,
+      "company": null,
+      "session_title": "Mission Copilot Autofix: Securing the world\u2019s software (2024)",
+      "profile_url": null
+    }
+  ]
+}

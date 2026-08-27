@@ -1,0 +1,89 @@
+{
+  "captured_at": "2026-08-27T21:53:57.600722+00:00",
+  "event_name": "Stripe Sessions 2026",
+  "sources": [
+    "https://stripe.com/llms.txt",
+    "https://stripe.com/sessions/2026"
+  ],
+  "event_description": "Stripe Sessions 2026",
+  "is_partial": true,
+  "speakers": [
+    {
+      "name": "John Collison",
+      "title": "Cofounder and President, Stripe",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Sam Altman",
+      "title": null,
+      "company": null,
+      "session_title": "A conversation with Sam Altman",
+      "profile_url": null
+    },
+    {
+      "name": "Patrick Collison",
+      "title": null,
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Soha Hohnecker",
+      "title": "global head of sales and marketing at Amazon Agentic Payments",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Kalyani Koppisetti",
+      "title": "Principal Partner Solution Architect at AWS",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Colin Sidoti",
+      "title": "CEO",
+      "company": null,
+      "session_title": "Auth for the agentic era",
+      "profile_url": null
+    },
+    {
+      "name": "Ernie Tedeschi",
+      "title": null,
+      "company": null,
+      "session_title": "Economists on AI: Labor markets and structural shifts",
+      "profile_url": null
+    },
+    {
+      "name": "Elena Verna",
+      "title": "Head of Growth",
+      "company": null,
+      "session_title": "How Lovable turned pricing into a growth strategy",
+      "profile_url": null
+    },
+    {
+      "name": "Guillermo Rauch",
+      "title": "CEO",
+      "company": null,
+      "session_title": "Inside the AI economy: What Stripe\u2019s data reveals",
+      "profile_url": null
+    },
+    {
+      "name": "Ian Kahn",
+      "title": "principal",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Tyler Bryson",
+      "title": "CRO",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    }
+  ]
+}

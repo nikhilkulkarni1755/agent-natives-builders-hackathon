@@ -1,0 +1,187 @@
+{
+  "captured_at": "2026-08-27T21:06:05.707849+00:00",
+  "event_name": "AI Engineer Europe",
+  "sources": [
+    "https://www.webconsulting.at/llms.txt",
+    "https://www.webconsulting.at/en/blog/ai-engineer-europe-2026"
+  ],
+  "event_description": "AI Engineer Europe 2026 in London",
+  "is_partial": true,
+  "speakers": [
+    {
+      "name": "Peter Steinberger",
+      "title": null,
+      "company": "OpenAI / OpenClaw Foundation",
+      "session_title": "State of the Claw",
+      "profile_url": null
+    },
+    {
+      "name": "Mario Zechner",
+      "title": null,
+      "company": "Earendil / Pi",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Armin Ronacher",
+      "title": null,
+      "company": "Earendil",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Cristina Poncela Cubeiro",
+      "title": null,
+      "company": "Earendil",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Malte Ubl",
+      "title": null,
+      "company": "Vercel",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Phil Hawksworth",
+      "title": null,
+      "company": null,
+      "session_title": "Opening Remarks",
+      "profile_url": null
+    },
+    {
+      "name": "Lia McBride",
+      "title": null,
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Raia Hadsell",
+      "title": null,
+      "company": "Google DeepMind",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Ryan Lopopolo",
+      "title": null,
+      "company": "OpenAI",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Swyx",
+      "title": null,
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Vincent Koc",
+      "title": null,
+      "company": "Comet ML",
+      "session_title": "Dark Factories",
+      "profile_url": null
+    },
+    {
+      "name": "Radek Sienkiewicz",
+      "title": null,
+      "company": "VelvetShark",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Sally Ann O'Malley",
+      "title": null,
+      "company": "Red Hat",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Nick Taylor",
+      "title": null,
+      "company": "Pomerium",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Onur Solmaz",
+      "title": null,
+      "company": "OpenClaw",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Merve Noyan",
+      "title": null,
+      "company": "Hugging Face",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Fryderyk Wiatrowski",
+      "title": null,
+      "company": "Viktor",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Gergely Orosz",
+      "title": null,
+      "company": "The Pragmatic Engineer",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Kitze",
+      "title": null,
+      "company": "Sizzy",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Matt Pocock",
+      "title": null,
+      "company": "AI Hero",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Sunil Pai",
+      "title": null,
+      "company": "Cloudflare",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Tejas Kumar",
+      "title": null,
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Omar Sanseviero",
+      "title": null,
+      "company": "Google DeepMind",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "David Soria Parra",
+      "title": null,
+      "company": "Anthropic",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Ido Salomon",
+      "title": null,
+      "company": "MCP Apps",
+      "session_title": null,
+      "profile_url": null
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "captured_at": "2026-08-27T21:55:12.615254+00:00",
+  "event_name": "MCP Dev Summit NYC 2026",
+  "sources": [
+    "https://events.linuxfoundation.org/llms.txt",
+    "https://mcpmanager.ai/blog/ai-conferences-list"
+  ],
+  "event_description": "MCP Dev Summit NYC, April 2\u20133, 2026, New York City",
+  "is_partial": false,
+  "speakers": [
+    {
+      "name": "Becky Brooks",
+      "title": "Staff Product Marketing Manager",
+      "company": "MCP Manager by Usercentrics",
+      "session_title": "How to Scale MCP Without Skipping Compliance",
+      "profile_url": null
+    }
+  ]
+}

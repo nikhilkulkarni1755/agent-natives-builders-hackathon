@@ -1,0 +1,67 @@
+{
+  "captured_at": "2026-08-27T21:54:24.314088+00:00",
+  "event_name": "AI DevSummit 2026",
+  "sources": [
+    "https://aidevsummit.co"
+  ],
+  "event_description": "AI DevSummit 2026 \u2013 May 27-28, 2026, South San Francisco, CA",
+  "is_partial": false,
+  "speakers": [
+    {
+      "name": "Abraham Jeevagunta",
+      "title": "Sr. Director, Advanced Concepts",
+      "company": "Cequence",
+      "session_title": "Agent Personas: From Tool Chaos to Context Efficiency in Enterprise AI Deployments",
+      "profile_url": null
+    },
+    {
+      "name": "Archie Sharma",
+      "title": "COO",
+      "company": "Zencoder",
+      "session_title": "Autonomy Without a Spec Is Just Hope With a GPU Bill",
+      "profile_url": null
+    },
+    {
+      "name": "Amjad Shaikh",
+      "title": "Vice President, Platform and AI",
+      "company": "ServiceNow",
+      "session_title": "AI Decision Observability: Enabling Transparency and Trust in System",
+      "profile_url": null
+    },
+    {
+      "name": "David vonThenen",
+      "title": "AI/ML Engineer",
+      "company": "NetApp",
+      "session_title": "How Model Quantization Fuels the Next Wave of Agentic AI",
+      "profile_url": null
+    },
+    {
+      "name": "Marvin Guerra",
+      "title": "Head of Engineering",
+      "company": "Pulley",
+      "session_title": "Continuous Strategy: What to Automate, What to Keep Human",
+      "profile_url": null
+    },
+    {
+      "name": "Ashish Shubham",
+      "title": "Engineering Fellow & VP of Engineering",
+      "company": "ThoughtSpot",
+      "session_title": "Prompt + Tools = Value. Everything Else Is Infra",
+      "profile_url": null
+    },
+    {
+      "name": "Sumeet Kumar Agrawal",
+      "title": "VP Product Management",
+      "company": "Salesforce",
+      "session_title": "Closing the Last Mile: Why Your AI Agents Need an Enterprise \u201cSemantic Brain\u201d",
+      "profile_url": null
+    },
+    {
+      "name": "Rohit Sharma",
+      "title": "Senior Member Of Technical Staff",
+      "company": "Salesforce",
+      "session_title": "Closing the Last Mile: Why Your AI Agents Need an Enterprise \u201cSemantic Brain\u201d",
+      "profile_url": null
+    }
+  ]
+}

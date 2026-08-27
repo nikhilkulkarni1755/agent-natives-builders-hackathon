@@ -1,0 +1,99 @@
+{
+  "captured_at": "2026-08-27T21:56:13.918114+00:00",
+  "event_name": "Data + AI Summit 2026",
+  "sources": [
+    "https://www.databricks.com/llms-full.txt",
+    "https://www.databricks.com/llms.txt",
+    "https://www.databricks.com/dataaisummit",
+    "https://www.aidataanalytics.network/events-generativeaisummit/speakers",
+    "https://www.flexera.com/blog/perspectives/databricks-data-ai-summit-2026"
+  ],
+  "event_description": "Databricks Data + AI Summit 2026, June 15 to 18, 2026, San Francisco",
+  "is_partial": true,
+  "speakers": [
+    {
+      "name": "Ali Ghodsi",
+      "title": "co\u2011founder & CEO",
+      "company": "Databricks",
+      "session_title": "opening keynote",
+      "profile_url": null
+    },
+    {
+      "name": "Ryan Blue",
+      "title": "original creator of Apache Iceberg, co\u2011founder of Tabular",
+      "company": "Tabular",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Ken Wong",
+      "title": "senior director, Genie & AI/BI",
+      "company": "Databricks",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Elise Georis",
+      "title": "product manager, Genie",
+      "company": "Databricks",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Magesh Bagavathi",
+      "title": "global chief data & AI officer",
+      "company": "PepsiCo",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Bilal Aslam",
+      "title": "senior director, LakeFlow",
+      "company": "Databricks",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Reynold Xin",
+      "title": "co\u2011founder",
+      "company": "Databricks",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Nikita Shamgunov",
+      "title": "VP engineering",
+      "company": "Databricks",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Federico Cohen Freue",
+      "title": "EVP AI & data operations",
+      "company": "Mastercard",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Greg Brockman",
+      "title": "president, chairman & co\u2011founder",
+      "company": "OpenAI",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Patrick Wendell",
+      "title": "co\u2011founder & VP engineering for AI",
+      "company": "Databricks",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Holly Smith",
+      "title": "developer relations",
+      "company": "Databricks",
+      "session_title": null,
+      "profile_url": null
+    }
+  ]
+}

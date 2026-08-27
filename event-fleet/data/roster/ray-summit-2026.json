@@ -1,0 +1,53 @@
+{
+  "captured_at": "2026-08-27T21:55:51.677550+00:00",
+  "event_name": "Ray Summit 2026",
+  "sources": [
+    "https://www.linkedin.com/posts/joinanyscale_the-ray-summit-2026-speaker-lineup-is-coming-activity-7470867490923872256-gtfR"
+  ],
+  "event_description": "Ray Summit 2026 in San Francisco",
+  "is_partial": false,
+  "speakers": [
+    {
+      "name": "Liam Fedus",
+      "title": "Co-founder & Co-CEO",
+      "company": "Periodic Labs",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Felix Heide",
+      "title": "Head of AI",
+      "company": "Torc Robotics",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Andrew Beam",
+      "title": "CTO",
+      "company": "Lila Sciences",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Kevin Peterson",
+      "title": "CTO",
+      "company": "Bedrock Robotics",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Robert Nishihara",
+      "title": "Co-founder",
+      "company": "Anyscale",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Ion Stoica",
+      "title": "Co-founder & Executive Chairman",
+      "company": "Anyscale",
+      "session_title": null,
+      "profile_url": null
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "captured_at": "2026-08-27T21:55:12.040569+00:00",
+  "event_name": "FinovateFall 2026",
+  "sources": [
+    "https://www.fintechfutures.com/fintech/finovatefall-2026-announces-powerhouse-speaker-lineup"
+  ],
+  "event_description": "FinovateFall 2026, taking place 9-11 September at the Marriott Marquis Times Square in New York City",
+  "is_partial": true,
+  "speakers": [
+    {
+      "name": "Sherry Graziano",
+      "title": "Head of Digital and Care Center Banking",
+      "company": "Truist Financial Corporation",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Kaushal Pandia",
+      "title": "CDO, Corporate and Commercial Segment",
+      "company": "US Bank",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Stefany Bello",
+      "title": "Senior Vice-President, Digital Partnerships, Fintech and Enablers in North America",
+      "company": "Mastercard",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Ashlyn Lackey",
+      "title": "Director, Emerging Technology and Innovation Strategy",
+      "company": "Prudential",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Laurie Stewart",
+      "title": "CEO",
+      "company": "Sound Community Bank",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Peter Wannemacher",
+      "title": "Principal Analyst, Digital Banking",
+      "company": "Forrester",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Sherry Wu",
+      "title": "Chief Technology Officer",
+      "company": "University Of Michigan Credit Union",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Josh Tanenbaum",
+      "title": "Managing Partner",
+      "company": "Rebalance Capital",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Jon Lakefish",
+      "title": "Founder",
+      "company": "Lakefish Group",
+      "session_title": null,
+      "profile_url": null
+    }
+  ]
+}

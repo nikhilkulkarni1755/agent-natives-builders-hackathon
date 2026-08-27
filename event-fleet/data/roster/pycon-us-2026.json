@@ -1,0 +1,109 @@
+{
+  "captured_at": "2026-08-27T21:02:40.459867+00:00",
+  "event_name": "PyCon US 2026",
+  "sources": [
+    "https://us.pycon.org/2026/about/keynote-speakers"
+  ],
+  "event_description": "PyCon US 2026",
+  "is_partial": false,
+  "speakers": [
+    {
+      "name": "Lin Qiao",
+      "title": "CEO and co\u2011founder",
+      "company": "Fireworks AI",
+      "session_title": "Your AI Product Doesn't Have a Moat... Yet",
+      "profile_url": null
+    },
+    {
+      "name": "amanda casari",
+      "title": "engineer and researcher",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Tim Schilling",
+      "title": "software engineer",
+      "company": null,
+      "session_title": "Djangonaut Space",
+      "profile_url": null
+    },
+    {
+      "name": "Rachell Calhoun",
+      "title": "co\u2011founder of Djangonaut Space",
+      "company": null,
+      "session_title": "Djangonaut Space",
+      "profile_url": null
+    },
+    {
+      "name": "Pablo Galindo Salgado",
+      "title": "CPython core developer",
+      "company": "Hudson River Trading",
+      "session_title": "Horizonte de sucesos / Event Horizon",
+      "profile_url": null
+    },
+    {
+      "name": "Barry Warsaw",
+      "title": null,
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Donghee Na",
+      "title": null,
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Savannah Ostrowski",
+      "title": null,
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Thomas Wouters",
+      "title": null,
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "D\u00e9bora Azevedo",
+      "title": "public school teacher",
+      "company": null,
+      "session_title": "Python is for Everyone: Growing the Community Without Limits",
+      "profile_url": null
+    },
+    {
+      "name": "Alla Barbalat",
+      "title": "lead organizer of PyLadies San Francisco",
+      "company": null,
+      "session_title": "Python is for Everyone: Growing the Community Without Limits",
+      "profile_url": null
+    },
+    {
+      "name": "Georgi Ker",
+      "title": "Director and Fellow of the Python Software Foundation",
+      "company": "Python Software Foundation",
+      "session_title": "Python is for Everyone: Growing the Community Without Limits",
+      "profile_url": null
+    },
+    {
+      "name": "Theresa Seyram Agbenyegah (Stancy)",
+      "title": "Software Engineer",
+      "company": null,
+      "session_title": "Python is for Everyone: Growing the Community Without Limits",
+      "profile_url": null
+    },
+    {
+      "name": "Abhijeet Mote",
+      "title": "Lead Python AI Engineer",
+      "company": null,
+      "session_title": "Python is for Everyone: Growing the Community Without Limits",
+      "profile_url": null
+    }
+  ]
+}

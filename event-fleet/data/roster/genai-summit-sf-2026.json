@@ -1,0 +1,41 @@
+{
+  "captured_at": "2026-08-27T21:54:35.542441+00:00",
+  "event_name": "GenAI Summit SF 2026",
+  "sources": [
+    "https://www.createwith.com/llms.txt",
+    "https://www.aidataanalytics.network/events-generativeaisummit/speakers",
+    "https://www.createwith.com/event/san-francisco-genai-summit-sf-2026-jul-2026"
+  ],
+  "event_description": "GenAI Summit SF 2026 on July 18-19, 2026 in San Francisco",
+  "is_partial": false,
+  "speakers": [
+    {
+      "name": "Jason Wei",
+      "title": null,
+      "company": "OpenAI",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Arvind Jain",
+      "title": "Founder & CEO",
+      "company": "Glean",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Shannon McClenaghan",
+      "title": "CEO",
+      "company": "StartX",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Zihan Wang",
+      "title": "researcher",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    }
+  ]
+}

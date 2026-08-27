@@ -1,0 +1,186 @@
+{
+  "captured_at": "2026-08-27T21:56:58.183990+00:00",
+  "event_name": "React Summit US 2026",
+  "sources": [
+    "https://gitnation.com/events/react-summit-us-2026"
+  ],
+  "event_description": "React Summit US 2026, November 17 - 20, 2026, New York, US",
+  "is_partial": false,
+  "speakers": [
+    {
+      "name": "Kent C. Dodds",
+      "title": null,
+      "company": "Epic React, USA",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "David Khourshid",
+      "title": null,
+      "company": "Stately AI, USA",
+      "session_title": "How (not) to Clone Any Fullstack App",
+      "profile_url": null
+    },
+    {
+      "name": "Ken Wheeler",
+      "title": null,
+      "company": "React Artist, USA",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Mark Erikson",
+      "title": "Senior Engineer",
+      "company": "Replay.io, USA",
+      "session_title": "How I Made Immer Twice as Fast: Performance Optimization in Practice",
+      "profile_url": null
+    },
+    {
+      "name": "Josh Goldberg",
+      "title": null,
+      "company": "Sentry, USA",
+      "session_title": "Guardrails for AI",
+      "profile_url": null
+    },
+    {
+      "name": "Erik Hanchett",
+      "title": "Senior Developer Advocate",
+      "company": "AWS, USA",
+      "session_title": "TanStack Start and the Server Factory: Three Ways to Run Code On the Server",
+      "profile_url": null
+    },
+    {
+      "name": "Brad Westfall",
+      "title": null,
+      "company": "ReactTraining, USA",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Seth Webster",
+      "title": "Chief Developer Evangelist",
+      "company": "Expo, USA",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Roxy Rodriguez-Becker",
+      "title": null,
+      "company": "Torc.dev, USA",
+      "session_title": "Trolling Your Way into Tech",
+      "profile_url": null
+    },
+    {
+      "name": "Kayla Sween",
+      "title": "Lead Front-end Engineer",
+      "company": null,
+      "session_title": "TypeScript is a Coping Mechanism: A Professional TypeScript Hater\u2019s Guide to Using TypeScript",
+      "profile_url": null
+    },
+    {
+      "name": "Maurice de Beijer",
+      "title": "Independent Software Consultant and Trainer",
+      "company": null,
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Vitor Alencar",
+      "title": "Senior Web Developer & Engineering Manager",
+      "company": "Chilipiper, Germany",
+      "session_title": "Modernizing Your React App: Compiler, useEffectEvent, Activity & Friends",
+      "profile_url": null
+    },
+    {
+      "name": "Amani Kanu",
+      "title": "Senior Frontend Engineer, Solution Architect, Tech Evangelist, Tech Career Coach",
+      "company": "MUST Company, Nigeria",
+      "session_title": "Building Fast Apps for Slow Networks and Low-End Devices",
+      "profile_url": null
+    },
+    {
+      "name": "Kristiyan Velkov",
+      "title": null,
+      "company": "Zerops.io, Bulgaria",
+      "session_title": "React Won\u2019t Save You: Front-End Security Mistakes We Keep Shipping",
+      "profile_url": null
+    },
+    {
+      "name": "Artur Morys-Magiera",
+      "title": "Senior React Native & AI Engineer",
+      "company": "Callstack, Poland",
+      "session_title": "Efficient On-Device Llms in React Native Done Right",
+      "profile_url": null
+    },
+    {
+      "name": "Jeff Huleatt",
+      "title": "Developer Relations Engineer",
+      "company": "Google, USA",
+      "session_title": "When (Not) to Use Server Components in Interactive Web Apps",
+      "profile_url": null
+    },
+    {
+      "name": "Dante De Ruwe",
+      "title": "consultant and software crafter",
+      "company": "AE, Belgium",
+      "session_title": "The Fun Side of Advanced TypeScript: A Live Coding Session",
+      "profile_url": null
+    },
+    {
+      "name": "Sulagna Ghosh",
+      "title": "Solutions Engineer",
+      "company": "CreoWis, India",
+      "session_title": "Two Agents, One React App: What Breaks When You Actually Wire State to an MCP Server",
+      "profile_url": null
+    },
+    {
+      "name": "Ameer Sami",
+      "title": "Staff Software Engineer",
+      "company": "S&C Electric, USA",
+      "session_title": "A JavaScript Less Future - New Browser APIs and Their Impact on the Future of React Development",
+      "profile_url": null
+    },
+    {
+      "name": "Jaayden Halko",
+      "title": "Coder",
+      "company": null,
+      "session_title": "When the AI Writes the UI: Frontend Lessons from Shipping Two AI Developer Tools",
+      "profile_url": null
+    },
+    {
+      "name": "Alexandros Gounis",
+      "title": "Sole Proprietor",
+      "company": null,
+      "session_title": "The React Tree Beyond the Web: Driving a Cross-Platform PDF Engine",
+      "profile_url": null
+    },
+    {
+      "name": "Vishnudhasan Govindarajan",
+      "title": null,
+      "company": "Virgio, India",
+      "session_title": "Building an AI Runtime in the Browser with React and Open Models",
+      "profile_url": null
+    },
+    {
+      "name": "Cynthia Wang",
+      "title": "Developer Relations",
+      "company": "Google, Canada",
+      "session_title": "When (Not) to Use Server Components in Interactive Web Apps",
+      "profile_url": null
+    },
+    {
+      "name": "Sachin Mamoru",
+      "title": "Associate Technical Lead",
+      "company": "Gapstars, Sri Lanka",
+      "session_title": "React Meets RAG: Building Production Multilingual AI Agent Interfaces",
+      "profile_url": null
+    },
+    {
+      "name": "Nina Torgunakova",
+      "title": "Frontend Engineer",
+      "company": "Evil Martians, Portugal",
+      "session_title": "Trust Nothing, Ship Safely: Surviving the Supply Chain Attack Era",
+      "profile_url": null
+    }
+  ]
+}

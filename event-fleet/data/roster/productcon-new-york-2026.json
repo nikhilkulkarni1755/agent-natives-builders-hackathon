@@ -1,0 +1,75 @@
+{
+  "captured_at": "2026-08-27T21:55:07.573717+00:00",
+  "event_name": "ProductCon New York 2026",
+  "sources": [
+    "https://productschool.com/llms.txt",
+    "https://productschool.com/productcon/newyork-2026"
+  ],
+  "event_description": "ProductCon New York, May 20, 2026, New York",
+  "is_partial": true,
+  "speakers": [
+    {
+      "name": "Eric Ries",
+      "title": "Author, The Lean Startup & Incorruptible",
+      "company": null,
+      "session_title": "To Build is a Radical Act",
+      "profile_url": null
+    },
+    {
+      "name": "Carlos Gonzalez de Villaumbrosia",
+      "title": "CEO",
+      "company": "Product School",
+      "session_title": "The AI Operating Model for Product Teams",
+      "profile_url": null
+    },
+    {
+      "name": "Meaghan Choi",
+      "title": "Head of Design for Claude Code and Cowork",
+      "company": "Anthropic",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Jaime DeLanghe",
+      "title": "CPO",
+      "company": "Slack",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Penny Szeto",
+      "title": "Head of Gen AI",
+      "company": "Amazon Games",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Ashley Nutter",
+      "title": "SVP of Product",
+      "company": "CNN",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Vinod Suresh",
+      "title": "VP of Product and GM",
+      "company": "GoDaddy",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Arnab Bose",
+      "title": "CPO",
+      "company": "Asana",
+      "session_title": null,
+      "profile_url": null
+    },
+    {
+      "name": "Jefferson Rabb",
+      "title": "CPO",
+      "company": "Business Insider",
+      "session_title": null,
+      "profile_url": null
+    }
+  ]
+}
