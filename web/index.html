@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Conference Prep Fleet</title>
+<link rel="stylesheet" href="./vendor/persona.css" />
+<style>
+  :root{
+    --ink:#12131a; --ink-2:#4a4f5e; --ink-3:#7c8394;
+    --line:#e3e6ee; --bg:#f6f7fb; --card:#ffffff;
+    --accent:#5b4bde; --accent-soft:#eeecfd;
+    --ok:#1f9d63; --warn:#b7791f; --err:#d1453b;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1280px;margin:0 auto;padding:20px 24px 28px;display:flex;flex-direction:column;gap:18px;min-height:100%}
+
+  /* ---------- header ---------- */
+  header.top{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .mark{
+    width:38px;height:38px;border-radius:10px;flex:none;
+    background:linear-gradient(135deg,var(--accent),#8a7bf0);
+    display:grid;place-items:center;color:#fff;font-weight:700;font-size:15px;
+    box-shadow:0 4px 14px rgba(91,75,222,.28);
+  }
+  .brand h1{margin:0;font-size:19px;letter-spacing:-.02em}
+  .brand p{margin:2px 0 0;font-size:13px;color:var(--ink-3)}
+  .spacer{flex:1}
+  .pill{
+    display:inline-flex;align-items:center;gap:7px;background:var(--card);
+    border:1px solid var(--line);border-radius:999px;padding:6px 12px;
+    font-size:12px;color:var(--ink-2);font-family:var(--mono);
+  }
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--ink-3);flex:none}
+  .dot.up{background:var(--ok);box-shadow:0 0 0 3px rgba(31,157,99,.16)}
+  .dot.down{background:var(--err);box-shadow:0 0 0 3px rgba(209,69,59,.16)}
+
+  /* ---------- layout ---------- */
+  .grid{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:18px;align-items:start;flex:1;min-height:0}
+  @media (max-width:1020px){ .grid{grid-template-columns:minmax(0,1fr)} }
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(16,20,40,.04)}
+  #chat{height:min(74vh,760px);min-height:520px;overflow:hidden;border-radius:14px}
+  /* The inline embed inherits the floating launcher's 440px width cap; this is
+     a full-width panel, so let it fill the card. */
+  #chat [data-persona-root]{width:100%;max-width:none;height:100%}
+
+  aside{display:flex;flex-direction:column;gap:14px;position:sticky;top:20px}
+  .card h2{
+    margin:0;padding:13px 16px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--ink-3);border-bottom:1px solid var(--line);font-weight:600;
+    display:flex;align-items:center;gap:8px;
+  }
+  .card h2 .t{margin-left:auto;font-family:var(--mono);letter-spacing:0;text-transform:none;font-size:12px;color:var(--ink-2)}
+
+  /* ---------- stage rail ---------- */
+  ol.rail{list-style:none;margin:0;padding:8px 10px}
+  ol.rail li{display:flex;align-items:center;gap:11px;padding:8px 8px;border-radius:9px;font-size:13.5px;color:var(--ink-3)}
+  ol.rail li .bead{
+    width:9px;height:9px;border-radius:50%;background:var(--line);flex:none;position:relative;
+    transition:background .2s,box-shadow .2s;
+  }
+  ol.rail li .lbl{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  ol.rail li .ms{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);opacity:0;transition:opacity .2s}
+  ol.rail li.done{color:var(--ink)}
+  ol.rail li.done .bead{background:var(--ok)}
+  ol.rail li.done .ms{opacity:1}
+  ol.rail li.active{color:var(--ink);background:var(--accent-soft);font-weight:550}
+  ol.rail li.active .bead{background:var(--accent);box-shadow:0 0 0 0 rgba(91,75,222,.6);animation:ping 1.5s ease-out infinite}
+  ol.rail li.active .ms{opacity:1;color:var(--accent)}
+  @keyframes ping{ to{box-shadow:0 0 0 9px rgba(91,75,222,0)} }
+  @media (prefers-reduced-motion:reduce){ ol.rail li.active .bead{animation:none} }
+
+  /* ---------- meta chips ---------- */
+  .meta{display:flex;flex-wrap:wrap;gap:7px;padding:12px 14px}
+  .chip{
+    font-family:var(--mono);font-size:11.5px;color:var(--ink-2);
+    background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:4px 9px;
+  }
+  .chip b{color:var(--ink);font-weight:600}
+  .chip.good{border-color:rgba(31,157,99,.35);background:rgba(31,157,99,.07);color:#177a4d}
+  .chip.bad{border-color:rgba(209,69,59,.35);background:rgba(209,69,59,.07);color:#a8352d}
+
+  /* ---------- live log ---------- */
+  #log{
+    margin:0;padding:10px 12px;height:242px;overflow-y:auto;overflow-x:hidden;
+    font-family:var(--mono);font-size:11.5px;line-height:1.65;
+  }
+  /* Deliberately inline, not flex: a flex row with min-width:0 collapses the
+     message column to zero and wraps the log one character per line. */
+  #log .ln{padding:1px 0;color:var(--ink-2);overflow-wrap:anywhere}
+  #log .ln .at{color:var(--ink-3);margin-right:8px;font-variant-numeric:tabular-nums}
+  #log .ln.warning .m{color:var(--warn)}
+  #log .ln.error .m{color:var(--err)}
+  #log .ln.stage .m{color:var(--accent);font-weight:600}
+  #log .idle{color:var(--ink-3);font-style:italic}
+
+  footer{font-size:12px;color:var(--ink-3);text-align:center;line-height:1.6}
+  footer code{font-family:var(--mono);background:var(--card);border:1px solid var(--line);border-radius:5px;padding:1px 5px}
+  .boot-err{display:none;padding:14px 16px;color:var(--err);font-size:13px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="mark">CP</div>
+    <div class="brand">
+      <h1>Conference Prep Fleet</h1>
+      <p>Tell it the event and what you want out of it. It tells you who to meet, and why.</p>
+    </div>
+    <div class="spacer"></div>
+    <span class="pill"><span class="dot" id="health-dot"></span><span id="health-txt">checking…</span></span>
+  </header>
+
+  <div class="grid">
+    <div class="card" id="chat"><div class="boot-err" id="boot-err"></div></div>
+
+    <aside>
+      <section class="card">
+        <h2>Pipeline <span class="t" id="clock"></span></h2>
+        <ol class="rail" id="rail"></ol>
+        <div class="meta" id="meta"><span class="chip">idle</span></div>
+      </section>
+      <section class="card">
+        <h2>Live agent log</h2>
+        <div id="log"><div class="idle">Waiting for a run…</div></div>
+      </section>
+    </aside>
+  </div>
+
+  <footer>
+    Streaming over Server-Sent Events from <code id="api-label"></code> ·
+    UI by <a href="https://github.com/runtypelabs/persona" style="color:var(--accent)">Persona</a> (@runtypelabs/persona v4.20.0, MIT)
+  </footer>
+</div>
+
+<!-- Must stay named index.global.js: the IIFE derives its lazy sibling chunks
+     (markdown-parsers.js) by rewriting this filename. Renaming it silently
+     disables markdown rendering and double-escapes every apostrophe. -->
+<script src="./vendor/index.global.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  /* ------------------------------------------------------------------ *
+   * Endpoint. Same-origin when this page is served by the fleet app
+   * itself (or through the tunnel); otherwise the local dev port.
+   * Override with ?api=https://host  — no key ever lives in this page.
+   * ------------------------------------------------------------------ */
+  var qs = new URLSearchParams(location.search);
+  var localHost = /^(127\.0\.0\.1|localhost|\[::1\])$/.test(location.hostname);
+  var API = (qs.get("api") ||
+      // Served off a separate dev port -> talk to the fleet app directly.
+      // Served by the fleet app itself, or through the tunnel -> same origin.
+      (localHost && location.port !== "8787" ? "http://127.0.0.1:8787" : location.origin)
+    ).replace(/\/+$/, "");
+  document.getElementById("api-label").textContent = API + "/prep/stream";
+
+  var DEMO_ASK = "AI Engineer Europe 2026, I'm hiring inference engineers";
+
+  /* ------------------------------------------------------------------ *
+   * Stage rail — the six stages the backend actually emits.
+   * ------------------------------------------------------------------ */
+  var STAGES = [
+    ["start",  "Accepted"],
+    ["roster", "Roster"],
+    ["enrich", "Enrichment"],
+    ["rank",   "Ranking"],
+    ["judge",  "Grounding audit"],
+    ["store",  "Persisted"]
+  ];
+  var railEl = document.getElementById("rail");
+  var logEl  = document.getElementById("log");
+  var metaEl = document.getElementById("meta");
+  var clockEl = document.getElementById("clock");
+  var nodes = {};
+
+  STAGES.forEach(function (s) {
+    var li = document.createElement("li");
+    li.innerHTML = '<span class="bead"></span><span class="lbl"></span><span class="ms"></span>';
+    li.querySelector(".lbl").textContent = s[1];
+    railEl.appendChild(li);
+    nodes[s[0]] = li;
+  });
+
+  var run = null;      // { started, stage, t0 }
+  var ticker = null;
+
+  function resetRun() {
+    run = { stage: null, since: 0, elapsed: 0 };
+    STAGES.forEach(function (s) { nodes[s[0]].className = ""; nodes[s[0]].querySelector(".ms").textContent = ""; });
+    logEl.innerHTML = "";
+    setMeta([]);
+    clearInterval(ticker);
+    var t = 0;
+    clockEl.textContent = "0.0s";
+    ticker = setInterval(function () { t += 0.1; clockEl.textContent = t.toFixed(1) + "s"; }, 100);
+  }
+
+  function stopClock(at) {
+    clearInterval(ticker); ticker = null;
+    if (typeof at === "number") clockEl.textContent = at.toFixed(1) + "s";
+  }
+
+  function setStage(name, elapsed) {
+    if (!nodes[name]) return;
+    if (run && run.stage && nodes[run.stage]) {
+      nodes[run.stage].className = "done";
+      nodes[run.stage].querySelector(".ms").textContent = (elapsed - run.since).toFixed(1) + "s";
+    }
+    nodes[name].className = "active";
+    if (run) { run.stage = name; run.since = elapsed; }
+  }
+
+  function finishStages(elapsed) {
+    if (run && run.stage && nodes[run.stage]) {
+      nodes[run.stage].className = "done";
+      nodes[run.stage].querySelector(".ms").textContent = (elapsed - run.since).toFixed(1) + "s";
+      run.stage = null;
+    }
+  }
+
+  function pushLog(elapsed, level, message, isStage) {
+    var atIdle = logEl.querySelector(".idle");
+    if (atIdle) atIdle.remove();
+    var stick = logEl.scrollTop + logEl.clientHeight >= logEl.scrollHeight - 24;
+    var d = document.createElement("div");
+    // NB: not "mark" — that class is the header logo (display:grid, 38px square).
+    d.className = "ln " + (isStage ? "stage" : (level || "info"));
+    var a = document.createElement("span"); a.className = "at"; a.textContent = elapsed.toFixed(1) + "s";
+    var m = document.createElement("span"); m.className = "m"; m.textContent = message;
+    d.appendChild(a); d.appendChild(m);
+    logEl.appendChild(d);
+    while (logEl.childNodes.length > 400) logEl.removeChild(logEl.firstChild);
+    if (stick) logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  function setMeta(chips) {
+    metaEl.innerHTML = "";
+    if (!chips.length) { metaEl.innerHTML = '<span class="chip">idle</span>'; return; }
+    chips.forEach(function (c) {
+      var s = document.createElement("span");
+      s.className = "chip" + (c.tone ? " " + c.tone : "");
+      s.innerHTML = c.k + " <b></b>";
+      s.querySelector("b").textContent = c.v;
+      metaEl.appendChild(s);
+    });
+  }
+
+  /* ------------------------------------------------------------------ *
+   * Health
+   * ------------------------------------------------------------------ */
+  (function health() {
+    var dot = document.getElementById("health-dot"), txt = document.getElementById("health-txt");
+    fetch(API + "/health", { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error("HTTP " + r.status)); })
+      .then(function (j) { dot.className = "dot up"; txt.textContent = j.service || "online"; })
+      .catch(function () { dot.className = "dot down"; txt.textContent = "endpoint unreachable"; });
+  })();
+
+  /* ------------------------------------------------------------------ *
+   * "prep me for X, I'm doing Y"  ->  { event_name, intent }
+   * The exact event string is passed through untouched: the roster cache
+   * key is the slugged event name, so we never rewrite what was typed.
+   * ------------------------------------------------------------------ */
+  function parseAsk(raw) {
+    var s = String(raw || "").trim();
+    var bar = s.match(/^(.+?)\s*\|\s*(.+)$/);
+    if (bar) return { event_name: bar[1].trim(), intent: bar[2].trim() };
+    s = s.replace(/^(?:can you\s+)?(?:please\s+)?(?:prep(?:\s+me)?(?:\s+for)?|brief(?:\s+me)?(?:\s+on|\s+for)?|get\s+me\s+ready\s+for)\s+/i, "");
+    var i = s.indexOf(",");
+    if (i > 0) return { event_name: s.slice(0, i).trim(), intent: s.slice(i + 1).trim() };
+    return { event_name: s, intent: "" };
+  }
+
+  function textOf(content) {
+    if (typeof content === "string") return content;
+    if (Array.isArray(content)) {
+      return content.map(function (p) { return p && p.type === "text" ? p.text : ""; }).join(" ");
+    }
+    return "";
+  }
+
+  /** A well-formed SSE error frame, so client-side problems land in the same lane as server ones. */
+  function sseError(message) {
+    return new Response("event: error\ndata: " + JSON.stringify({ message: message }) + "\n\n",
+      { status: 200, headers: { "Content-Type": "text/event-stream" } });
+  }
+
+  /* ------------------------------------------------------------------ *
+   * Persona wiring
+   * ------------------------------------------------------------------ */
+  var P = window.AgentWidget;
+  if (!P || !P.createAgentExperience) {
+    var be = document.getElementById("boot-err");
+    be.style.display = "block";
+    be.textContent = "Persona failed to load — ./vendor/persona.global.js is missing or blocked. Serve this directory over http:// rather than opening the file directly.";
+    return;
+  }
+
+  var lastEvent = "message";   // set by onSSEEvent immediately before parseSSEEvent, same frame
+
+  function onSSEEvent(type, data) {
+    lastEvent = type;
+    var el = typeof data.elapsed_s === "number" ? data.elapsed_s : 0;
+    if (type === "stage") {
+      setStage(data.stage, el);
+      pushLog(el, "info", data.message, true);
+    } else if (type === "progress") {
+      pushLog(el, data.level, data.message, false);
+    } else if (type === "briefing") {
+      finishStages(el);
+      stopClock(el);
+    } else if (type === "done") {
+      stopClock(el);
+      setMeta([
+        { k: "run", v: String(data.run_id || "").slice(0, 8) },
+        { k: "picks", v: String(data.picks) },
+        { k: "elapsed", v: el.toFixed(1) + "s" },
+        { k: "degradations", v: String(data.degradations),
+          tone: data.degradations ? "bad" : "good" }
+      ]);
+      pushLog(el, "info", "done · " + data.picks + " picks · " + data.degradations + " degradations", true);
+    } else if (type === "error") {
+      stopClock(el);
+      finishStages(el);
+      pushLog(el, "error", data.message, false);
+    }
+  }
+
+  /**
+   * Map the fleet's SSE vocabulary onto Persona's.
+   * `partId` is the seam that matters: the narration streams into one bubble
+   * while the run works, then the id flips and the finished briefing lands in
+   * a fresh bubble of its own.
+   */
+  function parseSSEEvent(data) {
+    switch (lastEvent) {
+      case "stage":
+        // `pipeline` is the backend's catch-all for logs outside a named stage;
+        // it bookends every run and reads as noise in the narration.
+        if (data.stage === "pipeline") return {};
+        return { text: "- " + data.message + "\n", partId: "run" };
+      case "briefing":
+        return { text: data.text, partId: "briefing" };
+      case "done":
+        return { done: true };
+      case "error":
+        return { error: data.message };
+      default:
+        return {};   // heartbeat + anything else: handled, renders nothing
+    }
+  }
+
+  function customFetch(url, init, payload) {
+    var msgs = (payload && payload.messages) || [];
+    var last = null;
+    for (var i = msgs.length - 1; i >= 0; i--) { if (msgs[i].role === "user") { last = msgs[i]; break; } }
+    var ask = parseAsk(textOf(last && last.content));
+
+    if (!ask.event_name || !ask.intent) {
+      return Promise.resolve(sseError(
+        'I need the event and what you want out of it, separated by a comma — for example: "' + DEMO_ASK + '".'
+      ));
+    }
+
+    resetRun();
+    return fetch(API + "/prep/stream", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ event_name: ask.event_name, intent: ask.intent }),
+      signal: init && init.signal
+    }).catch(function (e) {
+      stopClock();
+      return sseError("Could not reach the prep endpoint at " + API + " (" + e.message + ").");
+    });
+  }
+
+  P.createAgentExperience(document.getElementById("chat"), Object.assign({}, P.DEFAULT_WIDGET_CONFIG, {
+    apiUrl: API + "/prep/stream",
+    launcher: Object.assign({}, P.DEFAULT_WIDGET_CONFIG.launcher, {
+      enabled: false,                       // inline embed, not a floating bubble
+      width: "100%",
+      title: "Conference Prep Fleet",
+      subtitle: "Real rosters · grounded picks · audited before you see them",
+      agentIconText: "🎟"
+    }),
+    colorScheme: "light",
+    customFetch: customFetch,
+    parseSSEEvent: parseSSEEvent,
+    onSSEEvent: onSSEEvent,
+    // No postprocessMessage on purpose. Persona's own priority is
+    // postprocessMessage > markdown config > escapeHtml, so supplying one here
+    // takes over from the built-in markdown renderer and, in the IIFE build,
+    // escapes the output a second time (I'm -> &#39;).
+    markdown: { options: { gfm: true, breaks: true }, disableDefaultStyles: false },
+    theme: { semantic: { colors: { accent: "#5b4bde" } } },
+    copy: {
+      inputPlaceholder: "Which conference, and what do you want out of it?",
+      welcomeTitle: "Who should you meet?",
+      welcomeSubtitle: "Name the event and your goal. A full run takes 40–70 seconds, and you will see every stage of it.",
+      sendButtonLabel: "Prep"
+    },
+    statusIndicator: { visible: true, idleText: "Ready", connectingText: "Dispatching…", connectedText: "Working…", errorText: "Offline" },
+    voiceRecognition: { enabled: false },
+    suggestionChips: [DEMO_ASK],
+    layout: Object.assign({}, P.DEFAULT_WIDGET_CONFIG.layout, {
+      header: { layout: "default", showIcon: true, showTitle: true, showSubtitle: true, showCloseButton: false, showClearChat: true }
+    })
+  }));
+})();
+</script>
+</body>
+</html>
