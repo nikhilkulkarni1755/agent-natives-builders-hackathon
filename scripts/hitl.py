@@ -27,7 +27,7 @@ def token() -> str:
     if not t and (ROOT / "token.txt").exists():
         t = (ROOT / "token.txt").read_text().strip()
     if not t:
-        sys.exit("no TELEGRAM_BOT_TOKEN and no token.txt at repo root")
+        raise RuntimeError("no TELEGRAM_BOT_TOKEN set (token.txt is Immersive Commons, not Telegram)")
     return t
 
 
@@ -45,7 +45,11 @@ def chat_id() -> str | None:
         return c
     if CHATFILE.exists():
         return CHATFILE.read_text().strip() or None
-    upd = api("getUpdates", limit=50).get("result", [])
+    try:
+        upd = api("getUpdates", limit=50).get("result", [])
+    except Exception as e:
+        print(f"HITL: cannot reach Telegram ({e}). Set TELEGRAM_BOT_TOKEN.", file=sys.stderr)
+        return None
     for u in reversed(upd):
         msg = u.get("message") or u.get("channel_post") or {}
         cid = str((msg.get("chat") or {}).get("id", ""))
@@ -56,12 +60,21 @@ def chat_id() -> str | None:
 
 
 def send(text: str):
-    cid = chat_id()
+    """Best-effort. NEVER raises -- a broken HITL bridge must not kill an agent's loop."""
+    try:
+        cid = chat_id()
+    except Exception:
+        cid = None
     if not cid:
-        print("HITL: no chat_id yet -- message the bot once, then rerun `hitl.py discover`",
+        print("HITL: no chat_id yet -- set TELEGRAM_BOT_TOKEN, message the bot once, "
+              "then run `hitl.py discover`. Question queued to coord/hitl/pending/ anyway.",
               file=sys.stderr)
         return None
-    return api("sendMessage", chat_id=cid, text=text).get("result", {}).get("message_id")
+    try:
+        return api("sendMessage", chat_id=cid, text=text).get("result", {}).get("message_id")
+    except Exception as e:
+        print(f"HITL send failed: {e} (question still queued locally)", file=sys.stderr)
+        return None
 
 
 def qid() -> str:
@@ -128,11 +141,29 @@ def resolve(text: str, reply_to: int | None):
     return None, text
 
 
+def flush_unsent():
+    """Deliver questions that were queued while the bridge was down."""
+    for f in PENDING.glob("*.md"):
+        d = json.loads(f.read_text())
+        if d.get("message_id"):
+            continue
+        opts = "\n".join(f"  {i+1}) {o}" for i, o in enumerate(d["options"]))
+        body = f"[{d['qid']}] Agent {d['agent']} needs a call:\n\n{d['question']}"
+        body += f"\n\n{opts}\n\nReply `{d['qid']} <number>` or reply to this message." if opts \
+            else f"\n\nReply `{d['qid']} <answer>` or reply to this message."
+        mid = send(body)
+        if mid:
+            d["message_id"] = mid
+            f.write_text(json.dumps(d, indent=2))
+            print(f"  [{d['qid']}] delivered (was queued offline)")
+
+
 def cmd_poll():
     cid = chat_id()
-    print(f"HITL poller live. chat_id={cid or 'UNKNOWN — message your bot once'}")
+    print(f"HITL poller live. chat_id={cid or 'UNKNOWN -- message your bot once'}")
     off = int(OFFSET.read_text()) if OFFSET.exists() else 0
     while True:
+        flush_unsent()
         try:
             res = api("getUpdates", offset=off, timeout=50).get("result", [])
         except Exception as e:  # never die silently
