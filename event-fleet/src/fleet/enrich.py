@@ -80,8 +80,20 @@ MIN_FACT_WORDS = 8       # "View profile for <name>" is true, and it is not a fa
 MAX_FACT_CHARS = 240
 
 LOOKUP_WORKERS = 4
-"""Concurrent speaker lookups. Small on purpose: this is a real rate-limited
-LinkedIn read on a real account, not a load test."""
+"""Concurrent LinkedIn lookups. Small on purpose: this is a real rate-limited
+read on a real account, not a load test."""
+
+PUBLIC_LIMIT = 12
+"""Total speakers enriched. The first `limit` of them go through LinkedIn; the
+rest are resolved from public web data only. Tavily is a different plane with a
+different quota and no LinkedIn exposure, so widening coverage here costs zero
+LinkedIn calls -- which is the whole point of keeping the two budgets apart."""
+
+PUBLIC_WORKERS = 12
+"""Concurrent public-web lookups. Larger than LOOKUP_WORKERS because nothing here
+touches the rate-limited account, and sized to clear PUBLIC_LIMIT in one round:
+measured cold, seven concurrent searches take 5.0s, so a second round would put
+the whole enrichment phase on the demo's critical path for no benefit."""
 
 _STOPWORDS = frozenset(
     "the a an of at in for and or to with on inc llc ltd co corp company "
@@ -440,40 +452,49 @@ def _public_facts(speaker: Speaker, event_name: str | None) -> tuple[list[str], 
     return facts, sources
 
 
-def _fallback(speaker: Speaker, event_name: str | None, why: str) -> EnrichedSpeaker:
-    """Iridium could not resolve this speaker: try public data, loudly.
+def _fallback(speaker: Speaker, event_name: str | None, why: str | None = None) -> EnrichedSpeaker:
+    """Resolve one speaker from public web data.
 
-    Every branch here is a degradation -- the fallback firing at all is the
-    degradation, whether or not it finds anything (spec section 6).
+    `why` set means Iridium tried and failed on this speaker: the fallback firing
+    at all is a degradation and every branch below says so out loud, whether or
+    not it finds anything (spec section 6).
+
+    `why` None means this speaker was never looked up on LinkedIn -- they are
+    outside the rate-limited budget by policy (D-015), so public data is their
+    PRIMARY plane, not a fallback, and reporting it as a degradation would bury
+    the real ones. Exactly the line `_cached_user(after_failure)` already draws.
     """
+    def record(message: str) -> None:
+        if why:
+            _degrade(message)
+        else:
+            log.info("agent=%s step=public_only speaker=%r %s", AGENT, speaker.name, message)
+
+    lead = (f"Iridium could not resolve {speaker.name!r} ({why})" if why
+            else f"{speaker.name!r} was outside the LinkedIn budget, so public data only")
     try:
         facts, sources = _public_facts(speaker, event_name)
     except (httpx.HTTPError, RuntimeError, ValueError) as exc:
+        # A Tavily outage is loud on both paths: on the by-policy path it is not a
+        # user-facing degradation, but it is never a silent one.
         log.error("agent=%s step=public_fallback speaker=%r exc=%r",
                   AGENT, speaker.name, exc, exc_info=True)
-        _degrade(
-            f"Iridium could not resolve {speaker.name!r} ({why}) and the Tavily public-data "
-            f"fallback also failed ({type(exc).__name__}: {exc}); they are in the briefing "
-            "with no facts."
-        )
+        record(f"{lead}, and the Tavily public-data lookup also failed "
+               f"({type(exc).__name__}: {exc}); they are in the briefing with no facts.")
         return EnrichedSpeaker(speaker=speaker, source="none")
 
     if not facts:
-        _degrade(
-            f"Iridium could not resolve {speaker.name!r} ({why}), and public web search found "
-            "nothing that could be confirmed to be this person; they are in the briefing with "
-            "no facts rather than risk attributing another person's history to them."
-        )
+        record(f"{lead}, and public web search found nothing that could be confirmed to be "
+               "this person; they are in the briefing with no facts rather than risk "
+               "attributing another person's history to them.")
         return EnrichedSpeaker(speaker=speaker, source="none")
 
-    log.error(
-        "agent=%s step=public_fallback speaker=%r why=%s facts=%d sources=%s",
-        AGENT, speaker.name, why, len(facts), sources,
+    log.info(
+        "agent=%s step=public_fallback speaker=%r after_failure=%s facts=%d sources=%s",
+        AGENT, speaker.name, bool(why), len(facts), sources,
     )
-    _degrade(
-        f"Iridium could not resolve {speaker.name!r} ({why}); their {len(facts)} fact(s) came "
-        f"from public web search via Tavily ({', '.join(sources)}), not from LinkedIn."
-    )
+    record(f"{lead}; their {len(facts)} fact(s) came from public web search via Tavily "
+           f"({', '.join(sources)}), not from LinkedIn.")
     return EnrichedSpeaker(speaker=speaker, facts=facts, source="tavily")
 
 
@@ -526,39 +547,50 @@ def _resolve_speaker(speaker: Speaker, event_name: str | None = None) -> Enriche
 
 
 def enrich_speakers(
-    speakers: list[Speaker], limit: int = 3, event_name: str | None = None
+    speakers: list[Speaker],
+    limit: int = 3,
+    public_limit: int = PUBLIC_LIMIT,
+    event_name: str | None = None,
 ) -> list[EnrichedSpeaker]:
-    """Resolve up to `limit` speakers against Iridium; the rest pass through fact-less.
+    """Enrich the head of the roster; everyone else passes through fact-less.
 
-    Every speaker is returned, so ranking still sees the whole roster. `limit`
-    bounds the live LinkedIn lookups, which are the slowest calls in the run.
+    The two planes have two budgets, because they have two costs. `limit` is the
+    LinkedIn budget: a real rate-limited read on a real account, deliberately tiny
+    (D-015), and `limit=0` means look nobody up on LinkedIn at all. `public_limit`
+    is the TOTAL number of speakers enriched -- the ones past `limit` skip Iridium
+    entirely and go straight to public web data, which costs no LinkedIn calls.
+    That split is what stops a small LinkedIn budget from also throttling coverage:
+    a speaker who reaches the reader with no facts is filtered out of the render
+    (D-007), so thin enrichment is invisible thinness.
 
-    Anyone Iridium cannot resolve falls back to public web data via Tavily. Passing
-    `event_name` (optional, so the existing call site is unaffected) gives that
-    fallback a second anchor -- this person AT this event -- on top of the employer
-    match; without it, corroboration rests on the roster's company and title alone.
+    Every speaker is returned either way, so ranking still sees the whole roster.
+    `event_name` (optional, so the existing call site is unaffected) gives the
+    public path a second identity anchor -- this person AT this event.
     """
     if not speakers:
         log.warning("agent=%s step=enrich_speakers why=empty roster, nothing to enrich", AGENT)
         return []
 
-    # One lookup is a live LinkedIn read and costs ~14s, so `limit` sequential
-    # lookups would dominate the whole run and risk an MCP client timeout. The
-    # Iridium client locks around its token, so these are safe to overlap; the
-    # pool is small to stay polite to a rate-limited upstream. Order is preserved.
-    head = speakers[:limit]
-    if not head:
-        # limit=0 is a legitimate request -- rank everyone, look nobody up. It is how
-        # a run stays off the LinkedIn quota entirely (D-015), so it must not raise.
-        return [EnrichedSpeaker(speaker=s, source="none") for s in speakers]
-    with ThreadPoolExecutor(max_workers=min(LOOKUP_WORKERS, len(head))) as pool:
-        out = list(pool.map(partial(_resolve_speaker, event_name=event_name), head))
-    out += [EnrichedSpeaker(speaker=s, source="none") for s in speakers[limit:]]
+    head = speakers[:limit]                              # LinkedIn, then public on failure
+    public = speakers[len(head):max(limit, public_limit)]  # public only, no LinkedIn call
+    # Both planes run at once: one live LinkedIn read costs ~14s, and the public
+    # lookups fit inside that window instead of extending the run. The Iridium
+    # client locks around its token, so overlapping is safe; its pool stays small
+    # to be polite to a rate-limited upstream, while the public pool is wider
+    # because nothing in it touches the account. Order is preserved.
+    with ThreadPoolExecutor(max_workers=min(LOOKUP_WORKERS, len(head)) or 1) as linkedin, \
+            ThreadPoolExecutor(max_workers=min(PUBLIC_WORKERS, len(public)) or 1) as web:
+        futures = [linkedin.submit(_resolve_speaker, s, event_name) for s in head]
+        futures += [web.submit(_fallback, s, event_name) for s in public]
+        out = [f.result() for f in futures]
+    out += [EnrichedSpeaker(speaker=s, source="none") for s in speakers[len(out):]]
+
     resolved = sum(1 for e in out if e.source == "iridium")
-    public = sum(1 for e in out if e.source == "tavily")
+    got_public = sum(1 for e in out if e.source == "tavily")
     log.info(
-        "agent=%s step=enrich_speakers total=%d looked_up=%d resolved=%d public=%d fact_less=%d",
-        AGENT, len(out), min(limit, len(speakers)), resolved, public,
-        len(out) - resolved - public,
+        "agent=%s step=enrich_speakers total=%d linkedin_budget=%d public_only=%d "
+        "resolved=%d public=%d fact_less=%d",
+        AGENT, len(out), len(head), len(public), resolved, got_public,
+        len(out) - resolved - got_public,
     )
     return out
