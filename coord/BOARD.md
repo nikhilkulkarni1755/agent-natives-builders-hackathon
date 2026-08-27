@@ -118,6 +118,18 @@ multi-speaker enrichment · any login/user-management UI · hotels · anything G
 
 ## Decisions log (Agent A appends)
 - D-001: coord/ read+written at the absolute main-checkout path, not per-worktree. Zero sync latency.
+- D-012: BLOCKER FOUND BY LIVE END-TO-END RUN (dispatcher, run a73a8a9e). fetch_roster() against
+  the World's Fair page returns PAGE FURNITURE, not speakers: "Supporting Partners" (with the whole
+  sponsor list as its title), "Keynote", "Tuesday"/"Wednesday"/"Thursday", "PM", "New Engineer
+  Orientation". The extractor's name+title-line card heuristic was only ever proven against a page
+  with ZERO speakers, so its extraction path was never actually exercised. It does not invent people
+  (no-stub holds), but it cannot tell a person from a calendar row. R3 is now the #1 critical path.
+- D-013: Iridium enrichment VERIFIED WORKING on the live path — resolved the real user correctly
+  (role, company, Iridium MCP authorship, vLLM/SGLang PRs, 12 real interests). source=iridium.
+- D-014: The MCP server is a long-lived stdio subprocess. It loads lane modules ONCE at boot, so a
+  fix on disk is NOT live until the server reconnects. Run a73a8a9e still hit the judge truncation
+  bug that is already fixed on disk. Reconnect the server after any lane change, and ALWAYS before
+  rehearsing the demo.
 - D-010: HUMAN DECISION. Build and test against an event that HAS a published roster, but the
   product must work for ANY event with named people — fetch_roster stays genuinely event-agnostic
   and must NOT be ai.engineer-specific. New task R3 covers the generalization; V1 gates on it.
