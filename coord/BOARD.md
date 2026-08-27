@@ -7,6 +7,33 @@ T0 = when Agent A stamps it here:  T0 = __________   HARD STOP = T0 + 2h30m (las
 `prep_conference("AI Engineer NY", "<intent>")` in Claude returns a briefing built
 from the **real** AI Engineer NY speaker roster. That alone is a demo. Get here first.
 
+
+---
+## PRE-VERIFIED FACTS (real calls made at bootstrap — do NOT re-derive, do NOT doubt)
+
+**Secrets** — all three keys are live and loaded. Every terminal does:
+`set -a; . /Users/nikhilkulkarni/immersive-commons-hackathon/hackathon-p1/.env; set +a`
+That file is gitignored and 600. Never read it into context, never echo a key, never commit it.
+
+**Nebius (Agent C)** — key authenticates; 30 models on the live catalog.
+The exact slug is **`openai/gpt-oss-120b`** (namespaced, not bare). C1 is closed.
+`base_url="https://api.studio.nebius.com/v1/"`, OpenAI-compatible client.
+
+**Tavily (Agent B)** — key authenticates; real search returned results.
+Event entry point: **https://ai.engineer/nyc/2026** ("AI Engineer New York 2026: October 12-14").
+Start your crawl there. If speakers are client-rendered, drive a real browser and read the DOM.
+
+**Iridium (Agent D)** — Door 2 login **works and returns a real JWT + refresh token**.
+GOTCHA, this cost a round trip: the key is used **RAW, with NO `irid_` prefix**.
+Sending `irid_<key>` returns `401 {"detail":"Invalid API key"}`. The spec's `irid_...`
+notation is illustrative, not literal. Use `$IRIDIUM_API_KEY` exactly as-is:
+`POST https://api.iridiumhqmcp.com/auth/login  {"api_key": "<raw key>"}` -> 200,
+`access_token` (len ~209) + `refresh_token`. D1's remaining work is `/mcp/tools/list`.
+
+**Still unverified — these are real work, not freebies:** whether the NY speaker roster is
+published yet (it may be an empty wave), which Iridium tool resolves a person, and whether
+Cotal installs cleanly. Verify each yourself before claiming it.
+
 ---
 ## Lanes
 
@@ -27,7 +54,7 @@ Owns: `models.py`, `server.py`, run persistence, `BOARD.md`, `CONTRACTS.md`, int
 Owns: `roster.py`, `data/roster_*.json`.
 | # | Task | Prio | Status | Blocks |
 |---|---|---|---|---|
-| B1 | Deep research: find the real AI Engineer NY (Oct 12–14 2026) speaker page | P0 | TODO | everything |
+| B1 | Find the real AI Engineer NY speaker page — **entry point pre-verified below**, still confirm the speaker list renders | P0 | IN PROGRESS | everything |
 | B2 | `fetch_roster()` via real Tavily crawl/extract -> `list[Speaker]` | P0 | TODO | A3 |
 | B3 | Handle partial/wave roster + empty list without crashing; set `is_partial` | P0 | TODO | A3 |
 | B4 | Pre-cache the real response to `data/` with source URL + timestamp (demo fallback) | P0 | TODO | de-risk |
@@ -38,7 +65,7 @@ Owns: `roster.py`, `data/roster_*.json`.
 Owns: `rank.py`, `judge.py`, prompts.
 | # | Task | Prio | Status | Blocks |
 |---|---|---|---|---|
-| C1 | Deep research: confirm the exact gpt-oss-120b slug on the live Token Factory catalog | P0 | TODO | C2 |
+| C1 | ~~Confirm gpt-oss-120b slug~~ **RESOLVED, see PRE-VERIFIED below** | P0 | DONE | — |
 | C2 | Real Nebius call succeeds; paste real response in log | P0 | TODO | A5 |
 | C3 | `rank()` — speakers vs intent, structured `RankedPick` out | P0 | TODO | A5 |
 | C4 | `judge()` — Mechanism A, 3-check rubric, grounding check is the priority | P1 | TODO | A5 |
@@ -49,7 +76,7 @@ Owns: `rank.py`, `judge.py`, prompts.
 Owns: `enrich.py`, `.cotal/agents/*.md`, mesh wiring.
 | # | Task | Prio | Status | Blocks |
 |---|---|---|---|---|
-| D1 | Deep research: Iridium Door 2 live (`/auth/login` -> JWT -> `/mcp/tools/list`) | P0 | TODO | D2 |
+| D1 | Iridium Door 2 — **login pre-verified below**, still enumerate `/mcp/tools/list` and pick the read tool | P0 | IN PROGRESS | D2 |
 | D2 | `enrich_user()` — ONE real Iridium call, pre-warmed + cached for demo | P0 | TODO | A6 |
 | D3 | Tavily-only fallback path, proven by forcing an Iridium failure | P0 | TODO | de-risk |
 | D4 | Install Cotal; `cotal up` authed loopback; 4 agent files with default-deny ACLs | P1 | TODO | H2 theme |
@@ -67,4 +94,6 @@ multi-speaker enrichment · any login/user-management UI · hotels · anything G
 
 ## Decisions log (Agent A appends)
 - D-001: coord/ read+written at the absolute main-checkout path, not per-worktree. Zero sync latency.
+- D-003: Keys verified at bootstrap by live call, not assumed. Findings in PRE-VERIFIED above.
+- D-004: Iridium API key is used raw — the `irid_` prefix in the spec is notation, not literal.
 - D-002: Lanes are vertical slices, not pipeline stages, so A/B/C/D parallelise without chaining.

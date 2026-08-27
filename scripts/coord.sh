@@ -53,18 +53,14 @@ print(json.dumps({"ts":datetime.datetime.now(datetime.UTC).isoformat(),"agent":s
       echo "---------------- open HITL questions ----------------"
       if ls -A "$C/hitl/pending" >/dev/null 2>&1 && [ -n "$(ls -A "$C/hitl/pending" 2>/dev/null)" ]; then
         for q in "$C"/hitl/pending/*.md; do
-          python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); print("  ["+d["qid"]+"] "+d["agent"]+": "+d["question"]); [print("       "+str(i+1)+") "+o) for i,o in enumerate(d["options"])]' "$q"
+          "$ROOT/scripts/_fmt.py" question "$q"
         done
         echo "  -> answer:  scripts/coord.sh answer <QID> <choice-number-or-text>"
       else
         echo "  (none)"
       fi
       echo "---------------- last 12 events ----------------"
-      cat "$C"/log/*.jsonl 2>/dev/null | sort | tail -12 | \
-        python3 -c 'import sys,json
-for l in sys.stdin:
-    try: d=json.loads(l); print(f"  {d[\"ts\"][11:19]} {d[\"agent\"]} {d[\"event\"]}: {d[\"detail\"][:70]}")
-    except Exception: pass'
+      cat "$C"/log/*.jsonl 2>/dev/null | sort | tail -12 | "$ROOT/scripts/_fmt.py" log
       sleep 10
     done
     ;;
