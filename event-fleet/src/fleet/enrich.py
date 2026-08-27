@@ -242,7 +242,13 @@ def _to_user_profile(profile: dict, source: str) -> UserProfile:
     summary = " -- ".join(bits)
     about = (profile.get("about") or "").strip().replace("\n", " ")
     if about:
-        summary = f"{summary}. {about[:400]}"
+        # Cut on a sentence, else a word -- a hard slice ends the About-you
+        # paragraph mid-word ("...hard tradeoffs by hi"), which is visible to the reader.
+        blurb = about[:400]
+        if len(about) > 400:
+            cut = max(blurb.rfind(". "), blurb.rfind("! "), blurb.rfind("? "))
+            blurb = blurb[:cut + 1] if cut > 200 else blurb[:blurb.rfind(" ")].rstrip(",;:") + "..."
+        summary = f"{summary}. {blurb}"
     return UserProfile(summary=summary, interests=_interests(profile), source=source)
 
 
