@@ -9,6 +9,30 @@ from the **real** AI Engineer NY speaker roster. That alone is a demo. Get here 
 
 
 ---
+## Wiring into Claude  (S1 — VERIFIED: `claude mcp list` reports ✔ Connected)
+
+One paste, from anywhere:
+
+```bash
+claude mcp add conference-prep -- uv run --directory /Users/nikhilkulkarni/immersive-commons-hackathon/hackathon-p1/event-fleet python -m fleet.server
+```
+
+Confirm with `claude mcp list` -> `conference-prep: ... - ✔ Connected`. The tool then shows up
+in Claude as `prep_conference(event_name, intent)`. Reload Claude Code to pick it up.
+
+- Scope defaults to **local** (this project only). Add `-s user` to get it in every project.
+- Undo / re-add: `claude mcp remove conference-prep -s local`
+- The server loads `$FLEET_ROOT/.env` itself at boot, so lane keys are present even if the
+  terminal that launched Claude never sourced it. No key is ever logged, only the file path.
+- All server logging goes to **stderr** — stdout is the JSON-RPC channel and a stray `print()`
+  in any lane module will corrupt the stream and drop the connection. Lanes: use `logging`.
+
+**SDK GOTCHA (cost a round trip, do not re-derive):** `mcp` resolves to **2.1.1**, not 1.x.
+FastMCP is gone. The v2 API is `from mcp.server import MCPServer`, `@mcp.tool()`, `mcp.run()`.
+Wire-protocol fields are **snake_case** — `input_schema`, `output_schema`, `structured_content`,
+`is_error`. The v1 camelCase attribute names raise `AttributeError`.
+
+---
 ## PRE-VERIFIED FACTS (real calls made at bootstrap — do NOT re-derive, do NOT doubt)
 
 **Secrets** — all three keys are live and loaded. Every terminal does:
@@ -42,7 +66,7 @@ Owns: `models.py`, `server.py`, run persistence, `BOARD.md`, `CONTRACTS.md`, int
 | # | Task | Prio | Status | Blocks |
 |---|---|---|---|---|
 | A1 | `models.py` committed + pushed to main | P0 | DONE (scaffolded) | B,C,D |
-| A2 | MCP server boots; `prep_conference` registered; visible in Claude | P0 | TODO | demo |
+| A2 | MCP server boots; `prep_conference` registered; visible in Claude | P0 | DONE (S1, verified end-to-end) | demo |
 | A3 | Straight-line wiring: roster -> briefing, real data, no ranking yet | P0 | TODO | H1 floor |
 | A4 | Run persistence -> `run_id` on every briefing (SQLite or Supabase) | P1 | TODO | submit_eval |
 | A5 | Wire C's rank + judge into the flow; thread `degradations` | P1 | TODO | H2 |
