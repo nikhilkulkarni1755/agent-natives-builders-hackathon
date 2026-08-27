@@ -37,32 +37,11 @@ no API key required to try it.
 
 ## `agent_surface`  ← the field the rubric scores
 ```
-MCP server, reachable two ways. `prep_conference(event_name, intent) -> ConferenceBriefing` is
-registered over stdio (`claude mcp add`, health-checked Connected), and the same pipeline is
-exposed to remote agents over HTTP and SSE at https://events.iridiumhqmcp.com -- a named
-Cloudflare tunnel on our own zone, not an ephemeral hostname. Routes: /health, /prep (JSON),
-/prep/stream (Server-Sent Events). The SSE stream republishes the lanes' own structured logs as
-per-stage progress -- 55 events across a 30s run, first at 1.9s -- so a calling agent renders
-work in flight instead of blocking. Persona (Runtype's open-source agent UI) consumes that same
-stream with no server change. No key needed; per-caller limits enforced via CF-Connecting-IP.
+MCP server, reachable two ways. `prep_conference(event_name, intent) -> ConferenceBriefing` is registered over stdio (`claude mcp add`, health-checked Connected), and the same pipeline is exposed to remote agents over HTTP and SSE at https://events.iridiumhqmcp.com -- a named Cloudflare tunnel on our own zone. Routes: /health, /prep (JSON), /prep/stream (SSE). The stream republishes the lanes' own structured logs as per-stage progress -- 55 events across a 30s run, first at 1.9s -- so a calling agent renders work in flight instead of blocking. Persona (Runtype's open-source agent UI) consumes that stream unchanged. No key needed; per-caller limits use CF-Connecting-IP.
 
-Machine-to-machine identity enforced by a broker, not by application code. The fleet coordinates
-over a Cotal NATS mesh in authenticated mode; each agent holds its own minted least-privilege
-credential with an explicit default-deny subject ACL. An agent publishing outside its grant is
-refused by nats-server itself -- reproduced twice, captured verbatim: `Permissions Violation for
-Publish to "...fleet.judge-only"`. Every run writes its per-lane outcome and every error to a
-durable replayable audit log, verified by forcing a real upstream 401 and watching the error
-count move. Caller identity is request-scoped, so a remote agent is never answered with the
-operator's credentials or identity.
+Machine-to-machine identity enforced by a broker, not by application code. The fleet coordinates over a Cotal NATS mesh in authenticated mode; each agent holds its own minted least-privilege credential with an explicit default-deny subject ACL. An agent publishing outside its grant is refused by nats-server itself -- reproduced twice, captured verbatim: `Permissions Violation for Publish to "...fleet.judge-only"`. Every run writes its per-lane outcome and every error to a durable replayable audit log, verified by forcing a real 401 and watching the error count move. Caller identity is request-scoped: a remote agent is never answered with the operator's identity.
 
-Grounding as a surface, not a promise. Extraction is discover -> extract -> validate, and
-validation requires every returned name to appear verbatim in the source, making a fabricated
-speaker structurally impossible rather than discouraged. A second model then audits the ranking
-against the evidence that produced it, scoring 0-1 with per-check pass/fail; it has caught our
-own ranker inventing facts on live data. Unsupported sources fail closed in 0.0s with the reason
-attached -- Luma, Meetup and Partiful are refused by name, because a Luma page returns its RSVP
-guest list and an extractor will mistake that for a line-up. Every degradation reaches the
-caller; none is swallowed.
+Grounding as a surface, not a promise. Extraction is discover -> extract -> validate, and validation requires every returned name to appear verbatim in the source, making a fabricated speaker structurally impossible. A second model audits the ranking against the evidence that produced it, scoring 0-1 with per-check pass/fail; it has caught our own ranker inventing facts on live data. 24 events across 12 domains verified by real fetch. Unsupported sources fail closed in 0.0s -- Luma, Meetup and Partiful are refused by name, because a Luma page returns its RSVP guest list and an extractor will mistake it for a line-up.
 ```
 
 ---
@@ -90,7 +69,7 @@ caller; none is swallowed.
 ## Evidence
 `VERIFICATION.md` (independent audit, incl. what was found broken), `DEMO.md` (script + evidence
 index), `DEPLOY.md` (tunnel + SSE-through-proxy findings), `PUBLIC.md` (stranger onboarding),
-`EVENTS.md` (verified working events), `coord/BOARD.md` (32 recorded decisions),
+`EVENTS.md` (24 events verified by real fetch), `coord/BOARD.md` (32 recorded decisions),
 `coord/log/*.jsonl` (per-task evidence). 60 commits.
 
 ## Known limits, stated plainly
