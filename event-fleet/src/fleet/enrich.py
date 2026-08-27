@@ -21,6 +21,14 @@ candidate is accepted only when it wins on independent evidence AND clears the
 runner-up by a margin. Otherwise the speaker comes back with NO facts, which is
 correct behavior: fact-less speakers still rank and are filtered from the render.
 
+When Iridium cannot resolve a speaker -- it failed, it found nobody, or it found
+several people and none of them could be trusted -- enrichment falls back to
+public web data via Tavily rather than returning nothing. That fallback carries
+the SAME evidence discipline: a page is admissible only if it corroborates this
+speaker independently of their name, and only sentences that actually name them
+become facts, so a 50-person agenda page can never lend one speaker another
+speaker's line. Unconfirmed still means no facts.
+
 Degradations are never silent: `take_degradations()` drains a human-readable
 record of every fallback that fired, and each one is logged at error level as
 loudly as an outright failure.
@@ -36,7 +44,11 @@ import os
 import re
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
+from functools import partial
 from pathlib import Path
+from urllib.parse import urlsplit
+
+import httpx
 
 from fleet.iridium import IridiumError, client
 from fleet.models import EnrichedSpeaker, Speaker, UserProfile
@@ -54,6 +66,18 @@ USER_CACHE = DATA_DIR / "iridium_user_profile.json"
 # does not, because every result matches the name we searched for.
 MIN_SCORE = 2.0
 MIN_MARGIN = 1.5
+
+# Public-data fallback. Same MIN_SCORE bar as the LinkedIn path, deliberately:
+# a public page is not a softer standard, just a different source.
+TAVILY_SEARCH_URL = "https://api.tavily.com/search"
+TAVILY_RESULTS = 4
+ANCHOR_EVIDENCE = 2.0
+"""A page that names this speaker AND carries their event or their talk title in
+full is direct evidence of this person at this event -- weighted like an employer
+match. Never awarded on a one-token anchor, where the overlap would mean nothing."""
+MAX_PUBLIC_FACTS = 3
+MIN_FACT_WORDS = 8       # "View profile for <name>" is true, and it is not a fact
+MAX_FACT_CHARS = 240
 
 LOOKUP_WORKERS = 4
 """Concurrent speaker lookups. Small on purpose: this is a real rate-limited
@@ -302,7 +326,158 @@ def _score(speaker: Speaker, candidate: dict) -> float:
     return score
 
 
-def _resolve_speaker(speaker: Speaker) -> EnrichedSpeaker:
+def _tavily_results(query: str) -> list[dict]:
+    """One real Tavily search. Returns the raw result dicts (title/url/content).
+
+    The roster lane's Tavily helper is not reused: it is /extract-shaped around
+    one page's raw content, this path wants ranked search snippets, and that
+    module belongs to another lane.
+    """
+    key = os.environ.get("TAVILY_API_KEY")
+    if not key:
+        raise RuntimeError(
+            f"agent={AGENT} step=public_fallback why=TAVILY_API_KEY is unset; "
+            "the public-data fallback cannot run"
+        )
+    resp = httpx.post(
+        TAVILY_SEARCH_URL,
+        headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+        json={"query": query, "max_results": TAVILY_RESULTS, "search_depth": "advanced"},
+        timeout=30.0,
+    )
+    resp.raise_for_status()
+    return resp.json().get("results") or []
+
+
+def _mentions(name: str, *parts: str | None) -> bool:
+    """Does this text actually name the speaker? Whitespace-normalised, case-blind."""
+    text = " ".join(" ".join((p or "").split()) for p in parts).lower()
+    return " ".join(name.split()).lower() in text
+
+
+def _public_evidence(speaker: Speaker, event_name: str | None, result: dict) -> float:
+    """How strongly one search result is evidence about THIS speaker.
+
+    `_score` is reused verbatim over the page's title and snippet, so the public
+    path inherits the LinkedIn path's rule that a matching name is worth nothing
+    -- we searched for the name, and there were three Shawn Wangs. On top of it,
+    an anchor the page must carry *in full*: the event, or the talk this speaker
+    is giving. A roster often has no employer, and a page that names the speaker
+    and their exact session is the strongest public evidence available that this
+    is the right human.
+    """
+    page = _tokens(result.get("title"), result.get("content"))
+    score = _score(speaker, {"headline": result.get("title"), "about": result.get("content")})
+    for anchor in (event_name, speaker.session_title):
+        tokens = _tokens(anchor)
+        if len(tokens) > 1 and tokens <= page:
+            score += ANCHOR_EVIDENCE
+    return score
+
+
+def _name_sentences(name: str, text: str | None) -> list[str]:
+    """Sentences from a page that actually name the speaker.
+
+    This is the misattribution guard for public data. A conference agenda names
+    fifty people on one page; taking only the lines that carry THIS speaker's name
+    means another speaker's history can never be attached to them.
+    """
+    needle = " ".join(name.split()).lower()
+    out: list[str] = []
+    for raw in re.split(r"(?<=[.!?])\s+|\n+", text or ""):
+        sentence = " ".join(raw.split())
+        at = sentence.lower().find(needle)
+        if at < 0 or len(sentence.split()) < MIN_FACT_WORDS:
+            continue
+        if len(sentence) > MAX_FACT_CHARS:
+            # Keep a window AROUND the name, never a prefix. A schedule row can
+            # run past the cap, and cutting it from the front drops the name the
+            # line was selected for -- which is how another speaker's session
+            # ends up attributed to this one. Observed live, hence the recheck.
+            start = max(0, at - MAX_FACT_CHARS // 3)
+            window = sentence[start:start + MAX_FACT_CHARS].rstrip()
+            sentence = f"{'...' if start else ''}{window}..."
+        if _mentions(name, sentence):
+            out.append(sentence)
+    return out
+
+
+def _public_facts(speaker: Speaker, event_name: str | None) -> tuple[list[str], list[str]]:
+    """Public-web facts for one speaker: (facts, source domains).
+
+    Empty when nothing can be confirmed to be this person, which is the correct
+    answer -- a fact-less speaker still ranks (D-007), a misattributed fact is a
+    disaster. Every fact is stamped with the domain it came from, so the judge's
+    grounding check and the reader see the same provenance.
+    """
+    terms = [f'"{speaker.name}"']
+    terms += [t for t in (speaker.company, event_name, speaker.session_title) if t]
+    results = _tavily_results(" ".join(terms + ["speaker"]))
+
+    facts: list[str] = []
+    sources: list[str] = []
+    seen: set[str] = set()
+    for result in results:
+        score = _public_evidence(speaker, event_name, result)
+        named = _mentions(speaker.name, result.get("title"), result.get("content"))
+        if not named or score < MIN_SCORE:
+            log.info(
+                "agent=%s step=public_fallback speaker=%r rejected=%s named=%s score=%.2f",
+                AGENT, speaker.name, result.get("url"), named, score,
+            )
+            continue
+        domain = urlsplit(result.get("url") or "").netloc.removeprefix("www.") or "the web"
+        for sentence in _name_sentences(speaker.name, result.get("content")):
+            key = sentence.lower()
+            if key in seen:
+                continue
+            seen.add(key)
+            facts.append(f"Per {domain}: {sentence}")
+            if domain not in sources:
+                sources.append(domain)
+            if len(facts) >= MAX_PUBLIC_FACTS:
+                return facts, sources
+    return facts, sources
+
+
+def _fallback(speaker: Speaker, event_name: str | None, why: str) -> EnrichedSpeaker:
+    """Iridium could not resolve this speaker: try public data, loudly.
+
+    Every branch here is a degradation -- the fallback firing at all is the
+    degradation, whether or not it finds anything (spec section 6).
+    """
+    try:
+        facts, sources = _public_facts(speaker, event_name)
+    except (httpx.HTTPError, RuntimeError, ValueError) as exc:
+        log.error("agent=%s step=public_fallback speaker=%r exc=%r",
+                  AGENT, speaker.name, exc, exc_info=True)
+        _degrade(
+            f"Iridium could not resolve {speaker.name!r} ({why}) and the Tavily public-data "
+            f"fallback also failed ({type(exc).__name__}: {exc}); they are in the briefing "
+            "with no facts."
+        )
+        return EnrichedSpeaker(speaker=speaker, source="none")
+
+    if not facts:
+        _degrade(
+            f"Iridium could not resolve {speaker.name!r} ({why}), and public web search found "
+            "nothing that could be confirmed to be this person; they are in the briefing with "
+            "no facts rather than risk attributing another person's history to them."
+        )
+        return EnrichedSpeaker(speaker=speaker, source="none")
+
+    log.error(
+        "agent=%s step=public_fallback speaker=%r why=%s facts=%d sources=%s",
+        AGENT, speaker.name, why, len(facts), sources,
+    )
+    _degrade(
+        f"Iridium could not resolve {speaker.name!r} ({why}); their {len(facts)} fact(s) came "
+        f"from public web search via Tavily ({', '.join(sources)}), not from LinkedIn."
+    )
+    return EnrichedSpeaker(speaker=speaker, facts=facts, source="tavily")
+
+
+def _resolve_speaker(speaker: Speaker, event_name: str | None = None) -> EnrichedSpeaker:
     """Resolve one speaker, or return them fact-less rather than risk a misattribution."""
     payload: dict = {"name": speaker.name}
     if speaker.company:
@@ -315,14 +490,12 @@ def _resolve_speaker(speaker: Speaker) -> EnrichedSpeaker:
         response = _lookup(payload)
     except IridiumError as exc:
         log.error("agent=%s step=resolve speaker=%r exc=%r", AGENT, speaker.name, exc, exc_info=True)
-        _degrade(f"Iridium lookup failed for speaker {speaker.name!r} ({type(exc).__name__}: {exc}); "
-                 "they are in the briefing with no facts.")
-        return EnrichedSpeaker(speaker=speaker, source="none")
+        return _fallback(speaker, event_name, f"{type(exc).__name__}: {exc}")
 
     candidates = response.get("results") or []
     if not candidates:
         log.info("agent=%s step=resolve speaker=%r why=no match", AGENT, speaker.name)
-        return EnrichedSpeaker(speaker=speaker, source="none")
+        return _fallback(speaker, event_name, "LinkedIn returned no match for this name")
 
     ranked = sorted(((_score(speaker, c), c) for c in candidates), key=lambda p: p[0], reverse=True)
     best_score, best = ranked[0]
@@ -334,12 +507,11 @@ def _resolve_speaker(speaker: Speaker) -> EnrichedSpeaker:
             "runner_up=%.2f -- returning no facts rather than risk a misattribution",
             AGENT, speaker.name, len(candidates), best_score, runner_up,
         )
-        _degrade(
-            f"{speaker.name!r} matched {len(candidates)} LinkedIn profiles with no clear winner "
-            f"(best {best_score:.2f} vs runner-up {runner_up:.2f}); they are in the briefing "
-            "with no facts rather than risk attributing another person's history to them."
+        return _fallback(
+            speaker, event_name,
+            f"{len(candidates)} LinkedIn profiles matched with no clear winner, "
+            f"best {best_score:.2f} vs runner-up {runner_up:.2f}",
         )
-        return EnrichedSpeaker(speaker=speaker, source="none")
 
     log.info(
         "agent=%s step=resolve speaker=%r matched=%r score=%.2f margin=%.2f",
@@ -353,11 +525,18 @@ def _resolve_speaker(speaker: Speaker) -> EnrichedSpeaker:
     )
 
 
-def enrich_speakers(speakers: list[Speaker], limit: int = 3) -> list[EnrichedSpeaker]:
+def enrich_speakers(
+    speakers: list[Speaker], limit: int = 3, event_name: str | None = None
+) -> list[EnrichedSpeaker]:
     """Resolve up to `limit` speakers against Iridium; the rest pass through fact-less.
 
     Every speaker is returned, so ranking still sees the whole roster. `limit`
     bounds the live LinkedIn lookups, which are the slowest calls in the run.
+
+    Anyone Iridium cannot resolve falls back to public web data via Tavily. Passing
+    `event_name` (optional, so the existing call site is unaffected) gives that
+    fallback a second anchor -- this person AT this event -- on top of the employer
+    match; without it, corroboration rests on the roster's company and title alone.
     """
     if not speakers:
         log.warning("agent=%s step=enrich_speakers why=empty roster, nothing to enrich", AGENT)
@@ -369,11 +548,13 @@ def enrich_speakers(speakers: list[Speaker], limit: int = 3) -> list[EnrichedSpe
     # pool is small to stay polite to a rate-limited upstream. Order is preserved.
     head = speakers[:limit]
     with ThreadPoolExecutor(max_workers=min(LOOKUP_WORKERS, len(head))) as pool:
-        out = list(pool.map(_resolve_speaker, head))
+        out = list(pool.map(partial(_resolve_speaker, event_name=event_name), head))
     out += [EnrichedSpeaker(speaker=s, source="none") for s in speakers[limit:]]
     resolved = sum(1 for e in out if e.source == "iridium")
+    public = sum(1 for e in out if e.source == "tavily")
     log.info(
-        "agent=%s step=enrich_speakers total=%d looked_up=%d resolved=%d fact_less=%d",
-        AGENT, len(out), min(limit, len(speakers)), resolved, len(out) - resolved,
+        "agent=%s step=enrich_speakers total=%d looked_up=%d resolved=%d public=%d fact_less=%d",
+        AGENT, len(out), min(limit, len(speakers)), resolved, public,
+        len(out) - resolved - public,
     )
     return out
