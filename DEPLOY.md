@@ -44,7 +44,7 @@ uv run --directory /Users/nikhilkulkarni/immersive-commons-hackathon/hackathon-p
   python -m fleet.http_app &
 
 # 3. the SSE padding shim — REQUIRED for streaming, see the critical finding below
-python3 /tmp/sse_pad.py &        # write this file first, source is at the bottom of this doc
+python3 $FLEET_ROOT/scripts/sse_pad.py &        # write this file first, source is at the bottom of this doc
 
 # 4. the tunnel, and read the public hostname back out
 cloudflared tunnel --url http://127.0.0.1:8788 --no-autoupdate > /tmp/tunnel.log 2>&1 &
@@ -97,7 +97,7 @@ Two things that do **not** work, so nobody re-derives them:
 - A single large priming block at stream open. 128 KB up front changed time-to-first-event by
   nothing (8.1s primed vs 7.1s unprimed). The buffer refills; padding must be **continuous**.
 
-**The shim** (`/tmp/sse_pad.py`, source at the bottom) sits between cloudflared and the app and
+**The shim** (`$FLEET_ROOT/scripts/sse_pad.py`, source at the bottom) sits between cloudflared and the app and
 appends a 32 KB SSE **comment** after an event, at most once per 0.75s. Comment lines beginning
 with `:` are ignored by every spec-compliant SSE client including browser `EventSource`, so
 Persona needs no change. The time gate matters: padding *every* event cost 4.8 MB and ~24s of
@@ -184,7 +184,7 @@ while the tunnel is up; that opens a second, unheadered path and the cooldown be
 | What breaks | Impact | What you do |
 |---|---|---|
 | cloudflared exits / laptop changes network | public URL 502s or resolves to nothing | **Nothing.** The stdio MCP demo in Claude is unaffected — it never touches HTTP. |
-| The shim (8788) dies | `/prep/stream` reverts to buffered (still *returns*, just all at the end); `/health` and `/prep` fine | `python3 /tmp/sse_pad.py &`. Or point cloudflared at 8787 and accept JSON-only. |
+| The shim (8788) dies | `/prep/stream` reverts to buffered (still *returns*, just all at the end); `/health` and `/prep` fine | `python3 $FLEET_ROOT/scripts/sse_pad.py &`. Or point cloudflared at 8787 and accept JSON-only. |
 | The app (8787) dies | shim returns `502 upstream unreachable`; stdio MCP still fine | restart step 2 |
 | Persona's live view stalls | it is showing the buffered stream | it will still deliver the full briefing at the end — say "that's the stream landing" and move on |
 
@@ -215,12 +215,12 @@ pointed at the old one (Persona config, a browser tab, a QR code) breaks harder 
 
 ---
 
-## Appendix — `/tmp/sse_pad.py`
+## Appendix — `$FLEET_ROOT/scripts/sse_pad.py`
 
 Paste this whole block to recreate the shim from cold:
 
 ```bash
-cat > /tmp/sse_pad.py <<'PYEOF'
+cat > $FLEET_ROOT/scripts/sse_pad.py <<'PYEOF'
 """Pad SSE events so they cross the trycloudflare edge Worker's block buffer.
 
 The quick tunnel releases the response body only once a block has filled, so a
