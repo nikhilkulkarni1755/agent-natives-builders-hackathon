@@ -25,7 +25,7 @@ from typing import Any
 from dotenv import load_dotenv
 from mcp.server import MCPServer
 
-from fleet.models import ConferenceBriefing, EvalResult, UserProfile
+from fleet.models import ConferenceBriefing, EvalResult, PrepRequest, UserProfile
 
 AGENT = "S1/server"
 
@@ -129,6 +129,12 @@ def prep_conference(event_name: str, intent: str) -> ConferenceBriefing:
         roster_partial=roster_partial,
         degradations=degradations,
     )
+    # Persist last, so the stored row is exactly the briefing as returned. Passing the
+    # briefing's own degradations list means a storage failure is recorded on this
+    # briefing rather than losing the run silently.
+    _step("store", "save_run", briefing.degradations,
+          PrepRequest(event_name=event_name, intent=intent), briefing)
+
     log.info(
         "agent=%s step=done run_id=%s picks=%d roster_partial=%s degradations=%d",
         AGENT, run_id, len(briefing.picks), briefing.roster_partial, len(degradations),

@@ -9,3 +9,4 @@ __pycache__/
 .pytest_cache/
 coord/hitl/.offset
 .cotal/creds/
+event-fleet/data/*.db
