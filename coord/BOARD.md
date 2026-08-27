@@ -126,6 +126,15 @@ multi-speaker enrichment · any login/user-management UI · hotels · anything G
   200, bearerAuth, sandbox at dev.mitosislabs.ai, endpoints /api/v1/{search,jobs,batch,skills,me}.
   NO API KEY YET -- gating item. Persona is real: @runtypelabs/persona v4.20.0, MIT. cloudflared is
   NOT installed.
+- D-021: MITOSIS MCP PROBED LIVE by the dispatcher. `claude mcp add --transport http mitosis
+  https://mitosislabs.ai/api/mcp` -> Connected. 14 tools enumerate WITHOUT auth: cortex_ask,
+  cortex_recall, cortex_manifest, cortex_status, cortex_connectable_sources, cortex_connect_link,
+  cortex_remember, cortex_ingest_conversation, search, fetch, get_pricing, get_platform_status,
+  search_docs, list_skills. `search_docs` returns real results with NO credential. Every `cortex_*`
+  call returns 401 with `WWW-Authenticate: Bearer ... scope="memory:read memory:write"` until the
+  human completes browser OAuth. The endpoint is MCP Streamable HTTP (POST, Accept:
+  application/json, text/event-stream). Tools do NOT appear in an already-running Claude session --
+  the session must restart to see them.
 - D-020: MITOSIS NEEDS NO API KEY — verified live. The MCP server is Streamable HTTP at
   https://mitosislabs.ai/api/mcp with OAuth 2.1 + DYNAMIC CLIENT REGISTRATION
   (registration_endpoint https://mitosislabs.ai/api/oauth/register, scopes memory:read /
