@@ -126,6 +126,19 @@ multi-speaker enrichment · any login/user-management UI · hotels · anything G
   200, bearerAuth, sandbox at dev.mitosislabs.ai, endpoints /api/v1/{search,jobs,batch,skills,me}.
   NO API KEY YET -- gating item. Persona is real: @runtypelabs/persona v4.20.0, MIT. cloudflared is
   NOT installed.
+- D-020: MITOSIS NEEDS NO API KEY — verified live. The MCP server is Streamable HTTP at
+  https://mitosislabs.ai/api/mcp with OAuth 2.1 + DYNAMIC CLIENT REGISTRATION
+  (registration_endpoint https://mitosislabs.ai/api/oauth/register, scopes memory:read /
+  memory:write / offline_access). There is no key to paste. The HUMAN approves in a browser on the
+  first cortex_* call. Public tools (get_pricing, get_platform_status, search_docs, list_skills)
+  answer with no auth at all. Wire it with:
+      claude mcp add --transport http mitosis https://mitosislabs.ai/api/mcp
+  Key tools: cortex_ask (ranked evidence + citation + universal_id + cited_graph_url per item),
+  cortex_remember (write a durable fact), cortex_recall. cortex_ask ranks by RELEVANCE not recency;
+  bound time with since/until.
+- D-019 RESOLVED — HUMAN ACCEPTED the updated composition: Mitosis is the cited EVIDENCE STORE and
+  the judge KEEPS its grounding check, now validating claims against Mitosis citations. The judge is
+  not replaced. Original brief said replace; the human chose compose.
 - D-019: DISPUTED SCOPE — the brief says Mitosis should REPLACE the judge's grounding check. Do NOT
   do that. The judge's grounding check is verified working and has caught real invented facts on
   live data; it is the strongest demo moment we have. Correct composition: Mitosis becomes the
