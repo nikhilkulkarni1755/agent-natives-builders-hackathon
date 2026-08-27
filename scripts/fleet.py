@@ -42,8 +42,27 @@ def running(t):
     return [x for x in t.values() if x["status"] == "RUNNING"]
 
 
+def cmd_orphans(t=None):
+    """RUNNING tasks whose agent was never actually dispatched.
+
+    Claiming a task and spawning its agent are two steps, and the dispatcher has
+    forgotten the second one more than once. A claim whose agent field still looks
+    like a placeholder is almost certainly nobody's work.
+    """
+    t = t or load()
+    orphans = [x for x in t.values()
+               if x["status"] == "RUNNING" and (x["agent"] or "").startswith("wave")]
+    if orphans:
+        print(f"!! {len(orphans)} RUNNING task(s) may have no agent dispatched:")
+        for x in orphans:
+            print(f"     {x['id']:3} [{x['role']:10}] claimed as {x['agent']}")
+        print("   confirm an agent is live for each, or re-dispatch")
+    return orphans
+
+
 def cmd_ready():
     t = load()
+    cmd_orphans(t)
     inflight = running(t)
     slots = MAX_CONCURRENT - len(inflight)
     f = frontier(t)[:max(0, slots)]

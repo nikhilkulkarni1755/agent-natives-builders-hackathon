@@ -35,6 +35,13 @@ $FLEET_ROOT/scripts/coord.sh log    <A|B|C|D> <event> "<detail>"
 $FLEET_ROOT/scripts/coord.sh read                       # whole board + all statuses
 ```
 
+## Claiming is not dispatching
+`fleet.py claim <id>` only marks the board. It does NOT start an agent. The dispatcher
+has conflated the two three times (R2, M3, P4), leaving a task showing RUNNING with
+nobody on it — invisible, because the board looked healthy. After every claim, confirm
+an agent is actually live. `fleet.py ready` now prints a warning for any RUNNING task
+whose agent id still looks like a placeholder.
+
 ## HITL rule
 A decision is **HITL** only if it is genuinely the human's to make: a secret you
 don't have, a paid/irreversible action, a product-scope call, or an account login.
