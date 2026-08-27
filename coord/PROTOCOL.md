@@ -10,6 +10,14 @@ Coordination happens at the **absolute path** `$FLEET_ROOT/coord` — the main c
 shared by all agents, zero sync latency. Never `git pull` to see another agent's status;
 just read the file. Never edit another agent's status file.
 
+## THIS REPO IS PUBLIC
+`agent-natives-builders-hackathon` is a **public** GitHub repo. Before every push:
+- Never commit `.env`, `token.txt`, any `irid_...` / `sk-...` / bot token, or a JWT.
+- `token.txt` at repo root is an Immersive Commons token. It is gitignored. Leave it alone.
+- Secrets live in your shell env only. Never paste one into a source file, a log line,
+  a coord status, or a Cotal agent file.
+- Run `git diff --cached --name-only` before committing. If you see a secret, stop.
+
 ## Ownership map (violating this causes merge conflicts — don't)
 | Path | Writer | Readers |
 |---|---|---|
