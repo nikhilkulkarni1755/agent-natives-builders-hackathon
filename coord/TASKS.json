@@ -114,9 +114,9 @@
       "event-fleet/src/fleet/iridium.py"
     ],
     "verify": "real tool catalogue fetched; chosen tool named with its real payload shape",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave1-E1",
-    "evidence": null,
+    "evidence": "40 tools (not 53); openapi.json is ground truth; get_linkedin_profile via /users/me chain; Door 2 chosen over Door 3 on safety; 24 mutating tools refused pre-network; preconditions all green",
     "stretch": false
   },
   "E2": {
@@ -130,8 +130,8 @@
       "event-fleet/src/fleet/enrich.py"
     ],
     "verify": "real (redacted) response pasted; cache written to event-fleet/data/",
-    "status": "TODO",
-    "agent": null,
+    "status": "RUNNING",
+    "agent": "wave3-E2",
     "evidence": null,
     "stretch": false
   },

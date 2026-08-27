@@ -118,6 +118,13 @@ multi-speaker enrichment · any login/user-management UI · hotels · anything G
 
 ## Decisions log (Agent A appends)
 - D-001: coord/ read+written at the absolute main-checkout path, not per-worktree. Zero sync latency.
+- D-008: HARD RULE — NEVER `git add -A` / `git add .` in the shared checkout. Stage explicit paths
+  only. The dispatcher violated this and swept another lane's file into a coord commit; content was
+  fine, but with live Cotal creds and a .env on disk in a PUBLIC repo, a broad add is how a secret
+  eventually ships. Explicit paths, then `git diff --cached --name-only`, every time.
+- D-009: Iridium uses Door 2, NOT Door 3. ChatRequest is `{"message": str}` with no tool allowlist
+  or read-only mode — Door 3 would hand an LLM `delete_account` and `schedule_dm_to_person` against
+  a real production LinkedIn account. Door 2 is two typed deterministic calls. Safety, not taste.
 - D-005: HARD RULE, learned from S1 — stdout is the MCP JSON-RPC channel. NO `print()` in any
   module under event-fleet/src/fleet/. Use `logging` to stderr. A stray print drops the connection.
 - D-006: `mcp` resolves to 2.1.1, NOT 1.x. FastMCP is gone. Use `from mcp.server import MCPServer`,
