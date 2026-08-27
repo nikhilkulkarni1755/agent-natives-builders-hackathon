@@ -1,0 +1,179 @@
+{
+  "captured_at": "2026-08-27T20:42:10.623118+00:00",
+  "event_name": "AI Engineer Europe 2026",
+  "sources": [
+    "https://ai.engineer/europe/2026/llms-full.txt"
+  ],
+  "event_description": "AI Engineer Europe 2026, April 8-10, 2026, London",
+  "is_partial": true,
+  "speakers": [
+    {
+      "name": "Omar Sanseviero",
+      "title": null,
+      "company": null,
+      "session_title": "Gemma, DeepMind's Family of Open Models",
+      "profile_url": null
+    },
+    {
+      "name": "David Soria Parra",
+      "title": null,
+      "company": null,
+      "session_title": "The Future of MCP",
+      "profile_url": null
+    },
+    {
+      "name": "Ido Salomon",
+      "title": null,
+      "company": null,
+      "session_title": "AgentCraft: Putting the Orc in Agent Orchestration",
+      "profile_url": null
+    },
+    {
+      "name": "Mario Zechner",
+      "title": null,
+      "company": null,
+      "session_title": "Building pi in a World of Slop",
+      "profile_url": null
+    },
+    {
+      "name": "Adrian Bertagnoli",
+      "title": "Founding Engineer",
+      "company": "Callosum",
+      "session_title": "Scaling the Next Paradigm of Heterogeneous Intelligence",
+      "profile_url": null
+    },
+    {
+      "name": "Adrien Grondin",
+      "title": "iOS Developer",
+      "company": "Locally AI",
+      "session_title": "Running Gemma 4 On-Device: 40 Tokens/s on iPhone with MLX",
+      "profile_url": null
+    },
+    {
+      "name": "Alessandro Cappelli",
+      "title": "Co-founder & Chief Customer Officer",
+      "company": "Adaptive ML",
+      "session_title": "Scaling Reinforcement Learning: Lessons from Trillion-Token Deployments at Fortune 500s",
+      "profile_url": null
+    },
+    {
+      "name": "Alex Cheema",
+      "title": "Co-Founder",
+      "company": "EXO Labs",
+      "session_title": "Frontier AI at Home (literally)",
+      "profile_url": null
+    },
+    {
+      "name": "Amy Boyd",
+      "title": "Microsoft Foundry Developer Relations Lead",
+      "company": "Microsoft",
+      "session_title": "Mind the Gap (In your Agent Observability)",
+      "profile_url": null
+    },
+    {
+      "name": "Anant Dole",
+      "title": "Head of AI",
+      "company": "Take Take Take",
+      "session_title": "Building a Chess Coach",
+      "profile_url": null
+    },
+    {
+      "name": "Andreas Kollegger",
+      "title": "Director of Applied AI Research",
+      "company": "Neo4j",
+      "session_title": "Context Graphs for Explainable, Decision-Aware AI Agents",
+      "profile_url": null
+    },
+    {
+      "name": "Andrew Wilson",
+      "title": "Applied AI",
+      "company": "Anthropic",
+      "session_title": "How to Build Agents That Run for Hours (Without Losing the Plot)",
+      "profile_url": null
+    },
+    {
+      "name": "Angelos Perivolaropoulos",
+      "title": "Research Engineer, Speech-to-Text",
+      "company": "ElevenLabs",
+      "session_title": "Training an LLM from Scratch, Locally",
+      "profile_url": null
+    },
+    {
+      "name": "Angus J. McLean",
+      "title": "AI Director",
+      "company": "Oliver",
+      "session_title": "Bounded Autonomy: Between Free Will and Determinism",
+      "profile_url": null
+    },
+    {
+      "name": "Ara Khan",
+      "title": "Founding Engineer",
+      "company": "Cline",
+      "session_title": "Evals Are Broken, Use Them Anyway",
+      "profile_url": null
+    },
+    {
+      "name": "Armin Ronacher",
+      "title": "Founder",
+      "company": "Earendil",
+      "session_title": "The Friction Is Your Judgment",
+      "profile_url": null
+    },
+    {
+      "name": "Asbj\u00f8rn Steinskog",
+      "title": "Lead AI Developer",
+      "company": "Take Take Take",
+      "session_title": "Building a Chess Coach",
+      "profile_url": null
+    },
+    {
+      "name": "Ash Prabaker",
+      "title": "Member of Technical Staff",
+      "company": "Anthropic",
+      "session_title": "How to Build Agents That Run for Hours (Without Losing the Plot)",
+      "profile_url": null
+    },
+    {
+      "name": "Ben Burtenshaw",
+      "title": "ML Engineer",
+      "company": "Hugging Face",
+      "session_title": "Your Coding Agent Should Do AI System Engineering",
+      "profile_url": null
+    },
+    {
+      "name": "Ben Hylak",
+      "title": "CTO + Co-Founder",
+      "company": "Raindrop.ai",
+      "session_title": "Everything You Need To Know About Agent Observability",
+      "profile_url": null
+    },
+    {
+      "name": "Bertrand Charpentier",
+      "title": "Co-Founder, President & Chief Scientist",
+      "company": "Pruna AI",
+      "session_title": "What is state-of-the-art AI model?",
+      "profile_url": null
+    },
+    {
+      "name": "Bilge Y\u00fccel",
+      "title": "Senior DevRel Engineer",
+      "company": "deepset GmbH",
+      "session_title": "What Breaks When You Build AI Under Sovereignty Constraints",
+      "profile_url": null
+    },
+    {
+      "name": "Brandon Walsenuk",
+      "title": null,
+      "company": "Unblocked",
+      "session_title": "Stop babysitting your agents: building a context engine for mergeable code",
+      "profile_url": null
+    },
+    {
+      "name": "Brendon Dillon",
+      "title": "Research Scientist",
+      "company": "Google DeepMind",
+      "session_title": "Text Diffusion",
+      "profile_url": null
+    }
+  ]
+}

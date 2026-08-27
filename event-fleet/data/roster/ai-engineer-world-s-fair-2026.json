@@ -1,0 +1,144 @@
+{
+  "captured_at": "2026-08-27T20:41:14.891217+00:00",
+  "event_name": "AI Engineer World's Fair 2026",
+  "sources": [
+    "https://ai.engineer/worldsfair/2026/llms-full.md"
+  ],
+  "event_description": "AI Engineer World's Fair 2026, June 29 \u2013 July 2, 2026, San Francisco, CA",
+  "is_partial": true,
+  "speakers": [
+    {
+      "name": "Laurie Voss",
+      "title": null,
+      "company": null,
+      "session_title": "From Vibes to Production: Evaluating and Shipping AI Agents That Work 101",
+      "profile_url": null
+    },
+    {
+      "name": "Aaron Stanley",
+      "title": "CISO",
+      "company": "dbt Labs",
+      "session_title": "AI\u2019s Jurassic Park Period",
+      "profile_url": null
+    },
+    {
+      "name": "Abduallah Mohamed",
+      "title": "VP of AI/ML",
+      "company": "AIDAChip",
+      "session_title": "What If Your Chip Design Team Moved Like a Single Body?",
+      "profile_url": null
+    },
+    {
+      "name": "Abdul Dakkak",
+      "title": "Chief Scientist",
+      "company": "Modular",
+      "session_title": "Modular: Taming the AI Hardware Cambrian Explosion",
+      "profile_url": null
+    },
+    {
+      "name": "Abhi Arya",
+      "title": "Product, Software, Infra, and Applied AI",
+      "company": "Reducto",
+      "session_title": "From Chatbots to Agents: How Reducto builds for Agent Experience to Enable Real Work",
+      "profile_url": null
+    },
+    {
+      "name": "Abhilash Asokan",
+      "title": null,
+      "company": "ZS",
+      "session_title": "Why We Killed Our Multi-Agent Pipeline: Lessons From Pharma Commercial Intelligence",
+      "profile_url": null
+    },
+    {
+      "name": "Abhishek Bhardwaj",
+      "title": "Member of Technical Staff, RL & Agent Infrastructure",
+      "company": "OpenAI",
+      "session_title": "From fork() to Fleet: Designing an Agent Sandbox Cloud Pt 1",
+      "profile_url": null
+    },
+    {
+      "name": "Adam Azzam",
+      "title": "Member of Product Staff",
+      "company": "Modal",
+      "session_title": "Don\u2019t build agents, build environments",
+      "profile_url": null
+    },
+    {
+      "name": "Adam Huda",
+      "title": "Sr Engineering Leader for AI Dev Tools",
+      "company": "Uber",
+      "session_title": "Agentic SDLC at Uber: Building Blocks for Uber's Software Factory",
+      "profile_url": null
+    },
+    {
+      "name": "Addy Osmani",
+      "title": "Director of Engineering",
+      "company": "Independent",
+      "session_title": "Closing Keynote",
+      "profile_url": null
+    },
+    {
+      "name": "Adi Singh",
+      "title": "Co-founder",
+      "company": "AgentMail",
+      "session_title": "The Next Trillion Users of the Internet Still Don't Have an Identity",
+      "profile_url": null
+    },
+    {
+      "name": "Adit Abraham",
+      "title": "CEO and cofounder",
+      "company": "Reducto",
+      "session_title": "From Ingestion to Agents: How Leading AI Teams Build on Document Intelligence",
+      "profile_url": null
+    },
+    {
+      "name": "Aditya Gautam",
+      "title": "Machine Learning Lead",
+      "company": "Meta",
+      "session_title": "Modality Misalignment and Originality Attribution in Short-Form Video: A Multi-Agent Approach at Platform Scale",
+      "profile_url": null
+    },
+    {
+      "name": "Aditya Khandelwal",
+      "title": "MTS",
+      "company": "Amazon AGI Lab",
+      "session_title": "Agents, codebases, and teams: what it actually takes to ship together",
+      "profile_url": null
+    },
+    {
+      "name": "Ahmad Osman",
+      "title": "Founder & CEO",
+      "company": "Osmantic",
+      "session_title": "Local LLMs and workstation agents: Part 1",
+      "profile_url": null
+    },
+    {
+      "name": "Ahmed Ahres",
+      "title": "Head of Product & GTM",
+      "company": "Reactor",
+      "session_title": "The Next Medium: Why Real-Time Interactive Video Changes Everything for Developers",
+      "profile_url": null
+    },
+    {
+      "name": "Nader Khalil",
+      "title": null,
+      "company": "NVIDIA",
+      "session_title": "State of the Union: Why Local, Why Now",
+      "profile_url": null
+    },
+    {
+      "name": "Joseph Nelson",
+      "title": null,
+      "company": null,
+      "session_title": "State of the Union: Why Local, Why Now",
+      "profile_url": null
+    },
+    {
+      "name": "Alex Cheema",
+      "title": null,
+      "company": null,
+      "session_title": "State of the Union: Why Local, Why Now",
+      "profile_url": null
+    }
+  ]
+}

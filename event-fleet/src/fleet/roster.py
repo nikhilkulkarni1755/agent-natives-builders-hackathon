@@ -36,6 +36,19 @@ text alone so it works on any site that uses that common wording.
 
 An event with no published lineup correctly yields an empty list with
 is_partial=True. That is a real answer about the world, not a failure.
+
+Every successful fetch -- including that empty one -- is written to
+`data/roster/<event>.json` with its source URLs and a UTC capture
+timestamp, and served back for `FLEET_ROSTER_CACHE_HOURS` (default 7
+days). Discovery + extraction is ~20s of a ~66s run and the step most
+exposed to bad venue wifi, so the cached path is the normal path: it
+needs no network and no API key. It holds only what a real call returned
+-- never a hand-written speaker. Set `FLEET_ROSTER_LIVE=1` (or pass
+`live=True`) to force a fresh crawl and re-capture.
+
+Serving a fresh capture is the configured policy and is NOT a
+degradation. Falling back to a capture because a live fetch FAILED is,
+and says so in the briefing the user reads. Same line `enrich.py` draws.
 """
 
 from __future__ import annotations
@@ -44,12 +57,16 @@ import json
 import logging
 import os
 import re
-from datetime import date, datetime
+from datetime import date, datetime, timezone
+from pathlib import Path
 from urllib.parse import urljoin, urlsplit, urlunsplit
 
 import httpx
 from openai import OpenAI
 
+# server.py drains only enrich's degradation list, so a roster fallback has to land
+# in that same list to reach the user-facing briefing. DATA_DIR is reused, not redeclared.
+from fleet.enrich import DATA_DIR, _degrade
 from fleet.models import Speaker
 
 logger = logging.getLogger("fleet.roster")
@@ -57,6 +74,10 @@ logger = logging.getLogger("fleet.roster")
 TAVILY_API_URL = "https://api.tavily.com"
 NEBIUS_BASE_URL = "https://api.studio.nebius.com/v1/"
 MODEL = os.environ.get("NEBIUS_MODEL", "openai/gpt-oss-120b")
+
+CACHE_DIR = DATA_DIR / "roster"
+_DEFAULT_TTL_HOURS = 168.0   # a published lineup does not move in a week
+_SLUG_RE = re.compile(r"[^a-z0-9]+")
 
 MAX_PEOPLE = 25          # a briefing needs a shortlist, not 500 names
 _MAX_DOC_CHARS = 30000   # ~8k tokens of document per extraction call
@@ -424,20 +445,109 @@ def _cfp_still_open(text: str, today: date) -> bool | None:
     return closes >= today
 
 
-def fetch_roster(event_name: str) -> tuple[list[Speaker], str, bool]:
+def _cache_path(event_name: str) -> Path:
+    """One file per event, keyed on a punctuation-insensitive slug so
+    "AI Engineer World's Fair" and "ai engineer worlds fair" share a capture."""
+    return CACHE_DIR / f"{_SLUG_RE.sub('-', event_name.lower()).strip('-') or 'event'}.json"
+
+
+def _write_cache(event_name: str, speakers: list[Speaker], description: str,
+                 is_partial: bool, sources: list[str]) -> None:
+    """Persist a REAL response. This is a capture, not a stub: every field here
+    came back from the live discover/extract/validate path just now, and the
+    timestamp and source URLs are recorded so it can be audited later."""
+    path = _cache_path(event_name)
+    try:
+        CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({
+            "captured_at": datetime.now(timezone.utc).isoformat(),
+            "event_name": event_name,
+            "sources": sources,
+            "event_description": description,
+            "is_partial": is_partial,
+            "speakers": [s.model_dump() for s in speakers],
+        }, indent=2))
+        logger.info(
+            "roster: agent=B step=cache_write event_name=%r speakers=%d path=%s",
+            event_name, len(speakers), path,
+        )
+    except OSError as exc:
+        # A cache write must never fail a live run that already succeeded.
+        logger.error("roster: agent=B step=cache_write path=%s why=%r", path, exc)
+
+
+def _read_cache(event_name: str) -> tuple[list[Speaker], str, bool, str, float] | None:
+    """A previous real capture as (speakers, description, is_partial,
+    captured_at, age_hours), or None if there is none or it is unreadable."""
+    path = _cache_path(event_name)
+    if not path.is_file():
+        return None
+    try:
+        blob = json.loads(path.read_text())
+        speakers = [Speaker(**person) for person in blob["speakers"]]
+        captured_at = blob["captured_at"]
+        age = (datetime.now(timezone.utc) - datetime.fromisoformat(captured_at)).total_seconds() / 3600
+    except (OSError, ValueError, TypeError, KeyError) as exc:
+        logger.error("roster: agent=B step=cache_read path=%s why=%r", path, exc)
+        return None
+    return speakers, blob["event_description"], blob["is_partial"], captured_at, age
+
+
+def fetch_roster(event_name: str, live: bool | None = None) -> tuple[list[Speaker], str, bool]:
     """Real published roster for `event_name`: (speakers, event_description,
     is_partial). Never invents a speaker -- an empty list for an event whose
     lineup is not published yet is a correct answer, reported with
     is_partial=True.
+
+    Answered from the last real capture while that capture is inside the
+    freshness window; `live=True` (or FLEET_ROSTER_LIVE=1) forces a fresh crawl.
     """
+    if live is None:
+        live = os.environ.get("FLEET_ROSTER_LIVE") == "1"
+    cached = _read_cache(event_name)
+    ttl = float(os.environ.get("FLEET_ROSTER_CACHE_HOURS") or _DEFAULT_TTL_HOURS)
+
+    if cached and not live and cached[4] <= ttl:
+        speakers, description, is_partial, captured_at, age = cached
+        # Policy, not a fallback: the lineup has not changed and this skips ~20s
+        # of crawling. Deliberately NOT reported to the user as a degradation.
+        logger.info(
+            "roster: agent=B step=fetch_roster served=cache event_name=%r speakers=%d "
+            "captured_at=%s age_hours=%.1f ttl_hours=%.0f path=%s",
+            event_name, len(speakers), captured_at, age, ttl, _cache_path(event_name),
+        )
+        return speakers, description, is_partial
+
+    try:
+        speakers, description, is_partial, sources = _fetch_live(event_name)
+    except Exception as exc:
+        if cached is None:
+            raise
+        speakers, description, is_partial, captured_at, age = cached
+        _degrade(
+            f"The live roster fetch for {event_name!r} failed ({type(exc).__name__}: {exc}), so "
+            f"the roster came from the capture taken at {captured_at} ({age:.1f}h old, "
+            f"freshness window {ttl:.0f}h) rather than from a fresh crawl."
+        )
+        return speakers, description, is_partial
+
+    _write_cache(event_name, speakers, description, is_partial, sources)
+    return speakers, description, is_partial
+
+
+def _fetch_live(event_name: str) -> tuple[list[Speaker], str, bool, list[str]]:
+    """The real discover -> extract -> validate path. Also returns the source
+    URLs that were read, so the capture records where its people came from."""
     api_key = os.environ.get("TAVILY_API_KEY")
     if not api_key:
         logger.error("roster: agent=B step=fetch_roster why=TAVILY_API_KEY not set in env")
         raise RuntimeError("TAVILY_API_KEY is not set; cannot fetch a real roster")
 
     description: str | None = None
+    sources: list[str] = []
 
     for source_url, text in _documents(event_name, api_key):
+        sources.append(source_url)
         matches, speakers, described, truncated = _extract_people(text, source_url, event_name)
         if not matches:
             continue
@@ -449,7 +559,7 @@ def fetch_roster(event_name: str) -> tuple[list[Speaker], str, bool]:
                 event_name, source_url, len(speakers), truncated,
             )
             cfp_open = _cfp_still_open(text, date.today())
-            return speakers, described or description, truncated or cfp_open is True
+            return speakers, described or description, truncated or cfp_open is True, sources
 
     if description is None:
         raise RuntimeError(
@@ -462,4 +572,4 @@ def fetch_roster(event_name: str) -> tuple[list[Speaker], str, bool]:
         "candidate source; returning an empty roster rather than inventing one",
         event_name,
     )
-    return [], description, True
+    return [], description, True, sources
