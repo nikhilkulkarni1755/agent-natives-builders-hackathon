@@ -9,6 +9,9 @@ dependencies = [
     "httpx>=0.27",
     "openai>=1.40",
     "python-dotenv>=1.0",
+    # HTTP/SSE front door (fleet.http_app), alongside the stdio MCP transport.
+    "starlette>=0.37",
+    "uvicorn>=0.30",
 ]
 
 [build-system]
