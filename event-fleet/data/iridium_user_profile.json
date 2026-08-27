@@ -1,0 +1,107 @@
+{
+  "captured_at": "2026-08-27T19:41:03.000050+00:00",
+  "source": "GET /users/me -> linkedin_id",
+  "endpoint": "POST /mcp/tools/get_linkedin_profile",
+  "profile": {
+    "name": "Nikhil Kulkarni",
+    "headline": "AI/Agent Infrastructure Engineer | MCP-native systems, self-hosted vLLM, Kubernetes | Built Iridium | merged PRs @ vLLM, SGLang | ex-Google (via TCS)",
+    "location": "San Francisco Bay Area",
+    "prof_handle": "prof_001A044B61D760F0A1A19F84B456C",
+    "about": "Creator of Iridium - Linkedin MCP / Agent, merged PRs at vLLM, SGLang, Ax-Platforms, AWS DevOps Professional Certified, 2YOE @ Google via TCS\n\nI build the infrastructure around AI models (human in the loop, non cached data for agents) to build coherent AI products.\n\nFor the last two years I've done this on my own, shipping production agentic systems end to end and learning the hard tradeoffs by hitting them.\n\n- Iridium (Linkedin MCP) built to help people scale their outreach thoughtfully. Connect to Claude to comment on relevant posts, discover relevant ppl in the industry and schedule your outreach. All Agentic Calls are tracked, nothing happens without final human approval. \n\n- vLLM EKS Multi-tenant vLLM + diffusion pools on AWS EKS, autoscaled on queue depth, not CPU, because queue dept",
+    "network_distance": "",
+    "follower_count": 431,
+    "current_role": {
+      "title": "Full-Stack Engineer \u2014 Agentic Infrastructure",
+      "company": "iridiumhqmcp.com",
+      "started": "7/1/2026",
+      "months_in_role": 1
+    },
+    "past_companies": [
+      {
+        "title": "Independent Software Engineer \u2014 AI & Cloud Infrastructure",
+        "company": "Self Employed",
+        "started": "1/1/2024",
+        "ended": "6/1/2026"
+      },
+      {
+        "title": "Software Engineer",
+        "company": "Tata Consultancy Services",
+        "started": "6/1/2021",
+        "ended": "12/1/2023"
+      },
+      {
+        "title": "Software Engineer",
+        "company": "Google",
+        "started": "8/1/2021",
+        "ended": "9/1/2023"
+      }
+    ],
+    "education": [
+      {
+        "school": "Rutgers University",
+        "degree": "Bachelor of Science - BS, Computer Science",
+        "field": "",
+        "grad_year": "6/1/2021"
+      },
+      {
+        "school": "Woodbridge High School",
+        "degree": "",
+        "field": "",
+        "grad_year": "1/1/2017"
+      }
+    ],
+    "certifications": [
+      "AWS Certified DevOps Engineer \u2013 Professional",
+      "Finetuning Large Language Models",
+      "Building RAG Apps Using MongoDB",
+      "Amazon Web Services Developer - Associate",
+      "Amazon Web Services Cloud Practitioner",
+      "React: Using TypeScript",
+      "Learning Cloud Computing: Core Concepts"
+    ],
+    "skills": [
+      "Model Training",
+      "CUDA",
+      "Hugging Face",
+      "Large Language Models (LLM)",
+      "Large Language Model Operations (LLMOps)",
+      "FastAPI",
+      "Prometheus.io",
+      "Kubernetes",
+      "Amazon EKS",
+      "Infrastructure as code (IaC)",
+      "MLOps",
+      "Redux.js",
+      "Terraform",
+      "WebSocket",
+      "Datadog"
+    ],
+    "recent_posts": [
+      {
+        "text": "I demo'd Iridium - LinkedIn Agent live yesterday!\n\nIt's a tool built to delegate tasks like outreach to your agents (Claude / ChatGPT). Agent actions take place only after explicit user approval, and they can use your other connectors (Notion, Salesforce, Glean) to complete repeated outreach actions.\n\nIt's useful for bringing capable candidates and hiring managers together quicker.\n\nIn the clip: I",
+        "date": "2026-08-07",
+        "likes": 0
+      },
+      {
+        "text": "I gave a 5 min demo of Iridium at Hackerdojo in MTV \n\nGot some great feedback from people (chatgpt is more b2c friendly)\n\nNoticed that some people were confused on some aspects of the service (is it a skill or a connector, how does the human in the loop work).\n\nThe QnA session after the demo helped me find most of the gaps in Iridium's narrative.",
+        "date": "2026-07-24",
+        "likes": 0
+      },
+      {
+        "text": "I built an agent inside Claude that runs my LinkedIn engagement. It drafts every comment in my voice, grounded in fresh and accurate context, and turns hours of work into a few minutes of review. \n\nNothing goes out without my approval.\n\nDemo below. Comment \"IRIDIUM\" for early access.\n\n#AI #Agents #MCP",
+        "date": "2026-07-13",
+        "likes": 0
+      },
+      {
+        "text": "V1 of Iridium, LinkedIn Agent, was built for 1 user, me. I embedded all observability directly into the main DB \u2014 status, ai_score, errors, agent decisions \u2014 right next to production data. Why add Prometheus, Sentry or a separate table when everything you need is already there?\n\nThe problem is that observability and production DB operations are opposites. Fast point reads/writes keep your users ha",
+        "date": "2026-05-27",
+        "likes": 0
+      },
+      {
+        "text": "Every chat with Agentic Coding Tools is systematically insecure; all data read is sent to the servers including .env files, VM IPs, API keys, passwords. \n\nAll these tools can run toolcalls including cat, grep, find.\n\nSome variables cannot be rotated easily (VM info, internal URLs, personal info). Your app needs that info, it doesn't need to be stored in their servers for eternity. \n\nInject your se",
+        "date": "2026-05-20",
+        "likes": 0
+      }
+    ]
+  }
+}
