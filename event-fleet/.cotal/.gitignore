@@ -1,0 +1,9 @@
+# .cotal/ holds live mesh state: NATS operator/account seeds (auth/broker.json),
+# minted creds (*.creds, auth/creds/), the web console bearer token (manager.log),
+# JWTs embedded in server.conf, JetStream store data (nats/), and pid/log files.
+# None of that may ever reach the public repo. Deny-all, then allow-list only the
+# persona files, which are plain markdown with no secrets in them.
+*
+!.gitignore
+!agents/
+!agents/*.md
