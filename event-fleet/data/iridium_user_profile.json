@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-08-27T19:41:03.000050+00:00",
+  "captured_at": "2026-08-27T19:50:02.878345+00:00",
   "source": "GET /users/me -> linkedin_id",
   "endpoint": "POST /mcp/tools/get_linkedin_profile",
   "profile": {
