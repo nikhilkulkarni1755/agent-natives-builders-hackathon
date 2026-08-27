@@ -24,8 +24,8 @@
       "event-fleet/data/roster_aieng_ny.json"
     ],
     "verify": "cache file loads and contains source URL + UTC timestamp + the same real names",
-    "status": "TODO",
-    "agent": null,
+    "status": "RUNNING",
+    "agent": "wave5-R2",
     "evidence": null,
     "stretch": false
   },
@@ -100,9 +100,9 @@
       "event-fleet/tests/test_judge.py"
     ],
     "verify": "both runs pasted: grounded->pass, deliberately ungrounded->fail",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave4-P3",
-    "evidence": null,
+    "evidence": "4-test regression suite passing against the real model in 21s; discrimination held across 20 executions; the ~1-in-9 JudgeError flake it found is now fixed by salvage (6/6 clean on the smallest-budget path)",
     "stretch": false
   },
   "E1": {
@@ -146,9 +146,9 @@
       "event-fleet/src/fleet/enrich.py"
     ],
     "verify": "forced failure shown degrading cleanly; degradation string logged, not swallowed",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave4-E3",
-    "evidence": null,
+    "evidence": "split budgets: limit=LinkedIn only (3), public_limit=12 via Tavily; coverage 2->12 renderable at ZERO extra LinkedIn calls; 35.9s full run; 60 facts asserted, zero disambiguation violations",
     "stretch": false
   },
   "M1": {
@@ -210,8 +210,8 @@
       "event-fleet/src/fleet/server.py"
     ],
     "verify": "prep_conference called for real; briefing with real speakers returned",
-    "status": "TODO",
-    "agent": null,
+    "status": "RUNNING",
+    "agent": "wave5-I1",
     "evidence": null,
     "stretch": false
   },
@@ -258,9 +258,9 @@
       "event-fleet/src/fleet/render.py"
     ],
     "verify": "rendered briefing pasted, matching the spec's section-5 shape",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave4-I4",
-    "evidence": null,
+    "evidence": "render.py; 3 real briefings incl. live end-to-end at judge confidence 0.93; D-007 filter proven on the bad run",
     "stretch": false
   },
   "V1": {
@@ -286,6 +286,7 @@
     "id": "V2",
     "title": "Demo rehearsal + fallbacks armed",
     "deps": [
+      "D1",
       "V1"
     ],
     "role": "verify",
@@ -309,9 +310,87 @@
       "event-fleet/src/fleet/roster.py"
     ],
     "verify": "real speaker names returned for >=2 conferences on DIFFERENT domains, neither ai.engineer",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave4-R3",
+    "evidence": "event-agnostic discover->extract->validate; real names from us.pycon.org (10) + kccnceu2026.sched.com (25) + ai.engineer (19); NY empty case still passes",
+    "stretch": false
+  },
+  "D1": {
+    "id": "D1",
+    "title": "Pitch script + fallback plan + what-to-show-on-screen (independent of code)",
+    "deps": [],
+    "role": "demo",
+    "files": [
+      "DEMO.md"
+    ],
+    "verify": "every claim in the script traced to captured evidence on disk; every fallback triggered once",
+    "status": "DONE",
+    "agent": "wave4-D1",
+    "evidence": "DEMO.md: 85s script, 7 disk-only fallbacks, pre-flight checklist; softened 5 claims for lack of evidence incl. 'works for any conference'",
+    "stretch": false
+  },
+  "H1": {
+    "id": "H1",
+    "title": "HTTP + SSE endpoint alongside stdio (prerequisite for BOTH tunnel and Persona)",
+    "deps": [
+      "V1"
+    ],
+    "role": "deploy",
+    "files": [
+      "event-fleet/src/fleet/http_app.py"
+    ],
+    "verify": "real curl against the SSE route streams a real briefing; stdio MCP still works unchanged",
+    "status": "TODO",
+    "agent": null,
     "evidence": null,
     "stretch": false
+  },
+  "H2": {
+    "id": "H2",
+    "title": "Deploy publicly via Cloudflare tunnel",
+    "deps": [
+      "H1"
+    ],
+    "role": "deploy",
+    "files": [
+      "DEPLOY.md"
+    ],
+    "verify": "a real public URL serves a real briefing from another network; URL recorded in DEPLOY.md",
+    "status": "TODO",
+    "agent": null,
+    "evidence": null,
+    "stretch": false
+  },
+  "X1": {
+    "id": "X1",
+    "title": "Persona front end wired to the SSE endpoint",
+    "deps": [
+      "H1"
+    ],
+    "role": "stretch",
+    "files": [
+      "web/index.html"
+    ],
+    "verify": "briefing streams into the Persona widget in a real browser; screenshot captured",
+    "status": "TODO",
+    "agent": null,
+    "evidence": null,
+    "stretch": true
+  },
+  "X2": {
+    "id": "X2",
+    "title": "Mitosis Cortex as the cited evidence store the judge checks against",
+    "deps": [
+      "V1"
+    ],
+    "role": "stretch",
+    "files": [
+      "event-fleet/src/fleet/mitosis.py"
+    ],
+    "verify": "real Mitosis call; every rendered claim carries a citation traceable to a source",
+    "status": "TODO",
+    "agent": null,
+    "evidence": null,
+    "stretch": true
   }
 }

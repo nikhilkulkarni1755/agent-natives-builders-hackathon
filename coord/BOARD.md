@@ -118,6 +118,20 @@ multi-speaker enrichment · any login/user-management UI · hotels · anything G
 
 ## Decisions log (Agent A appends)
 - D-001: coord/ read+written at the absolute main-checkout path, not per-worktree. Zero sync latency.
+- D-017: DEPLOY BEFORE STRETCH (human decision). Order is: spine works -> HTTP/SSE endpoint (H1)
+  -> Cloudflare tunnel (H2) -> then Persona (X1) and/or Mitosis (X2). H1 is the shared prerequisite:
+  the tunnel needs an HTTP route and Persona needs an SSE route, so one piece of work unlocks both.
+  The stdio MCP transport must keep working unchanged -- it is the proven demo path.
+- D-018: RESEARCH VERIFIED. Mitosis is real: openapi.json + /.well-known/mcp/server-card.json both
+  200, bearerAuth, sandbox at dev.mitosislabs.ai, endpoints /api/v1/{search,jobs,batch,skills,me}.
+  NO API KEY YET -- gating item. Persona is real: @runtypelabs/persona v4.20.0, MIT. cloudflared is
+  NOT installed.
+- D-019: DISPUTED SCOPE — the brief says Mitosis should REPLACE the judge's grounding check. Do NOT
+  do that. The judge's grounding check is verified working and has caught real invented facts on
+  live data; it is the strongest demo moment we have. Correct composition: Mitosis becomes the
+  cited EVIDENCE STORE, and the judge keeps checking claims against it. The judge stays; only its
+  evidence source changes. Replacing a working eval with an unproven integration hours before a
+  demo is the wrong trade.
 - D-016: COTAL PLUGIN IS DEAD BY DESIGN, NOT BROKEN — diagnosed, do not spend more time on it.
   `plugin:cotal:cotal` requires COTAL_NAME/COTAL_LINK/COTAL_AGENT_FILE in the process env, then a
   second gate (COTAL_CONTROL_SOCKET/TOKEN) that only `cotal spawn --agent claude` wires up. A
