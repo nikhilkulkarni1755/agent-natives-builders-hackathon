@@ -265,6 +265,21 @@ def enrich_user(hint: str | None = None) -> UserProfile:
     a cached profile is served unless FLEET_ENRICH_LIVE=1 explicitly asks for a fresh
     one. This keeps rehearsals and test runs off the live quota.
     """
+    # The cache holds ONE real person: whoever owns the Iridium key it was captured
+    # with. Serving it to a caller who has no key would put a stranger's name, employer
+    # and interests under "About you" and rank the roster against the wrong person's
+    # goals. So the cache is only ever served to a caller who presents an Iridium key.
+    # A public caller with no key gets an honest empty profile and is ranked on their
+    # stated intent alone.
+    if not os.environ.get("IRIDIUM_API_KEY"):
+        log.info("agent=%s step=enrich_user why=no IRIDIUM_API_KEY; ranking on intent alone", AGENT)
+        _degrade(
+            "No Iridium account is connected, so this briefing has no attendee profile: "
+            "the picks are ranked against your stated goal only. Connect Iridium to have "
+            "the fleet work out who you are and rank against your background too."
+        )
+        return UserProfile(summary="", interests=[], source="none")
+
     if os.environ.get("FLEET_ENRICH_LIVE") != "1":
         cached = _cached_user(after_failure=False)
         if cached is not None:
