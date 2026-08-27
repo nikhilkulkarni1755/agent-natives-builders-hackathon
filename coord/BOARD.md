@@ -135,6 +135,23 @@ multi-speaker enrichment · any login/user-management UI · hotels · anything G
   server.py, so the wiring never existed as separate work. Closed against a real run rather than
   left open as bookkeeping: roster->briefing, rank+judge (3 checks, non-zero confidence),
   enrichment + threaded degradations, and the section-5 render all verified in one call.
+- D-031: IRIDIUM ONBOARDING IS ONE LINE, NO API KEY (verified live by the dispatcher).
+  Landing/signup: https://iridiumhqmcp.com/ (200).
+  Add to Claude:  claude mcp add --transport http iridium https://api.iridiumhqmcp.com/mcp
+  That endpoint 401s with `WWW-Authenticate: Bearer resource_metadata=...` -- correct MCP OAuth.
+  Dynamic client registration at /oauth/register, scopes ["mcp","mcp:introspect"], grants
+  authorization_code + client_credentials. So a stranger pastes NOTHING; they approve in a browser.
+  DO NOT document https://iridiumhqmcp.com/mcp -- it 405s with no OAuth challenge. The `api.`
+  subdomain is the MCP host. iridiumhqmcp.com already serves /llms.txt, /robots.txt,
+  /.well-known/mcp/server-card.json and /.well-known/oauth-protected-resource (all 200).
+  NOTE: api.iridiumhqmcp.com's server-card returns 200 but with name/serverUrl/homepage all null --
+  agents discover the card and learn nothing. Worth 2 minutes of the owner's time to populate.
+- D-032: LIVE LEAK FOUND AND CLOSED. The public tunnel was serving the OPERATOR's LinkedIn identity
+  to every caller: the earlier gate read the PROCESS env, and the server process holds the owner's
+  key, so each remote request inherited the owner's account. Identity is now request-scoped
+  (`enrich.set_caller`, bound per HTTP request from an X-Iridium-Key / Bearer header). Remote caller
+  gets their own key or no profile; local stdio still resolves the operator. Verified against the
+  running endpoint: LEAKS OWNER IDENTITY: False, and the stdio demo path is unchanged.
 - D-027: SUBMISSION TARGET (human). The Cloudflare tunnel must be LIVE at submission and strangers
   must be able to add the system and run any PUBIC event themselves. Iridium signup is THEIR choice,
   so the whole product must work correctly with NO Iridium account. Luma / Meetup / Partiful are
