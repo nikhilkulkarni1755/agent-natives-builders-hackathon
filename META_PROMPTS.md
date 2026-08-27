@@ -12,21 +12,32 @@ BUS          $FLEET_ROOT/scripts/coord.sh   ·   HITL  $FLEET_ROOT/scripts/hitl.
 ## STEP 0 — before any agent (terminal 0, ~60 seconds)
 
 ```bash
-export TELEGRAM_BOT_TOKEN='<from @BotFather>'   # token.txt is Immersive Commons, NOT this
 export TAVILY_API_KEY='...'                     # B, D
 export NEBIUS_API_KEY='...'                     # C
 export IRIDIUM_API_KEY='irid_...'               # D
 
-# message your bot once from Telegram, then:
-/Users/nikhilkulkarni/immersive-commons-hackathon/hackathon-p1/scripts/hitl.py discover
-/Users/nikhilkulkarni/immersive-commons-hackathon/hackathon-p1/scripts/hitl.py notify "fleet online"
-
 # leave this running in terminal 0 for the whole 3 hours:
-/Users/nikhilkulkarni/immersive-commons-hackathon/hackathon-p1/scripts/hitl.py poll
+/Users/nikhilkulkarni/immersive-commons-hackathon/hackathon-p1/scripts/coord.sh monitor
 ```
 
-Export the same keys in each agent terminal before launching `claude` — agents inherit env,
-and **no key ever goes in a file**.
+`monitor` is your live dashboard: every agent's state, anything blocked, open HITL
+questions, and the last 12 fleet events, refreshing every 10s. Answer a question from
+any terminal — no phone, no Telegram:
+
+```bash
+scripts/coord.sh answer <QID> 1        # pick option 1
+scripts/coord.sh answer <QID> "use Door 3 instead"
+```
+
+**Telegram is optional and off by default.** You said you'll be online, so the terminal
+path above is lower-latency anyway. If you do step away, add
+`export TELEGRAM_BOT_TOKEN='<from @BotFather>'`, message the bot once, then run
+`scripts/hitl.py discover` and `scripts/hitl.py poll` in a second terminal — it will
+flush any already-queued questions to your phone. (`token.txt` is Immersive Commons,
+not Telegram.) Both routes write to the same queue, so they work together or alone.
+
+Export the same keys in each agent terminal before launching `claude` — agents inherit
+env, and **no key ever goes in a file**.
 
 ---
 ## STEP 1 — launch each agent

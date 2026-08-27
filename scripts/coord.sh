@@ -38,6 +38,52 @@ print(json.dumps({"ts":datetime.datetime.now(datetime.UTC).isoformat(),"agent":s
         "$(grep '^STATE:' "$f" | cut -d' ' -f2-)" "$(grep '^NOW:' "$f" | cut -d' ' -f2-)"
     done
     ;;
+  monitor)
+    # live fleet dashboard for the human. Ctrl-C to exit.
+    while true; do
+      clear
+      echo "FLEET  $(ts)"
+      echo "================================================================"
+      for f in "$C"/status/*.md; do
+        n=$(basename "$f" .md)
+        printf '%-3s %-12s %s\n' "$n" "$(grep '^STATE:' "$f" | cut -d' ' -f2-)" "$(grep '^NOW:' "$f" | cut -d' ' -f2-)"
+        b=$(grep '^BLOCKED_ON:' "$f" | cut -d" " -f2-)
+        [ "$b" != "—" ] && [ -n "$b" ] && printf '    BLOCKED: %s\n' "$b"
+      done
+      echo "---------------- open HITL questions ----------------"
+      if ls -A "$C/hitl/pending" >/dev/null 2>&1 && [ -n "$(ls -A "$C/hitl/pending" 2>/dev/null)" ]; then
+        for q in "$C"/hitl/pending/*.md; do
+          python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); print("  ["+d["qid"]+"] "+d["agent"]+": "+d["question"]); [print("       "+str(i+1)+") "+o) for i,o in enumerate(d["options"])]' "$q"
+        done
+        echo "  -> answer:  scripts/coord.sh answer <QID> <choice-number-or-text>"
+      else
+        echo "  (none)"
+      fi
+      echo "---------------- last 12 events ----------------"
+      cat "$C"/log/*.jsonl 2>/dev/null | sort | tail -12 | \
+        python3 -c 'import sys,json
+for l in sys.stdin:
+    try: d=json.loads(l); print(f"  {d[\"ts\"][11:19]} {d[\"agent\"]} {d[\"event\"]}: {d[\"detail\"][:70]}")
+    except Exception: pass'
+      sleep 10
+    done
+    ;;
+  answer)
+    # answer a HITL question from the terminal, no Telegram needed
+    q="$2"; ans="$3"
+    f="$C/hitl/pending/$q.md"
+    [ -f "$f" ] || { echo "no pending question $q"; exit 1; }
+    python3 -c 'import json,sys,time
+f,ans=sys.argv[1],sys.argv[2]
+d=json.load(open(f))
+if ans.isdigit() and d["options"]:
+    i=int(ans)-1
+    if 0<=i<len(d["options"]): ans=d["options"][i]
+d["answer"],d["answered_at"]=ans,time.time()
+json.dump(d,open(sys.argv[3],"w"),indent=2)
+print("answered "+d["qid"]+" -> "+ans)' "$f" "$ans" "$C/hitl/answered/$q.md"
+    rm -f "$f"
+    ;;
   sync)
     # commit the coordination trail; safe to run from anywhere, retries on race
     cd "$ROOT"
