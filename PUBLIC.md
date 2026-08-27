@@ -10,7 +10,8 @@ It never invents a speaker. If a lineup isn't published, it says so and returns 
 
 ## Try it with no install and no key
 
-There is a live public endpoint. It is anonymous — no account, no token, nothing to sign up for.
+There is a live public endpoint and **it needs no keys at all** — no account, no token, nothing
+to sign up for. The roster crawl, the ranking and the grounding audit all run server-side.
 The hostname is an ephemeral Cloudflare quick tunnel and changes whenever the tunnel restarts;
 the current one is at the top of [DEPLOY.md](DEPLOY.md).
 
@@ -49,7 +50,7 @@ A local run uses **your own** keys, in your shell env or a `.env` at the repo ro
 |---|---|---|
 | `TAVILY_API_KEY` | finding and reading the event's pages | yes |
 | `NEBIUS_API_KEY` | roster extraction, ranking, the self-eval judge | yes |
-| `IRIDIUM_API_KEY` | working out who *you* are | **no — see below** |
+| `IRIDIUM_API_KEY` | working out who *you* are, so picks rank against your background too | **no — see below** |
 
 Nothing is committed to this repo that you have to fill in. There are no keys, tokens or
 credentials anywhere in it, including in the deploy doc — a quick tunnel is anonymous by design.
@@ -69,10 +70,34 @@ and nothing else. The briefing tells you so in plain words rather than pretendin
 *as well as* your stated goal — so "meet people working on agent evals" gets weighted by what
 you've actually built.
 
+### If you want that, here's how
+
+Iridium is at **https://iridiumhqmcp.com/**. Adding it to your own Claude takes **no API key** —
+it speaks OAuth 2.1 with dynamic client registration, so you approve it in a browser on the first
+call and never paste a credential:
+
+```bash
+claude mcp add --transport http iridium https://api.iridiumhqmcp.com/mcp
+```
+
+Note the `api.` subdomain — only that host serves MCP. The bare domain is the landing page, and
+`https://iridiumhqmcp.com/mcp` answers 405 with no OAuth challenge at all.
+
+Handing *this* fleet your identity is a separate, deliberate step — it never reads your Claude's
+other MCP connections:
+
+- **Public endpoint:** send your own Iridium API key as an `X-Iridium-Key` header (or
+  `Authorization: Bearer …`) on `/prep`. It is read from the request and never stored, logged or
+  persisted. Send nothing and you get the keyless briefing.
+- **Local stdio:** set `IRIDIUM_API_KEY` in your environment.
+
+### You never inherit anyone else's identity
+
 **This was a real bug and it is fixed.** An earlier build served the *owner's* cached LinkedIn
 profile to every caller, which would have ranked a stranger against the wrong person's interests.
-The cached profile is now gated on the caller presenting their own `IRIDIUM_API_KEY`. Verified
-again on the live public endpoint while writing this page — the run above came back with:
+Identity is now request-scoped: the server's own key is never used to answer someone else's
+request, so a remote caller gets their own profile or none at all. Verified again on the live
+public endpoint while writing this page — the keyless run above came back with:
 
 ```json
 "user": {"summary": "", "interests": [], "source": "none"}
