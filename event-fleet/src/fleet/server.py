@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import logging
 import sys
+import threading
 import traceback
 import uuid
 from importlib import import_module
@@ -25,6 +26,7 @@ from typing import Any
 from dotenv import load_dotenv
 from mcp.server import MCPServer
 
+from fleet import mesh
 from fleet.models import ConferenceBriefing, EvalResult, PrepRequest, UserProfile
 
 AGENT = "S1/server"
@@ -82,6 +84,23 @@ def _step(module: str, func: str, degradations: list[str], *args: Any, **kwargs:
         )
         degradations.append(f"{target} raised {type(exc).__name__}: {exc}")
         return None
+
+
+def _publish(tag: str, briefing: ConferenceBriefing, roster: int) -> None:
+    """Mirror one finished run onto the Cotal mesh (spec section 6).
+
+    One progress line saying what each lane produced, then one error line per
+    degradation -- which lane, which step, why -- so the durable audit log can be
+    read back after the run. `mesh.post`/`mesh.error` never raise and log their own
+    failures to stderr, so a down mesh costs the audit trail and nothing else.
+    """
+    mesh.post(
+        f"{tag} roster={roster} profile={briefing.user.source} picks={len(briefing.picks)} "
+        f"confidence={briefing.evaluation.confidence:.2f} "
+        f"degradations={len(briefing.degradations)}"
+    )
+    for line in briefing.degradations:
+        mesh.error(f"{tag} {line}", AGENT)
 
 
 @mcp.tool()
@@ -146,6 +165,14 @@ def prep_conference(event_name: str, intent: str) -> ConferenceBriefing:
     # briefing rather than losing the run silently.
     _step("store", "save_run", briefing.degradations,
           PrepRequest(event_name=event_name, intent=intent), briefing)
+
+    # Off the critical path in a thread: `cotal send` costs ~0.6s per message and can
+    # block on an unreachable mesh, and the briefing must never wait on the audit log.
+    # Reads `degradations`, never changes it -- other lanes render that same list.
+    threading.Thread(
+        target=_publish,
+        args=(f"run={run_id[:8]} event={event_name!r}", briefing, len(speakers)),
+    ).start()
 
     log.info(
         "agent=%s step=done run_id=%s picks=%d roster_partial=%s degradations=%d",

@@ -15,6 +15,7 @@ a crash -- callers get a bool back and keep going. stdout is the MCP JSON-RPC ch
 from __future__ import annotations
 
 import logging
+import re
 import shutil
 import subprocess
 
@@ -23,12 +24,23 @@ log = logging.getLogger("fleet.mesh")
 _TIMEOUT_S = 5
 _PROGRESS_CHANNEL = "fleet.progress"
 _ERROR_CHANNEL = "fleet.errors"
+_MAX_CHARS = 500
+# Callers pass raw exception text, which routinely carries the operator's home
+# directory. The audit log gets shown on a projector, so a path never reaches it.
+_ABS_PATH = re.compile(r"/(?:Users|home|private|var|tmp|opt)/[^\s'\"]*")
+
+
+def _scrub(text: str) -> str:
+    """One projector-safe line: no filesystem paths, no newlines, bounded length."""
+    line = _ABS_PATH.sub("<path>", " ".join(text.split()))
+    return line[:_MAX_CHARS] + "..." if len(line) > _MAX_CHARS else line
 
 
 def _send(channel: str, text: str) -> bool:
     """Best-effort `cotal send msg <channel> "<text>"`. True on success, False (and
     logged to stderr) on anything else -- missing binary, unreachable mesh, denied
     ACL, timeout. Never raises."""
+    text = _scrub(text)
     if shutil.which("cotal") is None:
         log.warning("mesh: cotal not on PATH, dropping #%s message: %s", channel, text)
         return False
