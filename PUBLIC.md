@@ -16,7 +16,7 @@ The hostname is an ephemeral Cloudflare quick tunnel and changes whenever the tu
 the current one is at the top of [DEPLOY.md](DEPLOY.md).
 
 ```bash
-U=https://reliability-olympics-minimize-acne.trycloudflare.com
+U=https://events.iridiumhqmcp.com
 
 curl -s $U/health
 

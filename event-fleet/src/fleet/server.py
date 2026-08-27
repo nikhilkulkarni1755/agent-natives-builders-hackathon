@@ -107,8 +107,28 @@ def _publish(tag: str, briefing: ConferenceBriefing, roster: int) -> None:
 def prep_conference(event_name: str, intent: str) -> ConferenceBriefing:
     """Prepare for a conference: who is worth meeting there, and why.
 
+    Works for any event with a public speakers or schedule page. Proven live on
+    ai.engineer, us.pycon.org and kccnceu2026.sched.com -- same code path, no
+    per-site handling. Never invents a speaker: an event whose lineup is not yet
+    published correctly returns nobody.
+
+    NOT SUPPORTED: Luma (lu.ma), Meetup and Partiful. Their pages are
+    client-rendered invites rather than published speaker listings, so there is no
+    roster to read -- a fetch returns nothing, an unrelated page, or the RSVP guest
+    list mistaken for a line-up. Those return an empty roster immediately with the
+    reason attached. Do not retry them and do not fill the gap yourself.
+
+    An Iridium account is optional. Without one the picks are ranked on `intent`
+    alone and the briefing says so; with one they are also ranked against the
+    caller's own professional background.
+
+    Takes 28-70s: ~30s for an event already captured, plus a 17-44s live crawl for
+    a cold one.
+
     Args:
-        event_name: The event to prep for, e.g. "AI Engineer NY".
+        event_name: The event to prep for, EXACTLY as the organiser writes it,
+            year included -- "AI Engineer World's Fair 2026", not "AI Engineer
+            World's Fair". Dropping the year degrades the run to 2 junk results.
         intent: What the user wants out of the event, in their own words --
             hiring, fundraising, a specific technical problem, partnerships.
     """
