@@ -126,6 +126,36 @@ multi-speaker enrichment · any login/user-management UI · hotels · anything G
   200, bearerAuth, sandbox at dev.mitosislabs.ai, endpoints /api/v1/{search,jobs,batch,skills,me}.
   NO API KEY YET -- gating item. Persona is real: @runtypelabs/persona v4.20.0, MIT. cloudflared is
   NOT installed.
+- D-027: SUBMISSION TARGET (human). The Cloudflare tunnel must be LIVE at submission and strangers
+  must be able to add the system and run any PUBIC event themselves. Iridium signup is THEIR choice,
+  so the whole product must work correctly with NO Iridium account. Luma / Meetup / Partiful are
+  explicitly NOT SUPPORTED and must be labelled as such at every surface the user meets.
+- D-028: PRIVACY BUG FOUND AND FIXED BEFORE GOING PUBLIC. `enrich_user()` served the OWNER's cached
+  LinkedIn profile to ANY caller -- a stranger would have seen "About you: Nikhil Kulkarni, Full-Stack
+  Engineer at iridiumhqmcp.com, San Francisco" and been ranked against the wrong person's interests.
+  The cache is now gated on the caller presenting an IRIDIUM_API_KEY; a public caller gets an honest
+  empty profile plus a plain degradation line and is ranked on stated intent alone. Verified both paths.
+- D-022: **STALE MCP SERVER IS THE #1 STAGE RISK** (V1, proved by CPU-time bracketing, not inferred).
+  Two fleet.server processes were alive; the one Claude uses booted BEFORE R2/R3 landed. Through it:
+  Europe = 176.7s / 158 junk picks / no session titles; World's Fair = 158.2s / 0 picks / RankError
+  from 352 page-furniture rows; NY = 12 named people (the EXCLUDED past-speakers list), which
+  detonates the closing line of the pitch. On a fresh server all three are correct (34.1s/24,
+  28.0s/19 conf 0.967, 0 picks). RELAUNCH CLAUDE CODE AND CONFIRM ONE fleet.server PROCESS.
+- D-023: mesh.py IS DEAD CODE. Nothing under src/fleet/ imports it. Pipeline errors never reach the
+  mesh: 3 real Iridium 401s moved cotal's fleet.errors count 2 -> 2. M3 is REOPENED. Do NOT claim
+  "every lane's progress, every error" on stage until a real pipeline error lands in the audit log.
+  The mesh, the ACL denial and the dashboard are all still real and demoable.
+- D-024: EVENT STRINGS MUST BE CHARACTER-EXACT. Dropping "2026" turns World's Fair into a 16.8s
+  crawl returning 2 speakers; a concurrent session got one "person" named "Optimizing Modern AI
+  Systems". Type them exactly as DEMO.md writes them.
+- D-025: SPEAKER LINKEDIN BUDGET IS NOW ZERO, on evidence. Over a full 24-speaker roster Iridium
+  resolved 0 speakers -- conference speakers are not in the account's network, so the disambiguation
+  guard correctly refused every match and all of them degraded to Tavily anyway. The calls bought
+  nothing and spent protected quota. Verified after the change: 24 picks, 11 with facts, 24s,
+  0 degradations, 0 get_linkedin_profile requests. enrich_user() is unaffected (cached, resolves).
+- D-026: DOMAIN-AGNOSTIC IS EARNED. V1 independently reproduced us.pycon.org -> 14 speakers and
+  kccnceu2026.sched.com -> 11, same code path, no domain checks. DEMO.md's softened "event-agnostic"
+  line is now stale -- quote the domains, not the counts (they vary per run).
 - D-021: MITOSIS MCP PROBED LIVE by the dispatcher. `claude mcp add --transport http mitosis
   https://mitosislabs.ai/api/mcp` -> Connected. 14 tools enumerate WITHOUT auth: cortex_ask,
   cortex_recall, cortex_manifest, cortex_status, cortex_connectable_sources, cortex_connect_link,

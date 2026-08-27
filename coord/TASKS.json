@@ -24,9 +24,9 @@
       "event-fleet/data/roster_aieng_ny.json"
     ],
     "verify": "cache file loads and contains source URL + UTC timestamp + the same real names",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave5-R2",
-    "evidence": null,
+    "evidence": "roster cache: 15-23s -> 0.06ms; 3 events pre-warmed (WF 19, Europe 24, NY 0-the-edge-case); byte-identical to live; serves with NO api keys at all; full run 66s -> 38.1s at conf 0.967",
     "stretch": false
   },
   "S1": {
@@ -193,9 +193,9 @@
       "event-fleet/src/fleet/mesh.py"
     ],
     "verify": "a real induced error appears in the durable audit log",
-    "status": "DONE",
-    "agent": "wave4-M3",
-    "evidence": "mesh.py post()/error() -> #fleet.progress / #fleet.errors; never raises (degrade path verified with cotal off PATH); induced error moved durable count 1->2 in dashboard",
+    "status": "RUNNING",
+    "agent": "wave8-M3",
+    "evidence": "REOPENED by V1: mesh.py is dead code -- no module under src/fleet/ imports it. A forced-failure run producing 3 real Iridium 401s moved cotal's fleet.errors count not at all (2 before, 2 after). Marked DONE on a manual CLI `cotal send`, which proved the mesh works but NOT that the fleet posts to it.",
     "stretch": false
   },
   "I1": {
@@ -277,8 +277,8 @@
     "role": "verify",
     "files": [],
     "verify": "cold-start real run through Claude; every claim on the board re-checked against reality",
-    "status": "TODO",
-    "agent": null,
+    "status": "RUNNING",
+    "agent": "wave6-V1",
     "evidence": null,
     "stretch": false
   },
@@ -287,6 +287,7 @@
     "title": "Demo rehearsal + fallbacks armed",
     "deps": [
       "D1",
+      "P4",
       "V1"
     ],
     "role": "verify",
@@ -340,9 +341,9 @@
       "event-fleet/src/fleet/http_app.py"
     ],
     "verify": "real curl against the SSE route streams a real briefing; stdio MCP still works unchanged",
-    "status": "TODO",
+    "status": "DONE",
     "agent": null,
-    "evidence": null,
+    "evidence": "Starlette+uvicorn (zero new deps, both transitive of mcp); /health, /prep, /prep/stream; TTFB 14ms; 75 real events; concurrency 1 + 60s cooldown + 20/hr cap; log scrubber verified clean against all 3 keys; stdio path proven unbroken",
     "stretch": false
   },
   "H2": {
@@ -356,8 +357,8 @@
       "DEPLOY.md"
     ],
     "verify": "a real public URL serves a real briefing from another network; URL recorded in DEPLOY.md",
-    "status": "TODO",
-    "agent": null,
+    "status": "RUNNING",
+    "agent": "wave7-H2",
     "evidence": null,
     "stretch": false
   },
@@ -372,8 +373,8 @@
       "web/index.html"
     ],
     "verify": "briefing streams into the Persona widget in a real browser; screenshot captured",
-    "status": "TODO",
-    "agent": null,
+    "status": "RUNNING",
+    "agent": "wave7-X1",
     "evidence": null,
     "stretch": true
   },
@@ -388,9 +389,26 @@
       "event-fleet/src/fleet/mitosis.py"
     ],
     "verify": "real Mitosis call; every rendered claim carries a citation traceable to a source",
+    "status": "RUNNING",
+    "agent": "wave6-X2",
+    "evidence": null,
+    "stretch": true
+  },
+  "P4": {
+    "id": "P4",
+    "title": "Public readiness: unsupported-platform labels, stranger onboarding, no-Iridium path",
+    "deps": [
+      "H2"
+    ],
+    "role": "deploy",
+    "files": [
+      "PUBLIC.md",
+      "event-fleet/src/fleet/roster.py"
+    ],
+    "verify": "a caller with NO Iridium key and NO local setup gets a correct briefing; unsupported platforms are labelled at every surface",
     "status": "TODO",
     "agent": null,
     "evidence": null,
-    "stretch": true
+    "stretch": false
   }
 }
