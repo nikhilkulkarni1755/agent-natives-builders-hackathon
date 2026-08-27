@@ -1,8 +1,12 @@
 """Roster fetch for the Conference Prep Fleet. Agent B / tasks R1-R3.
 
 Returns the real, named PEOPLE speaking at an event. Event-agnostic by
-construction: there is no domain check, no site-specific URL pattern and
-no per-event special case anywhere in this module.
+construction: no site-specific URL pattern and no per-event special case
+anywhere in this module. The one host check is `_UNSUPPORTED_HOSTS` -- a
+measured capability boundary, listing the platforms that publish invites
+rather than rosters, so the caller is told in ~2s instead of waiting out
+a 36-51s empty answer. Nothing about it is per-event: it names hosts
+where a roster does not exist, never events we prefer not to handle.
 
 Three stages, in order of how clean the data is:
 
@@ -78,6 +82,19 @@ MODEL = os.environ.get("NEBIUS_MODEL", "openai/gpt-oss-120b")
 CACHE_DIR = DATA_DIR / "roster"
 _DEFAULT_TTL_HOURS = 168.0   # a published lineup does not move in a week
 _SLUG_RE = re.compile(r"[^a-z0-9]+")
+
+# A capability boundary, not a site preference, and not the per-event special-casing
+# D-010 forbids: these hosts serve client-rendered invite/RSVP pages, so there is no
+# published roster on them to read. Measured 2026-08-27 against real public events:
+#   lu.ma        16.3s -> RuntimeError, and 9.1s -> the public RSVP guest list returned
+#                as 10 title-less "speakers" ("Xenofon", "Sushrut A") -- wrong data, not
+#                no data, which is the worse of the two failures.
+#   meetup.com   35.9s -> 0 speakers.
+#   partiful.com 51.2s -> 0 speakers, and 40.4s -> RuntimeError.
+# Matched on host suffix only, on the URL the caller gave or the URLs discovery
+# actually returned -- never on the event's name or subject.
+_UNSUPPORTED_HOSTS = {"lu.ma": "Luma", "luma.com": "Luma",
+                      "meetup.com": "Meetup", "partiful.com": "Partiful"}
 
 MAX_PEOPLE = 25          # a briefing needs a shortlist, not 500 names
 _MAX_DOC_CHARS = 30000   # ~8k tokens of document per extraction call
@@ -177,6 +194,51 @@ _SCHEMA = {
 }
 
 
+class UnsupportedPlatform(RuntimeError):
+    """Every source discovery found for this event is on a platform that publishes
+    no roster. Caught inside `fetch_roster`, which answers instead of raising."""
+
+    def __init__(self, platforms: set[str]) -> None:
+        self.platforms = sorted(platforms)
+        super().__init__(", ".join(self.platforms))
+
+
+def _unsupported_platform(url_or_name: str) -> str | None:
+    """The platform name when `url_or_name` points at an unsupported host, else
+    None. Suffix-matched so subdomains count; an event *name* has spaces in the
+    host slot and can never match."""
+    host = url_or_name.strip().split("//")[-1].split("/")[0].lower()
+    return next(
+        (name for suffix, name in _UNSUPPORTED_HOSTS.items()
+         if host == suffix or host.endswith(f".{suffix}")),
+        None,
+    )
+
+
+def _unsupported_roster(platforms: list[str] | set[str], event_name: str) -> tuple[list[Speaker], str, bool]:
+    """The empty-roster shape plus the reason, for an event that lives only on a
+    platform with no published roster. Never raises, and never caches -- there is
+    no real capture to keep. The reason goes in the description because that is
+    the first line of the briefing the user reads.
+
+    is_partial is False on purpose. It means "the lineup is published in waves and
+    this is the part that is out" -- which would contradict the line above it. This
+    roster is not partial; it was never fetchable."""
+    named = ", ".join(sorted(platforms))
+    logger.warning(
+        "roster: agent=B step=fetch_roster event_name=%r unsupported=%s "
+        "why=no published roster on this platform", event_name, named,
+    )
+    _degrade(f"No roster was fetched: {named} is not a supported source. See the event line above.")
+    return [], (
+        f"Not supported: {named}. Those event pages are client-rendered invites, so a public "
+        f"fetch returns nothing, an unrelated page, or the RSVP guest list -- never a speaker "
+        f"line-up. No roster was fetched for {event_name!r} and no speaker was invented. What "
+        f"does work: any conference with a public speakers or schedule page, proven live on "
+        f"ai.engineer, us.pycon.org and kccnceu2026.sched.com."
+    ), False
+
+
 def _collapse(text: str) -> str:
     """Whitespace-normalised text. Pages use non-breaking spaces inside
     names, so a raw substring check would reject real speakers."""
@@ -257,10 +319,25 @@ def _linked_documents(manifest: str, base_url: str, limit: int = 2) -> list[str]
 def _documents(event_name: str, api_key: str):
     """Yield (source_url, text) for this event, cleanest source first."""
     pages = _tavily_post("search", {"query": f"{event_name} speakers", "max_results": 3}, api_key)
-    urls = [r["url"] for r in pages.get("results") or []]
+    urls: list[str] = []
+    blocked: set[str] = set()
+    for candidate in (r["url"] for r in pages.get("results") or []):
+        # Drop the unsupported hosts here, before any /extract or model call: that is
+        # what turns a 36-51s empty answer into a ~2s honest one, and it also stops a
+        # Luma guest list being extracted as if it were a line-up.
+        platform = _unsupported_platform(candidate)
+        if platform:
+            blocked.add(platform)
+        else:
+            urls.append(candidate)
     if not urls:
+        if blocked:
+            raise UnsupportedPlatform(blocked)
         raise RuntimeError(f"Tavily search found no candidate URL for event {event_name!r}")
-    logger.info("roster: agent=B step=discover event_name=%r candidates=%s", event_name, urls)
+    logger.info(
+        "roster: agent=B step=discover event_name=%r candidates=%s skipped_platforms=%s",
+        event_name, urls, sorted(blocked),
+    )
 
     # Only the top-ranked results: a manifest is worth reading when it belongs to
     # the event's own site, not to some third party that merely mentions the event.
@@ -502,6 +579,12 @@ def fetch_roster(event_name: str, live: bool | None = None) -> tuple[list[Speake
     Answered from the last real capture while that capture is inside the
     freshness window; `live=True` (or FLEET_ROSTER_LIVE=1) forces a fresh crawl.
     """
+    # Before the cache and before the network: a link the caller pasted is already
+    # enough to know there is no roster to read, so say so in milliseconds.
+    platform = _unsupported_platform(event_name)
+    if platform:
+        return _unsupported_roster({platform}, event_name)
+
     if live is None:
         live = os.environ.get("FLEET_ROSTER_LIVE") == "1"
     cached = _read_cache(event_name)
@@ -520,6 +603,10 @@ def fetch_roster(event_name: str, live: bool | None = None) -> tuple[list[Speake
 
     try:
         speakers, description, is_partial, sources = _fetch_live(event_name)
+    except UnsupportedPlatform as exc:
+        # Not a failure to fall back from: there is no roster on that platform to
+        # fetch, now or on a retry, so a stale capture would answer the wrong question.
+        return _unsupported_roster(exc.platforms, event_name)
     except Exception as exc:
         if cached is None:
             raise
