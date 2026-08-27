@@ -118,6 +118,12 @@ multi-speaker enrichment · any login/user-management UI · hotels · anything G
 
 ## Decisions log (Agent A appends)
 - D-001: coord/ read+written at the absolute main-checkout path, not per-worktree. Zero sync latency.
+- D-016: COTAL PLUGIN IS DEAD BY DESIGN, NOT BROKEN — diagnosed, do not spend more time on it.
+  `plugin:cotal:cotal` requires COTAL_NAME/COTAL_LINK/COTAL_AGENT_FILE in the process env, then a
+  second gate (COTAL_CONTROL_SOCKET/TOKEN) that only `cotal spawn --agent claude` wires up. A
+  normally-launched Claude session can never satisfy it. DO NOT claim "drive the mesh from inside
+  Claude" on stage. DO claim: real mesh, minted least-privilege identities, a real broker-level ACL
+  denial, a real cross-identity round trip, and the live authed web dashboard — all proven.
 - D-015: HUMAN CONSTRAINT — LinkedIn throttles an account that searches too often, and losing
   enrichment would kill the best-working part of the demo. Iridium is DONE; treat it as working and
   do not refine it further. `enrich_user()` now serves the cached real profile by default (0 live

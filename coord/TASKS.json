@@ -15,17 +15,17 @@
   },
   "R2": {
     "id": "R2",
-    "title": "Cache the real roster response as the on-stage fallback",
+    "title": "Cache real roster responses to data/ as on-stage fallbacks",
     "deps": [
-      "R1"
+      "R3"
     ],
     "role": "roster",
     "files": [
       "event-fleet/data/roster_aieng_ny.json"
     ],
     "verify": "cache file loads and contains source URL + UTC timestamp + the same real names",
-    "status": "RUNNING",
-    "agent": "wave3-R2",
+    "status": "TODO",
+    "agent": null,
     "evidence": null,
     "stretch": false
   },
@@ -54,9 +54,9 @@
       "event-fleet/src/fleet/store.py"
     ],
     "verify": "two real runs persisted; run_ids distinct; row re-read and printed",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave2-S2",
-    "evidence": null,
+    "evidence": "SQLite persistence; 2 distinct run_ids; rehydrated ConferenceBriefing re-read in a separate process; latest-run rule verified; server still Connected",
     "stretch": false
   },
   "P1": {
@@ -84,9 +84,9 @@
       "event-fleet/src/fleet/judge.py"
     ],
     "verify": "real call; EvalResult with per-check pass/fail printed",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave2-P2",
-    "evidence": null,
+    "evidence": "judge() discriminates: grounded conf=0.9 facts_grounded=True; ungrounded conf=0.25 facts_grounded=False, names both invented claims. 2.3-3.0s",
     "stretch": false
   },
   "P3": {
@@ -100,8 +100,8 @@
       "event-fleet/tests/test_judge.py"
     ],
     "verify": "both runs pasted: grounded->pass, deliberately ungrounded->fail",
-    "status": "TODO",
-    "agent": null,
+    "status": "RUNNING",
+    "agent": "wave4-P3",
     "evidence": null,
     "stretch": false
   },
@@ -130,9 +130,9 @@
       "event-fleet/src/fleet/enrich.py"
     ],
     "verify": "real (redacted) response pasted; cache written to event-fleet/data/",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave3-E2",
-    "evidence": null,
+    "evidence": "enrich_user + enrich_speakers via Door 2 with disambiguation; cached to data/iridium_user_profile.json",
     "stretch": false
   },
   "E3": {
@@ -146,8 +146,8 @@
       "event-fleet/src/fleet/enrich.py"
     ],
     "verify": "forced failure shown degrading cleanly; degradation string logged, not swallowed",
-    "status": "TODO",
-    "agent": null,
+    "status": "RUNNING",
+    "agent": "wave4-E3",
     "evidence": null,
     "stretch": false
   },
@@ -177,9 +177,9 @@
       "event-fleet/src/fleet/mesh.py"
     ],
     "verify": "real cotal_send/cotal_anycast round trip; cotal web dashboard shows it",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave2-M2",
-    "evidence": null,
+    "evidence": "real NATS broker denial captured (Permissions Violation on ungranted subject, reproduced 2x); 3 minted least-privilege identities; cross-identity round trip incl. anycast; cotal web authed dashboard showing durable counts grow live",
     "stretch": false
   },
   "M3": {
@@ -193,9 +193,9 @@
       "event-fleet/src/fleet/mesh.py"
     ],
     "verify": "a real induced error appears in the durable audit log",
-    "status": "TODO",
-    "agent": null,
-    "evidence": null,
+    "status": "DONE",
+    "agent": "wave4-M3",
+    "evidence": "mesh.py post()/error() -> #fleet.progress / #fleet.errors; never raises (degrade path verified with cotal off PATH); induced error moved durable count 1->2 in dashboard",
     "stretch": false
   },
   "I1": {
@@ -251,17 +251,15 @@
   },
   "I4": {
     "id": "I4",
-    "title": "Render the exact section-5 output format",
-    "deps": [
-      "I3"
-    ],
+    "title": "Render the exact section-5 output format (pure fn, independent of wiring)",
+    "deps": [],
     "role": "spine",
     "files": [
       "event-fleet/src/fleet/render.py"
     ],
     "verify": "rendered briefing pasted, matching the spec's section-5 shape",
-    "status": "TODO",
-    "agent": null,
+    "status": "RUNNING",
+    "agent": "wave4-I4",
     "evidence": null,
     "stretch": false
   },
@@ -311,8 +309,8 @@
       "event-fleet/src/fleet/roster.py"
     ],
     "verify": "real speaker names returned for >=2 conferences on DIFFERENT domains, neither ai.engineer",
-    "status": "TODO",
-    "agent": null,
+    "status": "RUNNING",
+    "agent": "wave4-R3",
     "evidence": null,
     "stretch": false
   }
