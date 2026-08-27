@@ -547,6 +547,10 @@ def enrich_speakers(
     # Iridium client locks around its token, so these are safe to overlap; the
     # pool is small to stay polite to a rate-limited upstream. Order is preserved.
     head = speakers[:limit]
+    if not head:
+        # limit=0 is a legitimate request -- rank everyone, look nobody up. It is how
+        # a run stays off the LinkedIn quota entirely (D-015), so it must not raise.
+        return [EnrichedSpeaker(speaker=s, source="none") for s in speakers]
     with ThreadPoolExecutor(max_workers=min(LOOKUP_WORKERS, len(head))) as pool:
         out = list(pool.map(partial(_resolve_speaker, event_name=event_name), head))
     out += [EnrichedSpeaker(speaker=s, source="none") for s in speakers[limit:]]
