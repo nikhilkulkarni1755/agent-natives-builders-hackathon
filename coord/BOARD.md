@@ -126,6 +126,15 @@ multi-speaker enrichment · any login/user-management UI · hotels · anything G
   200, bearerAuth, sandbox at dev.mitosislabs.ai, endpoints /api/v1/{search,jobs,batch,skills,me}.
   NO API KEY YET -- gating item. Persona is real: @runtypelabs/persona v4.20.0, MIT. cloudflared is
   NOT installed.
+- D-029: PROCESS FAILURE, RECORDED. The dispatcher claimed R2, M3 and P4 without ever spawning an
+  agent, so the board read RUNNING while nobody was working. Caught by the human, not by the system.
+  `fleet.py ready` now flags any RUNNING task whose agent id is still a placeholder; it immediately
+  surfaced two more stale rows (I1 held deliberately, V1 finished but never marked). Claiming is not
+  dispatching -- confirm a live agent after every claim.
+- D-030: I1/I2/I3 were written as sequential wiring steps, but each lane landed straight into
+  server.py, so the wiring never existed as separate work. Closed against a real run rather than
+  left open as bookkeeping: roster->briefing, rank+judge (3 checks, non-zero confidence),
+  enrichment + threaded degradations, and the section-5 render all verified in one call.
 - D-027: SUBMISSION TARGET (human). The Cloudflare tunnel must be LIVE at submission and strangers
   must be able to add the system and run any PUBIC event themselves. Iridium signup is THEIR choice,
   so the whole product must work correctly with NO Iridium account. Luma / Meetup / Partiful are

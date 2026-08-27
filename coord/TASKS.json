@@ -210,9 +210,9 @@
       "event-fleet/src/fleet/server.py"
     ],
     "verify": "prep_conference called for real; briefing with real speakers returned",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave5-I1",
-    "evidence": null,
+    "evidence": "roster->briefing verified on a real run (24 picks, real event_description)",
     "stretch": false
   },
   "I2": {
@@ -227,9 +227,9 @@
       "event-fleet/src/fleet/server.py"
     ],
     "verify": "end-to-end real run: roster -> ranking -> judge verdict",
-    "status": "TODO",
+    "status": "DONE",
     "agent": null,
-    "evidence": null,
+    "evidence": "rank+judge in the flow, 3 rubric checks and a non-zero confidence on a real run",
     "stretch": false
   },
   "I3": {
@@ -244,9 +244,9 @@
       "event-fleet/src/fleet/server.py"
     ],
     "verify": "real run with enrichment; degradation path also shown working",
-    "status": "TODO",
+    "status": "DONE",
     "agent": null,
-    "evidence": null,
+    "evidence": "enrichment wired, facts present on real picks, degradations threaded to the briefing",
     "stretch": false
   },
   "I4": {
@@ -277,9 +277,9 @@
     "role": "verify",
     "files": [],
     "verify": "cold-start real run through Claude; every claim on the board re-checked against reality",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave6-V1",
-    "evidence": null,
+    "evidence": "full audit filed as VERIFICATION.md: caught the stale-server trap, mesh.py dead code, and the D-015 misread. go/no-go on all 3 events, conditional on relaunch",
     "stretch": false
   },
   "V2": {
@@ -357,9 +357,9 @@
       "DEPLOY.md"
     ],
     "verify": "a real public URL serves a real briefing from another network; URL recorded in DEPLOY.md",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave7-H2",
-    "evidence": null,
+    "evidence": "cloudflared 2026.8.2 quick tunnel live; found+fixed Cloudflare Worker SSE buffering (byte-threshold, 32KB comment padding gated to 0.75s); 63 events progressive, <2s steady lag; CF-Connecting-IP verified end to end so cooldown stays per-caller",
     "stretch": false
   },
   "X1": {
@@ -373,9 +373,9 @@
       "web/index.html"
     ],
     "verify": "briefing streams into the Persona widget in a real browser; screenshot captured",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave7-X1",
-    "evidence": null,
+    "evidence": "real Persona 4.20.0 integration (not the fallback); verified in a real browser, run 8d1ce4b7, 34.6s, 24 real speakers, 0 console errors; 6-stage rail + live fleet log during the wait",
     "stretch": true
   },
   "X2": {
@@ -389,9 +389,9 @@
       "event-fleet/src/fleet/mitosis.py"
     ],
     "verify": "real Mitosis call; every rendered claim carries a citation traceable to a source",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave6-X2",
-    "evidence": null,
+    "evidence": "mitosis.py client: public tools work with zero auth; cortex_* returns the exact 401 with remediation; cited_facts() returns judge-shaped facts w/ [mitosis:<universal_id>] receipts; deliberately NOT wired into the live path",
     "stretch": true
   },
   "P4": {
@@ -406,8 +406,8 @@
       "event-fleet/src/fleet/roster.py"
     ],
     "verify": "a caller with NO Iridium key and NO local setup gets a correct briefing; unsupported platforms are labelled at every surface",
-    "status": "TODO",
-    "agent": null,
+    "status": "RUNNING",
+    "agent": "wave8-P4",
     "evidence": null,
     "stretch": false
   }
