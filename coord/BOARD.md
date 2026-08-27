@@ -118,6 +118,12 @@ multi-speaker enrichment · any login/user-management UI · hotels · anything G
 
 ## Decisions log (Agent A appends)
 - D-001: coord/ read+written at the absolute main-checkout path, not per-worktree. Zero sync latency.
+- D-010: HUMAN DECISION. Build and test against an event that HAS a published roster, but the
+  product must work for ANY event with named people — fetch_roster stays genuinely event-agnostic
+  and must NOT be ai.engineer-specific. New task R3 covers the generalization; V1 gates on it.
+- D-011: The AI Engineer NY empty roster (0 confirmed speakers, Wave 2 lands Sep 1) is KEPT as a
+  demonstrated EDGE CASE, not a failure. Refusing to invent speakers when a lineup is unpublished
+  is a feature worth showing. Keep the cached NY artifact as proof we checked.
 - D-008: HARD RULE — NEVER `git add -A` / `git add .` in the shared checkout. Stage explicit paths
   only. The dispatcher violated this and swept another lane's file into a coord commit; content was
   fine, but with live Cotal creds and a .env on disk in a PUBLIC repo, a broad add is how a secret

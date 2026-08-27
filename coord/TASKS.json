@@ -8,9 +8,9 @@
       "event-fleet/src/fleet/roster.py"
     ],
     "verify": "fetch_roster('AI Engineer NY') run for real; ACTUAL SPEAKER NAMES pasted in evidence",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave1-R1",
-    "evidence": null,
+    "evidence": "AI Engineer NY 2026 roster NOT published: 0 confirmed speakers. 24 named cards on page all under 'Past speakers & attendees from'; 2 cross-checked as World's Fair/Miami. /nyc/2026/speakers 404s. Wave 2 acceptances Sep 1 (future). Real event facts captured.",
     "stretch": false
   },
   "R2": {
@@ -24,8 +24,8 @@
       "event-fleet/data/roster_aieng_ny.json"
     ],
     "verify": "cache file loads and contains source URL + UTC timestamp + the same real names",
-    "status": "TODO",
-    "agent": null,
+    "status": "RUNNING",
+    "agent": "wave3-R2",
     "evidence": null,
     "stretch": false
   },
@@ -270,10 +270,11 @@
     "title": "FULL END-TO-END VERIFICATION \u2014 always last",
     "deps": [
       "I4",
-      "S2",
-      "R2",
+      "M3",
       "P3",
-      "M3"
+      "R2",
+      "R3",
+      "S2"
     ],
     "role": "verify",
     "files": [],
@@ -294,6 +295,22 @@
       "DEMO.md"
     ],
     "verify": "script written; every fallback triggered once and confirmed working",
+    "status": "TODO",
+    "agent": null,
+    "evidence": null,
+    "stretch": false
+  },
+  "R3": {
+    "id": "R3",
+    "title": "Generalize fetch_roster to ANY event with named people (not ai.engineer-specific)",
+    "deps": [
+      "R2"
+    ],
+    "role": "roster",
+    "files": [
+      "event-fleet/src/fleet/roster.py"
+    ],
+    "verify": "real speaker names returned for >=2 conferences on DIFFERENT domains, neither ai.engineer",
     "status": "TODO",
     "agent": null,
     "evidence": null,
