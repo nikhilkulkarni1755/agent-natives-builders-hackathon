@@ -118,6 +118,13 @@ multi-speaker enrichment · any login/user-management UI · hotels · anything G
 
 ## Decisions log (Agent A appends)
 - D-001: coord/ read+written at the absolute main-checkout path, not per-worktree. Zero sync latency.
+- D-015: HUMAN CONSTRAINT — LinkedIn throttles an account that searches too often, and losing
+  enrichment would kill the best-working part of the demo. Iridium is DONE; treat it as working and
+  do not refine it further. `enrich_user()` now serves the cached real profile by default (0 live
+  calls); set FLEET_ENRICH_LIVE=1 only for a deliberate live capture. `enrich_speakers` budget cut
+  5 -> 3. NO AGENT may run enrichment repeatedly to test. Test against the cache. Spend live
+  LinkedIn calls only on the final pre-demo capture. Serving cache by policy is NOT a degradation
+  and must not appear in the user-facing degradations list.
 - D-012: BLOCKER FOUND BY LIVE END-TO-END RUN (dispatcher, run a73a8a9e). fetch_roster() against
   the World's Fair page returns PAGE FURNITURE, not speakers: "Supporting Partners" (with the whole
   sponsor list as its title), "Keynote", "Tuesday"/"Wednesday"/"Thursday", "PM", "New Engineer
