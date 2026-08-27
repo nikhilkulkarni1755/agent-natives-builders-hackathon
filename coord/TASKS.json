@@ -193,9 +193,9 @@
       "event-fleet/src/fleet/mesh.py"
     ],
     "verify": "a real induced error appears in the durable audit log",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave8-M3",
-    "evidence": "REOPENED by V1: mesh.py is dead code -- no module under src/fleet/ imports it. A forced-failure run producing 3 real Iridium 401s moved cotal's fleet.errors count not at all (2 before, 2 after). Marked DONE on a manual CLI `cotal send`, which proved the mesh works but NOT that the fleet posts to it.",
+    "evidence": "REDONE with proof: forced 401 moved fleet.errors 3->4 and fleet.progress 10->11, captured live on cotal console; entry names lane/run/event/why; no latency regression (30.0s up, 30.5s cotal off PATH, 30.2s cotal hung, 0 raised)",
     "stretch": false
   },
   "I1": {
@@ -406,9 +406,9 @@
       "event-fleet/src/fleet/roster.py"
     ],
     "verify": "a caller with NO Iridium key and NO local setup gets a correct briefing; unsupported platforms are labelled at every surface",
-    "status": "RUNNING",
+    "status": "DONE",
     "agent": "wave8-P4",
-    "evidence": null,
+    "evidence": "Luma/Meetup/Partiful guarded at 0.0s (was 9-51s); found Luma returns its RSVP GUEST LIST as speakers - wrong data confidently presented; 3 demo events unchanged; D-028 re-verified through the live tunnel",
     "stretch": false
   }
 }
