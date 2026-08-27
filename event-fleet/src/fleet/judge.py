@@ -106,7 +106,11 @@ class _Verdict(BaseModel):
 
 class _JudgeOut(BaseModel):
     verdicts: list[_Verdict] = Field(default_factory=list)
-    summary: str
+    # The schema requires this, so a complete response always carries it. It is
+    # optional here only so a salvaged verdict -- truncated after `verdicts` closes
+    # but before `summary` is emitted -- still validates. Every scored signal lives
+    # in the verdicts; the summary is narrative for the Evaluation section.
+    summary: str = ""
 
 
 _SCHEMA = {
@@ -156,6 +160,43 @@ def _user_prompt(user: UserProfile, picks: list[RankedPick], intent: str) -> str
         + "\n\n".join(_pick_block(i, p) for i, p in enumerate(picks))
         + f"\n\nReturn exactly {len(picks)} verdicts, one per pick index above."
     )
+
+
+def _salvage(raw: str) -> str | None:
+    """Close a verdict that is complete but unterminated.
+
+    The model emits the whole audit, then pads whitespace until the token cap, so
+    the JSON arrives structurally valid except for its closing brackets. Balancing
+    them recovers a real verdict; anything still unparseable returns None and is
+    retried rather than guessed at.
+    """
+    text = raw.strip()
+    if not text.startswith("{"):
+        return None
+    depth = {"{": 0, "[": 0}
+    in_string = escaped = False
+    for ch in text:
+        if in_string:
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+        elif ch == '"':
+            in_string = True
+        elif ch in "{[":
+            depth["{" if ch == "{" else "["] += 1
+        elif ch in "}]":
+            depth["{" if ch == "}" else "["] -= 1
+    if in_string or depth["{"] < 0 or depth["["] < 0:
+        return None  # truncated mid-token: not recoverable, and never guessed
+    closed = text + "]" * depth["["] + "}" * depth["{"]
+    try:
+        json.loads(closed)
+    except json.JSONDecodeError:
+        return None
+    return closed
 
 
 def _validate(raw: str, n: int) -> _JudgeOut:
@@ -283,29 +324,49 @@ def judge(user: UserProfile, picks: list[RankedPick], intent: str) -> EvalResult
 
         raw = resp.choices[0].message.content or ""
         if resp.choices[0].finish_reason != "stop":
-            last_err = f"response was cut off (finish_reason={resp.choices[0].finish_reason})"
-            # Truncation is a budget problem, not a prompting one -- buy room.
-            budget *= 2
-        else:
-            try:
-                parsed = _validate(raw, len(picks))
-            except (ValidationError, ValueError, json.JSONDecodeError) as exc:
-                last_err = str(exc)
-            else:
-                result = _score(picks, parsed)
-                log.info(
-                    "agent=%s step=judge model=%s picks=%d attempts=%d latency_s=%.2f "
-                    "confidence=%.3f checks=%s",
-                    AGENT, MODEL, len(picks), attempt, time.perf_counter() - started,
-                    result.confidence, result.checks,
+            # gpt-oss-120b finishes the verdict, then floods whitespace until the cap.
+            # reasoning_effort="medium" makes this rare but not impossible (~1 in 9 real
+            # calls, always on the smallest budget), so the verdict is salvaged rather
+            # than thrown away: a complete audit is not a failure just because trailing
+            # padding ran past the limit. Only a genuinely incomplete verdict retries.
+            salvaged = _salvage(raw)
+            if salvaged is not None:
+                try:
+                    parsed = _validate(salvaged, len(picks))
+                except (ValidationError, ValueError, json.JSONDecodeError):
+                    salvaged = None
+            if salvaged is None:
+                last_err = f"response was cut off (finish_reason={resp.choices[0].finish_reason})"
+                budget *= 2  # genuinely truncated -- buy room and retry
+                log.warning(
+                    "agent=%s step=judge.truncated attempt=%d why=verdict incomplete, retrying "
+                    "with budget=%d", AGENT, attempt, budget,
                 )
-                if not result.checks[CHECK_GROUNDED]:
-                    # A failed grounding check is a loud finding, not a detail.
-                    log.error(
-                        "agent=%s step=judge.grounding why=ranking cited facts absent from "
-                        "the enrichment output | %s", AGENT, result.notes,
-                    )
-                return result
+                continue
+            log.warning(
+                "agent=%s step=judge.salvaged attempt=%d why=verdict complete but response hit "
+                "the token cap on trailing padding; parsed it instead of retrying", AGENT, attempt,
+            )
+            raw = salvaged
+        try:
+            parsed = _validate(raw, len(picks))
+        except (ValidationError, ValueError, json.JSONDecodeError) as exc:
+            last_err = str(exc)
+        else:
+            result = _score(picks, parsed)
+            log.info(
+                "agent=%s step=judge model=%s picks=%d attempts=%d latency_s=%.2f "
+                "confidence=%.3f checks=%s",
+                AGENT, MODEL, len(picks), attempt, time.perf_counter() - started,
+                result.confidence, result.checks,
+            )
+            if not result.checks[CHECK_GROUNDED]:
+                # A failed grounding check is a loud finding, not a detail.
+                log.error(
+                    "agent=%s step=judge.grounding why=ranking cited facts absent from "
+                    "the enrichment output | %s", AGENT, result.notes,
+                )
+            return result
 
         log.error(
             "agent=%s step=judge.parse attempt=%d model=%s why=%s | raw=%.400r",
