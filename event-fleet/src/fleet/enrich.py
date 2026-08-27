@@ -32,6 +32,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import re
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
@@ -176,8 +177,13 @@ def _cache_user(payload: dict, source: str) -> None:
         log.error("agent=%s step=cache path=%s exc=%r", AGENT, USER_CACHE, exc, exc_info=True)
 
 
-def _cached_user() -> UserProfile | None:
-    """The pre-warmed profile, if one was captured. Used only after a live failure."""
+def _cached_user(after_failure: bool = True) -> UserProfile | None:
+    """The pre-warmed profile, if one was captured.
+
+    Serving it is a degradation only when a live call actually failed. When it is
+    served deliberately to stay off LinkedIn's rate limit, that is the configured
+    policy, not a fallback, and must not be reported to the user as one.
+    """
     if not USER_CACHE.is_file():
         return None
     try:
@@ -186,10 +192,11 @@ def _cached_user() -> UserProfile | None:
     except (OSError, ValueError, KeyError) as exc:
         log.error("agent=%s step=cache-read path=%s exc=%r", AGENT, USER_CACHE, exc, exc_info=True)
         return None
-    _degrade(
-        f"Iridium was unreachable, so the attendee profile came from the cached "
-        f"response captured at {blob.get('captured_at')} rather than a live call."
-    )
+    if after_failure:
+        _degrade(
+            f"Iridium was unreachable, so the attendee profile came from the cached "
+            f"response captured at {blob.get('captured_at')} rather than a live call."
+        )
     return _to_user_profile(profile, source="iridium-cache")
 
 
@@ -210,7 +217,18 @@ def enrich_user(hint: str | None = None) -> UserProfile:
     disambiguation at all: `linkedin_member_id` resolves to exactly one person.
     `hint` is only consulted when the account carries no LinkedIn id, and only if
     it actually looks like a name.
+
+    Every lookup spends a real LinkedIn search behind Iridium, and LinkedIn throttles
+    an account that searches too often. The attendee does not change between runs, so
+    a cached profile is served unless FLEET_ENRICH_LIVE=1 explicitly asks for a fresh
+    one. This keeps rehearsals and test runs off the live quota.
     """
+    if os.environ.get("FLEET_ENRICH_LIVE") != "1":
+        cached = _cached_user(after_failure=False)
+        if cached is not None:
+            log.info("agent=%s step=enrich_user served=cache (FLEET_ENRICH_LIVE!=1)", AGENT)
+            return cached
+
     try:
         account = client().account()
         member_id = account.get("linkedin_member_id")
@@ -335,7 +353,7 @@ def _resolve_speaker(speaker: Speaker) -> EnrichedSpeaker:
     )
 
 
-def enrich_speakers(speakers: list[Speaker], limit: int = 5) -> list[EnrichedSpeaker]:
+def enrich_speakers(speakers: list[Speaker], limit: int = 3) -> list[EnrichedSpeaker]:
     """Resolve up to `limit` speakers against Iridium; the rest pass through fact-less.
 
     Every speaker is returned, so ranking still sees the whole roster. `limit`
