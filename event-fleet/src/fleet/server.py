@@ -108,7 +108,10 @@ def prep_conference(event_name: str, intent: str) -> ConferenceBriefing:
         # No profile source has resolved. Report an empty profile rather than invent one.
         user = UserProfile(summary="", interests=[], source="none")
 
-    enriched = _step("enrich", "enrich_speakers", degradations, speakers) or []
+    # event_name is a second disambiguation anchor: it lets the public plane confirm
+    # "this speaker, at this event" and lifts confirmed coverage 10 -> 12 for free.
+    enriched = _step("enrich", "enrich_speakers", degradations, speakers,
+                     event_name=event_name) or []
 
     # The enrichment plane records its own fallbacks internally -- an Iridium failure
     # answered from public web data, a speaker it refused to guess at. Draining them
