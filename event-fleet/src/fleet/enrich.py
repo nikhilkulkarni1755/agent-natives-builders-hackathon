@@ -554,7 +554,14 @@ def _resolve_speaker(speaker: Speaker, event_name: str | None = None) -> Enriche
 
 def enrich_speakers(
     speakers: list[Speaker],
-    limit: int = 3,
+    # Zero on evidence, not caution: measured over a full 24-speaker roster, Iridium
+    # resolved 0 speakers. Conference speakers are not in the account's network, so a
+    # name search returns several strangers and the disambiguation guard correctly
+    # refuses all of them (best 2.00 vs runner-up 2.00). Every lookup degraded to the
+    # public plane anyway -- so the LinkedIn calls bought nothing while spending a
+    # quota the human asked us to protect (D-015). Callers may still pass limit=N.
+    # enrich_user() is unaffected: it resolves correctly and is served from cache.
+    limit: int = 0,
     public_limit: int = PUBLIC_LIMIT,
     event_name: str | None = None,
 ) -> list[EnrichedSpeaker]:
