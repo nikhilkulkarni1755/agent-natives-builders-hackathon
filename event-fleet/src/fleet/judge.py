@@ -36,6 +36,11 @@ AGENT = "C"
 # scored on these; checks (b) and (c) still see the full ranking.
 RENDERED_TOP_N = 3
 
+# How many picks one verdict audits. A full roster is 19-25 picks; auditing every
+# one overruns the completion budget and returns no rubric at all. This is a
+# comfortable superset of what is ever rendered (D-007).
+AUDIT_LIMIT = 8
+
 # Any unsupported claim caps confidence here, however good the rest looks.
 UNGROUNDED_CONFIDENCE_CAP = 0.4
 LOW_CONFIDENCE_THRESHOLD = 0.7
@@ -216,7 +221,7 @@ def _validate(raw: str, n: int) -> _JudgeOut:
     return parsed
 
 
-def _score(picks: list[RankedPick], out: _JudgeOut) -> EvalResult:
+def _score(picks: list[RankedPick], out: _JudgeOut, skipped: int = 0) -> EvalResult:
     """Aggregate the model's per-pick verdicts into the rubric. Deterministic on
     purpose: every judgement here came from the real call, only the arithmetic
     is local, so the same verdicts always produce the same confidence."""
@@ -249,6 +254,11 @@ def _score(picks: list[RankedPick], out: _JudgeOut) -> EvalResult:
     confidence = round(confidence, 3)
 
     notes = out.summary.strip()
+    if skipped:
+        notes = (notes + " " if notes else "") + (
+            f"(Audited the top {len(picks)} picks; {skipped} lower-ranked entries were "
+            "not audited and are not rendered.)"
+        )
     if ungrounded:
         detail = "; ".join(
             f"{name}: " + " | ".join(claims) for name, claims in ungrounded
@@ -288,11 +298,24 @@ def judge(user: UserProfile, picks: list[RankedPick], intent: str) -> EvalResult
             notes="No picks were produced, so there was nothing to judge.",
         )
 
+    # A full roster is 19-25 picks, and auditing all of them overruns the completion
+    # budget: the verdict truncates mid-audit and the briefing renders with no rubric
+    # at all, which costs more than the unaudited tail is worth. The reader only ever
+    # sees the top few (D-007), so audit a superset of those and say so plainly.
+    audited = picks[:AUDIT_LIMIT]
+    skipped = len(picks) - len(audited)
+    if skipped:
+        log.info(
+            "agent=%s step=judge why=auditing top %d of %d picks; the rest rank below "
+            "anything that will be rendered", AGENT, len(audited), len(picks),
+        )
+
     messages: list[dict[str, str]] = [
         {"role": "system", "content": _SYSTEM},
-        {"role": "user", "content": _user_prompt(user, picks, intent)},
+        {"role": "user", "content": _user_prompt(user, audited, intent)},
     ]
 
+    picks = audited
     client = _client()
     last_err: str | None = None
     budget = _max_tokens(len(picks))
@@ -353,7 +376,7 @@ def judge(user: UserProfile, picks: list[RankedPick], intent: str) -> EvalResult
         except (ValidationError, ValueError, json.JSONDecodeError) as exc:
             last_err = str(exc)
         else:
-            result = _score(picks, parsed)
+            result = _score(picks, parsed, skipped)
             log.info(
                 "agent=%s step=judge model=%s picks=%d attempts=%d latency_s=%.2f "
                 "confidence=%.3f checks=%s",
